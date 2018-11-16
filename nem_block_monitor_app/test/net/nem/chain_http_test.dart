@@ -11,14 +11,4 @@ void main() {
     expect(height, greaterThan(0));
   });
 
-  test('getBlocksAfter', () async {
-    DummyChannel.register();
-    final chainHttp = ChainHttp(Uri.http("nistest.ttechdev.com:7890", ""));
-    final height = await chainHttp.getBlockchainHeight();
-    final blocks = await chainHttp.getBlocksAfter(height - 10);
-
-    print(blocks);
-
-    expect(blocks.length, 10);
-  });
 }
