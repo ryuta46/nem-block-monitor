@@ -1,7 +1,8 @@
 
 
-import 'package:nem_block_monitor_app/net/nem/model/network_type.dart';
-import 'package:nem_block_monitor_app/net/nem/model/public_account.dart';
+import 'package:nem_block_monitor_app/net/nem/model/block/network_type.dart';
+import 'package:nem_block_monitor_app/net/nem/model/account/public_account.dart';
+import 'package:nem_block_monitor_app/net/nem/model/transaction/transaction.dart';
 
 enum BlockType {
   nemesis,
@@ -34,7 +35,7 @@ class Block  {
   final String signature;
 
   /// Array of transaction
-  final List<Object> transactions;
+  final List<Transaction> transactions;
 
   /// The blockchain version
   final NetworkType networkType;

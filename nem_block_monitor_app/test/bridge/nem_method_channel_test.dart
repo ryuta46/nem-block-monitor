@@ -1,8 +1,19 @@
 
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:nem_block_monitor_app/bridge/nem_method_channel.dart';
-import 'package:nem_block_monitor_app/net/nem/model/network_type.dart';
+import 'package:nem_block_monitor_app/net/nem/model/block/network_type.dart';
 
+
+class DummyChannel {
+  static void register() {
+    MethodChannel channel = const MethodChannel(
+        'nemblockmonitorapp.ttechsoft.com/nem');
+    channel.setMockMethodCallHandler((MethodCall methodCall) async {
+      return "NDUMMYADDRESS";
+    });
+  }
+}
 
 void main() {
    test('calculateAddress', () async {

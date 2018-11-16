@@ -1,7 +1,7 @@
 
 
-import 'package:nem_block_monitor_app/net/nem/model/address.dart';
-import 'package:nem_block_monitor_app/net/nem/model/network_type.dart';
+import 'package:nem_block_monitor_app/net/nem/model/account/address.dart';
+import 'package:nem_block_monitor_app/net/nem/model/block/network_type.dart';
 
 /// The public account structure contains account's address and public key.
 class PublicAccount {

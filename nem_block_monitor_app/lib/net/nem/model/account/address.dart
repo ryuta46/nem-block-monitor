@@ -1,6 +1,6 @@
 
 import 'package:nem_block_monitor_app/bridge/nem_method_channel.dart';
-import 'package:nem_block_monitor_app/net/nem/model/network_type.dart';
+import 'package:nem_block_monitor_app/net/nem/model/block/network_type.dart';
 
 class Address {
   final String plain;
