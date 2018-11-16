@@ -3,10 +3,10 @@ enum TransactionType {
   importanceTransfer,
   mosaicDefinitionCreation,
   mosaicSupplyChange,
-  transfer,
-  aggregateModification,
+  multisigAggregateModification,
   multisigSignature,
-  multisig
+  multisig,
+  transfer,
 }
 
 
@@ -16,7 +16,7 @@ class TransactionTypeValues {
     TransactionType.mosaicDefinitionCreation: 0x4001,
     TransactionType.mosaicSupplyChange: 0x4002,
     TransactionType.transfer: 0x101,
-    TransactionType.aggregateModification: 0x1001,
+    TransactionType.multisigAggregateModification: 0x1001,
     TransactionType.multisigSignature: 0x1002,
     TransactionType.multisig: 0x1003,
   };

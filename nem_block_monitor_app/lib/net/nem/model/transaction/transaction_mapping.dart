@@ -5,13 +5,19 @@ import 'package:nem_block_monitor_app/net/nem/model/asset/mosaic.dart';
 import 'package:nem_block_monitor_app/net/nem/model/asset/mosaic_definition_dto.dart';
 import 'package:nem_block_monitor_app/net/nem/model/asset/mosaic_id_dto.dart';
 import 'package:nem_block_monitor_app/net/nem/model/block/network_type.dart';
+import 'package:nem_block_monitor_app/net/nem/model/transaction/hash_data_dto.dart';
 import 'package:nem_block_monitor_app/net/nem/model/transaction/importance_mode.dart';
 import 'package:nem_block_monitor_app/net/nem/model/transaction/importance_transfer_transaction.dart';
 import 'package:nem_block_monitor_app/net/nem/model/transaction/message.dart';
 import 'package:nem_block_monitor_app/net/nem/model/transaction/message_type.dart';
+import 'package:nem_block_monitor_app/net/nem/model/transaction/modification_type.dart';
 import 'package:nem_block_monitor_app/net/nem/model/transaction/mosaic_definition_creation_transaction.dart';
 import 'package:nem_block_monitor_app/net/nem/model/transaction/mosaic_supply_change_transaction.dart';
 import 'package:nem_block_monitor_app/net/nem/model/transaction/mosaic_supply_type.dart';
+import 'package:nem_block_monitor_app/net/nem/model/transaction/multisig_aggregate_modification_transaction.dart';
+import 'package:nem_block_monitor_app/net/nem/model/transaction/multisig_cosignatory_modification.dart';
+import 'package:nem_block_monitor_app/net/nem/model/transaction/multisig_signature_transaction.dart';
+import 'package:nem_block_monitor_app/net/nem/model/transaction/multisig_transaction.dart';
 import 'package:nem_block_monitor_app/net/nem/model/transaction/transaction.dart';
 import 'package:nem_block_monitor_app/net/nem/model/transaction/transaction_type.dart';
 import 'package:nem_block_monitor_app/net/nem/model/transaction/transfer_transaction.dart';
@@ -28,6 +34,12 @@ class TransactionMapping {
         return getMosaicDefinitionCreation(base, dict);
       case TransactionType.mosaicSupplyChange:
         return getMosaicSupplyChange(base, dict);
+      case TransactionType.multisigAggregateModification:
+        return getMultisigAggregateModification(base, dict);
+      case TransactionType.multisigSignature:
+        return getMultisigSignature(base, dict);
+      case TransactionType.multisig:
+        return getMultisig(base, dict);
       case TransactionType.transfer:
         return getTransfer(base, dict);
       default:
@@ -76,6 +88,49 @@ class TransactionMapping {
         MosaicSupplyTypeValues.types[dict["supplyType"] as int],
         dict["delta"] as int,
         MosaicIdDTO.fromJson(dict["mosaicId"]).toModel()
+    );
+  }
+  static Future<MultisigAggregateModificationTransaction> getMultisigAggregateModification(Transaction base, Map<String, dynamic> dict) async {
+    final List<Map<String, dynamic>> modificationsDict = dict["modifications"];
+    List<MultisigCosignatoryModification> modifications = [];
+    if (modificationsDict != null) {
+      modifications = (await Future.wait(modificationsDict.map((modificationDict) async {
+        return MultisigCosignatoryModification(
+            ModificationTypeValues.types[modificationDict["modificationType"]],
+            await PublicAccount.fromPublicKey(modificationDict["cosignatoryAccount"], base.networkType));
+      }))).toList();
+    }
+
+    int relativeChange = 0;
+    final Map<String, dynamic> minCosignatoriesDict = dict["minCosignatories"];
+    if (minCosignatoriesDict != null) {
+      relativeChange = minCosignatoriesDict["relativeChange"] as int;
+    }
+
+    return MultisigAggregateModificationTransaction(
+        base,
+        modifications,
+        relativeChange);
+  }
+
+  static Future<MultisigSignatureTransaction> getMultisigSignature(Transaction base, Map<String, dynamic> dict) async {
+    return MultisigSignatureTransaction(
+        base,
+        HashDataDTO.fromJson(dict["otherHash"]).data,
+        Address(dict["otherAccount"])
+    );
+  }
+
+  static Future<MultisigTransaction> getMultisig(Transaction base, Map<String, dynamic> dict) async {
+    final otherTrans = await TransactionMapping.apply(dict["otherTrans"]);
+    final List<Map<String, dynamic>> signaturesDict = dict["signatures"];
+    final List<MultisigSignatureTransaction> signatures = (await Future.wait(signaturesDict.map(
+            (signatureDict) async => await TransactionMapping.apply(signatureDict)))).toList();
+
+    return MultisigTransaction(
+        base,
+        otherTrans,
+        signatures
     );
   }
 
