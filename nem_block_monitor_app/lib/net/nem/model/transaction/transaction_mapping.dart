@@ -10,6 +10,8 @@ import 'package:nem_block_monitor_app/net/nem/model/transaction/importance_trans
 import 'package:nem_block_monitor_app/net/nem/model/transaction/message.dart';
 import 'package:nem_block_monitor_app/net/nem/model/transaction/message_type.dart';
 import 'package:nem_block_monitor_app/net/nem/model/transaction/mosaic_definition_creation_transaction.dart';
+import 'package:nem_block_monitor_app/net/nem/model/transaction/mosaic_supply_change_transaction.dart';
+import 'package:nem_block_monitor_app/net/nem/model/transaction/mosaic_supply_type.dart';
 import 'package:nem_block_monitor_app/net/nem/model/transaction/transaction.dart';
 import 'package:nem_block_monitor_app/net/nem/model/transaction/transaction_type.dart';
 import 'package:nem_block_monitor_app/net/nem/model/transaction/transfer_transaction.dart';
@@ -24,6 +26,8 @@ class TransactionMapping {
         return getImportanceTransfer(base, dict);
       case TransactionType.mosaicDefinitionCreation:
         return getMosaicDefinitionCreation(base, dict);
+      case TransactionType.mosaicSupplyChange:
+        return getMosaicSupplyChange(base, dict);
       case TransactionType.transfer:
         return getTransfer(base, dict);
       default:
@@ -64,6 +68,14 @@ class TransactionMapping {
         dict["creationFee"] as int,
         await PublicAccount.fromPublicKey(dict["creationFeeSink"] as String, base.networkType),
         await MosaicDefinitionDTO.fromJson(dict["definition"]).toModel(base.networkType)
+    );
+  }
+  static Future<MosaicSupplyChangeTransaction> getMosaicSupplyChange(Transaction base, Map<String, dynamic> dict) async {
+    return MosaicSupplyChangeTransaction(
+        base,
+        MosaicSupplyTypeValues.types[dict["supplyType"] as int],
+        dict["delta"] as int,
+        MosaicIdDTO.fromJson(dict["mosaicId"]).toModel()
     );
   }
 
