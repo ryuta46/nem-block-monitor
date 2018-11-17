@@ -40,5 +40,15 @@ class Block  {
   /// The blockchain version
   final NetworkType networkType;
 
+  int get totalFee {
+    if (transactions.isEmpty) {
+      return 0;
+    } else if (transactions.length == 1) {
+      return transactions[0].totalFee;
+    } else {
+      return transactions.map((transaction) => transaction.totalFee).reduce((f1, f2) => f1 + f2);
+    }
+  }
+
   Block(this.height, this.type, this.timeStamp, this.prevBlockHash, this.signer, this.signature, this.transactions, this.networkType);
 }

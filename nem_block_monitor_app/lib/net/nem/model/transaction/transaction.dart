@@ -13,6 +13,8 @@ class Transaction {
   final TransactionType type;
   final NetworkType networkType;
 
+  int get totalFee => fee;
+
   Transaction.fromBase(Transaction base):
         this.timestamp = base.timestamp,
         this.signature = base.signature,

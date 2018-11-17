@@ -8,7 +8,7 @@ void main() {
   test('getBlockByHeight', () async {
     DummyChannel.register();
     final blockHttp = BlockHttp(Uri.http("nistest.ttechdev.com:7890", ""));
-    final block = await blockHttp.getBlockByHeight(1);
+    final block = await blockHttp.getBlockByHeight(1728577);
 
     expect(block.prevBlockHash, "0000000000000000000000000000000000000000000000000000000000000000");
     expect(block.height, 1);
