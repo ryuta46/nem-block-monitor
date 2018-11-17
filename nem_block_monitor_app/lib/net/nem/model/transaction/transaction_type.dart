@@ -6,6 +6,7 @@ enum TransactionType {
   multisigAggregateModification,
   multisigSignature,
   multisig,
+  provisioningNamespace,
   transfer,
 }
 
@@ -15,10 +16,11 @@ class TransactionTypeValues {
     TransactionType.importanceTransfer: 0x801,
     TransactionType.mosaicDefinitionCreation: 0x4001,
     TransactionType.mosaicSupplyChange: 0x4002,
-    TransactionType.transfer: 0x101,
     TransactionType.multisigAggregateModification: 0x1001,
     TransactionType.multisigSignature: 0x1002,
     TransactionType.multisig: 0x1003,
+    TransactionType.provisioningNamespace: 0x2001,
+    TransactionType.transfer: 0x101,
   };
 
   static final Map<int, TransactionType> types = values.map((k, v) => MapEntry(v, k));

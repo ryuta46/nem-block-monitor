@@ -18,6 +18,7 @@ import 'package:nem_block_monitor_app/net/nem/model/transaction/multisig_aggrega
 import 'package:nem_block_monitor_app/net/nem/model/transaction/multisig_cosignatory_modification.dart';
 import 'package:nem_block_monitor_app/net/nem/model/transaction/multisig_signature_transaction.dart';
 import 'package:nem_block_monitor_app/net/nem/model/transaction/multisig_transaction.dart';
+import 'package:nem_block_monitor_app/net/nem/model/transaction/provisioning_namespace_transaction.dart';
 import 'package:nem_block_monitor_app/net/nem/model/transaction/transaction.dart';
 import 'package:nem_block_monitor_app/net/nem/model/transaction/transaction_type.dart';
 import 'package:nem_block_monitor_app/net/nem/model/transaction/transfer_transaction.dart';
@@ -40,6 +41,8 @@ class TransactionMapping {
         return getMultisigSignature(base, dict);
       case TransactionType.multisig:
         return getMultisig(base, dict);
+      case TransactionType.provisioningNamespace:
+        return getProvisioningNamespace(base, dict);
       case TransactionType.transfer:
         return getTransfer(base, dict);
       default:
@@ -91,7 +94,7 @@ class TransactionMapping {
     );
   }
   static Future<MultisigAggregateModificationTransaction> getMultisigAggregateModification(Transaction base, Map<String, dynamic> dict) async {
-    final List<Map<String, dynamic>> modificationsDict = dict["modifications"];
+    final List<dynamic> modificationsDict = dict["modifications"];
     List<MultisigCosignatoryModification> modifications = [];
     if (modificationsDict != null) {
       modifications = (await Future.wait(modificationsDict.map((modificationDict) async {
@@ -123,7 +126,7 @@ class TransactionMapping {
 
   static Future<MultisigTransaction> getMultisig(Transaction base, Map<String, dynamic> dict) async {
     final otherTrans = await TransactionMapping.apply(dict["otherTrans"]);
-    final List<Map<String, dynamic>> signaturesDict = dict["signatures"];
+    final List<dynamic> signaturesDict = dict["signatures"];
     final List<MultisigSignatureTransaction> signatures = (await Future.wait(signaturesDict.map(
             (signatureDict) async => await TransactionMapping.apply(signatureDict)))).toList();
 
@@ -131,6 +134,15 @@ class TransactionMapping {
         base,
         otherTrans,
         signatures
+    );
+  }
+  static Future<ProvisioningNamespaceTransaction> getProvisioningNamespace(Transaction base, Map<String, dynamic> dict) async {
+    return ProvisioningNamespaceTransaction(
+      base,
+      dict["creationFee"] as int,
+      await PublicAccount.fromPublicKey(dict["creationFeeSink"] as String, base.networkType),
+      dict["newPart"] as String,
+      dict["parent"] as String,
     );
   }
 
@@ -146,7 +158,7 @@ class TransactionMapping {
       );
     }
 
-    final mosaicsArray = dict["mosaics"] as List<Map<String, dynamic>>;
+    final List<dynamic> mosaicsArray = dict["mosaics"];
     List<Mosaic> mosaics = [];
 
     if (mosaicsArray != null) {
