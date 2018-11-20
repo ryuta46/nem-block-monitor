@@ -40,10 +40,10 @@ class BlocksPage extends StatelessWidget {
                   return BlockBriefTile(blocksState.blocks[blockIndex]);
                 }
                 else if (blockIndex == blocksState.blocks.length) {
-                  final lastBlock = blocksState.blocks.lastWhere((block) => true, orElse: null);
-                  if (lastBlock == null) {
+                  if (blocksState.blocks.isEmpty) {
                     return null;
                   }
+                  final lastBlock = blocksState.blocks.last;
                   _loadNext(lastBlock.height);
                   return Center(
                     child: Container(

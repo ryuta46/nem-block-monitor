@@ -22,8 +22,8 @@ class MainActivity: FlutterActivity() {
         val methodChannel = MethodChannel(flutterView, channel).setMethodCallHandler { methodCall, result ->
             when(methodCall.method) {
                 "calculateAddress" -> {
-                    val publicKey = methodCall.argument<String>("publicKey")
-                    val networkType = when (methodCall.argument<Int>("networkType")) {
+                    val publicKey = methodCall.argument("publicKey")
+                    val networkType = when (methodCall.argument("networkType")) {
                         0x68 -> Version.Main
                         else -> Version.Test
                     }
