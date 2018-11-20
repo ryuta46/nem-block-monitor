@@ -28,7 +28,7 @@ class MainActivity: FlutterActivity() {
                         else -> Version.Test
                     }
 
-                    val address = AccountGenerator.calculateAddress(ConvertUtils.toByteArray(publicKey), networkType)
+                    val address = AccountGenerator.calculateAddress(ConvertUtils.toByteArray(publicKey!!), networkType)
                     result.success(address)
                 }
                 else -> {

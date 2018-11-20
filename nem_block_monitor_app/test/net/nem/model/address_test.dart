@@ -1,7 +1,7 @@
 
 import 'package:nem_block_monitor_app/net/nem/model/account/address.dart';
 import 'package:nem_block_monitor_app/net/nem/model/block/network_type.dart';
-import 'package:test/test.dart';
+import 'package:test_api/test_api.dart';
 
 void main() {
   test('fromPlainAddress', () async {
