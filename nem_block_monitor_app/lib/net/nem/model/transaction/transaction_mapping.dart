@@ -81,8 +81,8 @@ class TransactionMapping {
     return MosaicDefinitionCreationTransaction(
         base,
         dict["creationFee"] as int,
-        await PublicAccount.fromPublicKey(dict["creationFeeSink"] as String, base.networkType),
-        await MosaicDefinitionDTO.fromJson(dict["definition"]).toModel(base.networkType)
+        Address(dict["creationFeeSink"] as String),
+        await MosaicDefinitionDTO.fromJson(dict["mosaicDefinition"]).toModel(base.networkType)
     );
   }
   static Future<MosaicSupplyChangeTransaction> getMosaicSupplyChange(Transaction base, Map<String, dynamic> dict) async {
@@ -128,7 +128,7 @@ class TransactionMapping {
     final otherTrans = await TransactionMapping.apply(dict["otherTrans"]);
     final List<dynamic> signaturesDict = dict["signatures"];
     final List<MultisigSignatureTransaction> signatures = (await Future.wait(signaturesDict.map(
-            (signatureDict) async => await TransactionMapping.apply(signatureDict)))).toList();
+            (signatureDict) async => await TransactionMapping.apply(signatureDict) as MultisigSignatureTransaction))).toList();
 
     return MultisigTransaction(
         base,
@@ -139,8 +139,8 @@ class TransactionMapping {
   static Future<ProvisioningNamespaceTransaction> getProvisioningNamespace(Transaction base, Map<String, dynamic> dict) async {
     return ProvisioningNamespaceTransaction(
       base,
-      dict["creationFee"] as int,
-      await PublicAccount.fromPublicKey(dict["creationFeeSink"] as String, base.networkType),
+      dict["rentalFee"] as int,
+      Address(dict["rentalFeeSink"] as String),
       dict["newPart"] as String,
       dict["parent"] as String,
     );

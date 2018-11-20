@@ -9,9 +9,9 @@ part of 'mosaic_definition_dto.dart';
 MosaicDefinitionDTO _$MosaicDefinitionDTOFromJson(Map<String, dynamic> json) {
   return MosaicDefinitionDTO(
       json['creator'] as String,
-      json['mosaicId'] == null
+      json['id'] == null
           ? null
-          : MosaicIdDTO.fromJson(json['mosaicId'] as Map<String, dynamic>),
+          : MosaicIdDTO.fromJson(json['id'] as Map<String, dynamic>),
       json['description'] as String,
       (json['properties'] as List)
           ?.map((e) => e as Map<String, dynamic>)

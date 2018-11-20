@@ -18,7 +18,7 @@ class TransactionTypeValues {
     TransactionType.mosaicSupplyChange: 0x4002,
     TransactionType.multisigAggregateModification: 0x1001,
     TransactionType.multisigSignature: 0x1002,
-    TransactionType.multisig: 0x1003,
+    TransactionType.multisig: 0x1004,
     TransactionType.provisioningNamespace: 0x2001,
     TransactionType.transfer: 0x101,
   };

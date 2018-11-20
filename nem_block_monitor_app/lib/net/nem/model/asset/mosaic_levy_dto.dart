@@ -19,6 +19,9 @@ class MosaicLevyDTO {
   factory MosaicLevyDTO.fromJson(Map<String, dynamic> json) => factory(json);
 
   MosaicLevy toModel() {
+    if (recipient == null) {
+      return null;
+    }
     return MosaicLevy(
         MosaicLevyTypeValues.types[int],
         Address(recipient),

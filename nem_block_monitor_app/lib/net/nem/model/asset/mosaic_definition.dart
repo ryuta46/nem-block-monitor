@@ -5,7 +5,7 @@ import 'package:nem_block_monitor_app/net/nem/model/account/public_account.dart'
 
 class MosaicDefinition {
   final PublicAccount creator;
-  final MosaicId mosaicId;
+  final MosaicId id;
   final String description;
   final int divisibility;
   final int initialSupply;
@@ -13,5 +13,5 @@ class MosaicDefinition {
   final bool transferable;
   final MosaicLevy levy;
 
-  MosaicDefinition(this.creator, this.mosaicId, this.description, this.divisibility, this.initialSupply, this.supplyMutable, this.transferable, this.levy);
+  MosaicDefinition(this.creator, this.id, this.description, this.divisibility, this.initialSupply, this.supplyMutable, this.transferable, this.levy);
 }
