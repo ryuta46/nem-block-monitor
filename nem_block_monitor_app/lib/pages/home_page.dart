@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:nem_block_monitor_app/pages/blocks/blocks_page.dart';
+import 'package:nem_block_monitor_app/pages/watch/watch_page.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -12,7 +13,8 @@ class HomePage extends StatefulWidget {
 class _HomeState extends State<HomePage> {
   int _currentIndex = 0;
     final List<Widget> _children = [
-    BlocksPage()
+      BlocksPage(),
+      WatchPage()
   ];
   @override
   Widget build(BuildContext context) {
@@ -20,7 +22,7 @@ class _HomeState extends State<HomePage> {
       appBar: AppBar(
         title: Text('My Flutter App'),
       ),
-      body: _children[0],
+      body: _children[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
         onTap: onTabTapped,
         currentIndex: _currentIndex, // this will be set when a new tab is tapped
@@ -50,7 +52,9 @@ class _HomeState extends State<HomePage> {
 
   void onTabTapped(int index) {
     setState(() {
-      _currentIndex = index;
+      if (index < 2) {
+        _currentIndex = index;
+      }
     });
   }
 
