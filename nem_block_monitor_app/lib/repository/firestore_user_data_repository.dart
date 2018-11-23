@@ -9,8 +9,6 @@ import 'package:nem_block_monitor_app/repository/user_data_repository.dart';
 class _WatchList {
   final String key;
   final Map<String, List<String>> _lists;
-  //final Map<String, String> userDocumentFieldPath;
-  //final Map<String, String> cacheDocumentFieldPath;
 
   _WatchList(this.key): _lists = {};
 
@@ -28,16 +26,8 @@ class _WatchList {
     }
   }
 
-  void readList(Map<String, dynamic> watchData, String network) {
-    _lists.remove(network);
-    if (watchData.containsKey(key)) {
-      _lists[key] = watchData[key];
-    }
-  }
-
-  void writeList(Map<String, List<String>> watchData, String network) {
-    final list = getList(network);
-    watchData[key] = list;
+  void setList(String network, Iterable<String> list) {
+    _lists[network] = List<String>()..addAll(list);
   }
 
   List<String> getList(String network) {
@@ -82,12 +72,10 @@ class FirestoreUserDataRepository extends UserDataRepository {
     _token = (snapShot.data["token"] ?? "") as String;
 
     for (var network in ["mainnet, testnet"]) {
-      final watchData = await Firestore.instance.document(
-          'users/$_userId/watch/$network').get();
-      if (watchData.exists) {
-        _watchLists.values.forEach((_watchLists) {
-          _watchLists.readList(watchData.data, network);
-        });
+      final watchData = Firestore.instance.collection('users/$_userId/$network');
+      for (var watchList in _watchLists.values) {
+        final entriesDocument = await watchData.document(watchList.key).get();
+        watchList.setList(network, entriesDocument.data?.keys ?? []);
       }
     }
   }
@@ -114,66 +102,61 @@ class FirestoreUserDataRepository extends UserDataRepository {
   FutureOr<void> removeWatchAddress(String address) async => _removeWatchEntry(keyAddresses, address);
 
   @override
-  // TODO: implement watchAssets
-  Future<BuiltList<String>> get watchAssets => null;
+  Future<BuiltList<String>> get watchAssets async =>  _getList(keyAssets);
 
   @override
-  FutureOr<void> addWatchAsset(String assetFullName) {
-    return null;
-  }
+  FutureOr<void> addWatchAsset(String assetFullName) async => _addWatchEntry(keyAssets, assetFullName);
 
   @override
-  FutureOr<void> removeWatchAsset(String assetFullName) {
-    // TODO: implement removeWatchAsset
-    return null;
-  }
-
+  FutureOr<void> removeWatchAsset(String assetFullName) async => _removeWatchEntry(keyAssets, assetFullName);
 
   @override
-  // TODO: implement watchHarvests
-  Future<BuiltList<String>> get watchHarvests => null;
+  Future<BuiltList<String>> get watchHarvests async => _getList(keyHarvests);
 
   @override
-  FutureOr<void> addWatchHarvest(String address) {
-    // TODO: implement addWatchHarvest
-    return null;
-  }
-
+  FutureOr<void> addWatchHarvest(String address) async => _addWatchEntry(keyHarvests, address);
 
   @override
-  FutureOr<void> removeWatchHarvest(String address) {
-    // TODO: implement removeWatchHarvest
-    return null;
-  }
-
+  FutureOr<void> removeWatchHarvest(String address) async => _removeWatchEntry(keyHarvests, address);
 
   BuiltList<String> _getList(String key) {
     final watchList = _watchLists[key];
     return BuiltList<String>(watchList.getList(_network));
   }
 
-  FutureOr<void> _addWatchEntry(String key, String newEntry) async {
+  FutureOr<void> _addWatchEntry(String key, String entry) async {
+    _addToFirestore(_network, key, entry);
     final watchList = _watchLists[key];
-    watchList.add(_network, newEntry);
-
-    _saveWatchLists(_network);
+    watchList.add(_network, entry);
   }
 
-  FutureOr<void> _removeWatchEntry(String key, String newEntry) async {
+  FutureOr<void> _removeWatchEntry(String key, String entry) async {
+    _removeFromFirestore(_network, key, entry);
     final watchList = _watchLists[key];
-    watchList.remove(_network, newEntry);
-
-    _saveWatchLists(_network);
+    watchList.remove(_network, entry);
   }
 
-  FutureOr<void> _saveWatchLists(String network) async {
-    final Map<String, List<String>> watchData = {};
+  FutureOr<void> _addToFirestore(String network, String key, String entry) async {
+    Firestore.instance.runTransaction((transaction) async {
+      final userWatchRef = Firestore.instance.document(
+          'users/$_userId/watch/$network/$key/$entry');
+      await userWatchRef.setData({"active": true});
 
-    _watchLists.values.forEach((watchList) => watchList.writeList(watchData, network));
+      final watchRef = Firestore.instance.document(
+          '$network/$key/$entry/$_userId');
+      await watchRef.setData({"active": true});
+    });
+  }
 
-    final watchRef = Firestore.instance.document('users/$_userId/watch/$network');
+  FutureOr<void> _removeFromFirestore(String network, String key, String entry) async {
+    Firestore.instance.runTransaction((transaction) async {
+      final userWatchRef = Firestore.instance.document(
+          'users/$_userId/watch/$network/$key/$entry');
+      await userWatchRef.delete();
 
-    await watchRef.setData(watchData);
-
+      final watchRef = Firestore.instance.document(
+          '$network/$key/$entry/$_userId');
+      await watchRef.delete();
+    });
   }
 }
