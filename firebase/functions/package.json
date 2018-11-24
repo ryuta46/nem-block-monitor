@@ -11,8 +11,12 @@
   },
   "main": "lib/index.js",
   "dependencies": {
+    "@types/node-fetch": "^2.1.2",
     "firebase-admin": "~6.0.0",
-    "firebase-functions": "^2.1.0"
+    "firebase-functions": "^2.1.0",
+    "nem-library": "^2.0.0-RC3",
+    "node-fetch": "^2.2.1",
+    "rxjs": "^5.5.12"
   },
   "devDependencies": {
     "tslint": "~5.8.0",
