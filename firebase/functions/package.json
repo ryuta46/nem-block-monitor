@@ -16,7 +16,9 @@
     "firebase-functions": "^2.1.0",
     "nem-library": "^2.0.0-RC3",
     "node-fetch": "^2.2.1",
-    "rxjs": "^5.5.12"
+    "rxjs": "^5.5.12",
+    "cryptiles": ">=4.1.2",
+    "hoek": ">=4.2.1"
   },
   "devDependencies": {
     "tslint": "~5.8.0",
