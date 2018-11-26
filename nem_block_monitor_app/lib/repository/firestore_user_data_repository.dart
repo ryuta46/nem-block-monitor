@@ -14,15 +14,15 @@ class _WatchList {
 
   void add(String network, String newEntry) {
     if (_lists.containsKey(network)) {
-      _lists[key].add(newEntry);
+      _lists[network].add(newEntry);
     } else {
-      _lists[key] = [newEntry];
+      _lists[network] = [newEntry];
     }
   }
 
   void remove(String network, String newEntry) {
     if (_lists.containsKey(network)) {
-      _lists[key].remove(newEntry);
+      _lists[network].remove(newEntry);
     }
   }
 
@@ -71,11 +71,12 @@ class FirestoreUserDataRepository extends UserDataRepository {
 
     _token = (snapShot.data["token"] ?? "") as String;
 
-    for (var network in ["mainnet, testnet"]) {
-      final watchData = Firestore.instance.collection('users/$_userId/$network');
+    for (var network in ["mainnet", "testnet"]) {
+      final watchData = Firestore.instance.document('users/$_userId/watch/$network');
       for (var watchList in _watchLists.values) {
-        final entriesDocument = await watchData.document(watchList.key).get();
-        watchList.setList(network, entriesDocument.data?.keys ?? []);
+        final entriesCollection = watchData.collection(watchList.key);
+        final entries = (await entriesCollection.getDocuments()).documents.map((document) => document.documentID);
+        watchList.setList(network, entries ?? []);
       }
     }
   }

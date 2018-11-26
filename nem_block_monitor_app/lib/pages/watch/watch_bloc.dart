@@ -3,7 +3,6 @@ import 'dart:math';
 import 'package:built_collection/built_collection.dart';
 import 'package:meta/meta.dart';
 import 'package:bloc/bloc.dart';
-import 'package:nem_block_monitor_app/net/nem/model/block/block.dart';
 import 'package:nem_block_monitor_app/repository/user_data_repository.dart';
 
 class WatchState {
