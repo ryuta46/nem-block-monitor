@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nem_block_monitor_app/app_style.dart';
 import 'package:nem_block_monitor_app/net/nem/model/account/address.dart';
-import 'package:nem_block_monitor_app/pages/blocks/blocks_bloc.dart';
 import 'package:nem_block_monitor_app/pages/watch/watch_bloc.dart';
 import 'package:nem_block_monitor_app/repository/firestore_user_data_repository.dart';
 import 'package:nem_block_monitor_app/widgets/expandable_fab.dart';
@@ -31,14 +30,13 @@ class _WatchPageState extends State<WatchPage> {
             return Center(child: CircularProgressIndicator());
           }
 
-          List<WatchListItem> items = []
-            ..add(WatchListHeader("Addresses"))
-            ..addAll(state.addresses.map((address) => WatchListItem(address)))
-            ..add(WatchListHeader("Assets"))
-            ..addAll(state.assets.map((asset) => WatchListItem(asset)))
-            ..add(WatchListHeader("Harvests"))
-            ..addAll(state.harvests.map((harvest) => WatchListItem(harvest)));
-
+          List<_WatchListItem> items = []
+            ..add(_WatchListHeader("Addresses"))
+            ..addAll(state.addresses.map((address) => _WatchAddressItem(address)))
+            ..add(_WatchListHeader("Assets"))
+            ..addAll(state.assets.map((asset) => _WatchAssetItem(asset)));
+            //..add(WatchListHeader("Harvests"))
+            //..addAll(state.harvests.map((harvest) => WatchHarvestItem(harvest)));
 
           return Scaffold(
             body: ListView.builder(
@@ -49,16 +47,32 @@ class _WatchPageState extends State<WatchPage> {
                   }
                   final itemIndex = index ~/ 2;
                   final item = items[itemIndex];
-                  if (item is WatchListHeader) {
+                  if (item is _WatchListHeader) {
                     return Container(
                         child: ListTile(
                             title: Text(item.title, style: AppStyle.textListHeader)
                         )
                     );
                   }
+                  else if (item is _WatchAddressItem){
+                    return ListTile(
+                        title: Text(Address(item.title).pretty),
+                        trailing: IconButton(
+                          icon: Icon(Icons.delete),
+                          onPressed: () => _showRemoveAddressDialog(context, item.title),
+                        ));
+                  }
+                  else if (item is _WatchAssetItem){
+                    return ListTile(
+                        title: Text(item.title),
+                        trailing: IconButton(
+                          icon: Icon(Icons.delete),
+                          onPressed: () => _showRemoveAssetDialog(context, item.title),
+                        ));
+                  }
                   else {
                     return ListTile(
-                        title: Text(Address(item.title).pretty)
+                        title: Text(item.title),
                     );
                   }
                 }
@@ -68,7 +82,7 @@ class _WatchPageState extends State<WatchPage> {
                 children: <Widget>[
                   addressButton(context),
                   mosaicButton(),
-                  harvestButton()
+                  //harvestButton()
                 ]),
           );
         });
@@ -91,7 +105,7 @@ class _WatchPageState extends State<WatchPage> {
     return Container(
       child: FloatingActionButton.extended(
         icon: Icon(Icons.attach_money),
-        onPressed: null,
+        onPressed: () => _showAddAssetDialog(context),
         tooltip: 'Mosaic',
         label: Text('Mosaic'),
       ),
@@ -121,18 +135,17 @@ class _WatchPageState extends State<WatchPage> {
         content: TextField(
           controller: inputText,
           decoration: InputDecoration(
-            labelText: "New watch address",
-            hintText: "eg. NA..."
+              labelText: "New watch address",
+              hintText: "eg. NA..."
           ),
         ),
-        // ボタンの配置
         actions: <Widget>[
-          new FlatButton(
-              child: const Text('cancel'),
+          FlatButton(
+              child: const Text('CANCEL'),
               onPressed: () => Navigator.pop(context, null)
           ),
 
-          new FlatButton(
+          FlatButton(
               child: const Text('OK'),
               onPressed: () {
                 Navigator.pop(context, inputText.text);
@@ -143,17 +156,123 @@ class _WatchPageState extends State<WatchPage> {
       if (value == null) {
         return;
       }
-      print(value);
-      _bloc.addAddress(value);
+      _bloc.addAddress(Address(value).plain);
+    });
+  }
+
+  void _showRemoveAddressDialog(BuildContext context, String address) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        title: Text("Remove watch address"),
+        content: Text("Remove\n${Address(address).pretty}\nfrom watch list?"),
+        actions: <Widget>[
+          FlatButton(
+              child: const Text('CANCEL'),
+              onPressed: () => Navigator.pop(context, false)
+          ),
+          FlatButton(
+              child: const Text('OK'),
+              onPressed: () {
+                Navigator.pop(context, true);
+              })
+        ],
+      ),
+    ).then<void>((value) {
+      if (!value) {
+        return;
+      }
+      _bloc.removeAddress(address);
+    });
+  }
+
+  void _showAddAssetDialog(BuildContext context) {
+    final inputNamespace = TextEditingController();
+    final inputName = TextEditingController();
+    showDialog(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        title: Text("Add watch mosaic"),
+        content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              TextField(
+                controller: inputNamespace,
+                decoration: InputDecoration(
+                    labelText: "Namespace",
+                    hintText: "eg. root.sub"
+                ),
+              ),
+              TextField(
+                controller: inputName,
+                decoration: InputDecoration(
+                    labelText: "Name",
+                    hintText: "eg. name"
+                ),
+              ),
+            ]
+        ),
+        actions: <Widget>[
+          FlatButton(
+              child: const Text('CANCEL'),
+              onPressed: () => Navigator.pop(context, null)
+          ),
+          FlatButton(
+              child: const Text('OK'),
+              onPressed: () {
+                Navigator.pop(context, "${inputNamespace.text}:${inputName.text}");
+              })
+        ],
+      ),
+    ).then<void>((value) {
+      if (value == null) {
+        return;
+      }
+      _bloc.addAsset(value);
+    });
+  }
+
+
+  void _showRemoveAssetDialog(BuildContext context, String asset) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        title: Text("Remove mosaic"),
+        content: Text("Remove $asset from watch list?"),
+        actions: <Widget>[
+          FlatButton(
+              child: const Text('CANCEL'),
+              onPressed: () => Navigator.pop(context, false)
+          ),
+          FlatButton(
+              child: const Text('OK'),
+              onPressed: () {
+                Navigator.pop(context, true);
+              })
+        ],
+      ),
+    ).then<void>((value) {
+      if (!value) {
+        return;
+      }
+      _bloc.removeAsset(asset);
     });
   }
 }
 
-class WatchListItem {
+class _WatchListItem {
   final String title;
-  WatchListItem(this.title);
+  _WatchListItem(this.title);
 }
 
-class WatchListHeader extends WatchListItem {
-  WatchListHeader(String title) : super(title);
+class _WatchAddressItem extends _WatchListItem {
+  _WatchAddressItem(String title): super(title);
+}
+
+class _WatchAssetItem extends _WatchListItem{
+  _WatchAssetItem(String title): super(title);
+}
+
+class _WatchListHeader extends _WatchListItem {
+  _WatchListHeader(String title): super(title);
 }

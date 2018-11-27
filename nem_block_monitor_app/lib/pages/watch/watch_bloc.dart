@@ -92,7 +92,7 @@ class WatchBloc extends Bloc<WatchEvent, WatchState> {
     dispatch(WatchAddAssetEvent(asset));
   }
 
-  void removeAssets(String asset) {
+  void removeAsset(String asset) {
     dispatch(WatchRemoveAssetEvent(asset));
   }
 
