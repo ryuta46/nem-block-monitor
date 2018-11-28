@@ -4,15 +4,15 @@ import 'package:flutter/widgets.dart';
 import 'package:nem_block_monitor_app/net/nem/block_http.dart';
 import 'package:nem_block_monitor_app/net/nem/chain_http.dart';
 import 'package:nem_block_monitor_app/pages/blocks/blocks_bloc.dart';
+import 'package:nem_block_monitor_app/preference.dart';
 import 'package:nem_block_monitor_app/widgets/block_brief_tile.dart';
 
 class BlocksPage extends StatelessWidget {
-  final Uri uri;
   BlocksBloc _bloc;
   int _topHeight = -1;
 
-  BlocksPage():
-        uri =  Uri.http("nistest.ttechdev.com:7890", "") {
+  BlocksPage() {
+    final uri =  Uri.parse(Preference.instance.node);
     _bloc = BlocksBloc(ChainHttp(uri), BlockHttp(uri));
   }
 

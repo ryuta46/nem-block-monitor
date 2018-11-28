@@ -12,9 +12,9 @@ class HomePage extends StatefulWidget {
 
 class _HomeState extends State<HomePage> {
   int _currentIndex = 0;
-    final List<Widget> _children = [
-      BlocksPage(),
-      WatchPage()
+  final List<Widget> _children = [
+    BlocksPage(),
+    WatchPage()
   ];
   @override
   Widget build(BuildContext context) {
@@ -22,7 +22,7 @@ class _HomeState extends State<HomePage> {
       appBar: AppBar(
         title: Text('My Flutter App'),
       ),
-      body: _children[_currentIndex],
+      body: _getChild(_currentIndex),
       bottomNavigationBar: BottomNavigationBar(
         onTap: onTabTapped,
         currentIndex: _currentIndex, // this will be set when a new tab is tapped
@@ -44,10 +44,22 @@ class _HomeState extends State<HomePage> {
           BottomNavigationBarItem(
             icon: Icon(Icons.search),
             title: Text('SEARCH'),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.settings),
+            title: Text('SETTINGS'),
           )
         ],
       ),
     );
+  }
+
+  Widget _getChild(int childIndex) {
+    switch(childIndex) {
+      case 0: return BlocksPage();
+      case 1: return WatchPage();
+      default: return BlocksPage();
+    }
   }
 
   void onTabTapped(int index) {

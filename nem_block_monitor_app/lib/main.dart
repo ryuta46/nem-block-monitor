@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:nem_block_monitor_app/pages/home_page.dart';
 
@@ -7,6 +5,7 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:nem_block_monitor_app/preference.dart';
 import 'package:nem_block_monitor_app/repository/firestore_user_data_repository.dart';
 
 
@@ -25,16 +24,20 @@ class _AppState extends State<App> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   String _token;
   String _userId;
+  bool _isLoadingSetting = true;
+  bool _isLoadingUserData = true;
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Firebase Analytics Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      navigatorObservers: <NavigatorObserver>[observer],
-      home: HomePage()
+        title: 'Firebase Analytics Demo',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        navigatorObservers: <NavigatorObserver>[observer],
+        home: (_isLoadingSetting || _isLoadingUserData)
+            ? Center( child: CircularProgressIndicator())
+            : HomePage()
     );
   }
 
@@ -42,8 +45,25 @@ class _AppState extends State<App> {
   void initState() {
     super.initState();
 
+    _isLoadingUserData = true;
+    _isLoadingSetting = true;
+
+    _loadSetting();
     _setupMessagingCallbacks();
     _signIn();
+  }
+
+  _loadSetting() {
+    Preference.instance.load().then((preference) {
+      setState(() {
+        final userData = FirestoreUserDataRepository.instance;
+        userData.setTargetNetwork(preference.network);
+
+        setState(() {
+          _isLoadingSetting = false;
+        });
+      });
+    });
   }
 
   _setupMessagingCallbacks() {
@@ -78,7 +98,6 @@ class _AppState extends State<App> {
     });
   }
 
-
   _updateUserData() async {
     if (_token == null || _userId == null) {
       return;
@@ -89,8 +108,9 @@ class _AppState extends State<App> {
 
     userData.setToken(_token);
 
-    // TODO: switch network by settings
-    userData.setTargetNetwork("mainnet");
+    setState(() {
+      _isLoadingUserData = false;
+    });
   }
 
 }
