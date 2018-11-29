@@ -1,8 +1,9 @@
 import {
+    Asset, AssetHttp,
     Block,
     BlockHeight,
     BlockHttp,
-    ChainHttp,
+    ChainHttp, MultisigTransaction,
     NEMLibrary,
     NetworkTypes, Transaction,
     TransactionTypes,
@@ -11,13 +12,14 @@ import {
 import {Store} from "./store";
 import {Logger} from "./logger";
 import {Notifier} from "./notifier";
+import {Decimal} from 'decimal.js'
 
 export class BlockMonitorApp {
 
     constructor(readonly store: Store, readonly notifier: Notifier, readonly logger: Logger ){};
 
     async run() {
-        await this.runWith(NetworkTypes.MAIN_NET);
+        //await this.runWith(NetworkTypes.MAIN_NET);
         await this.runWith(NetworkTypes.TEST_NET);
     }
 
@@ -54,8 +56,9 @@ export class BlockMonitorApp {
 
         const blocks = await this.getBlocksInRange(lastBlock + 1, currentBlock);
         const addresses = await this.store.loadWatchedAddresses();
+        const assets = await this.store.loadWatchedAssets();
 
-        await this.notifyIfRelated(blocks, addresses);
+        await this.notifyIfRelated(blocks, addresses, assets);
 
         await this.store.saveLastBlock(currentBlock);
     }
@@ -85,13 +88,24 @@ export class BlockMonitorApp {
         return Promise.all(tasks);
     }
 
-    private async notifyIfRelated(blocks: Block[], addresses: string[]) {
+    private async notifyIfRelated(blocks: Block[], addresses: string[], assets: string[]) {
         this.logging(`Checking ${blocks.length} blocks, address: ${addresses}`);
         for(const block of blocks) {
             this.logging(`Checking block ${block.height} ....`);
             for (const transaction of block.transactions) {
+                let transferTransaction: TransferTransaction = null;
+                if (transaction.type === TransactionTypes.MULTISIG) {
+                    const multisig = transaction as MultisigTransaction;
+                    if (multisig.otherTransaction.type === TransactionTypes.TRANSFER) {
+                        transferTransaction = multisig.otherTransaction as TransferTransaction;
+                    }
+                }
+
                 if (transaction.type === TransactionTypes.TRANSFER) {
-                    const transferTransaction = transaction as TransferTransaction;
+                    transferTransaction = transaction as TransferTransaction;
+                }
+
+                if (transferTransaction !== null) {
                     const sender = transaction.signer;
                     this.logging(`Sender ${sender.address.plain()}`);
 
@@ -99,7 +113,7 @@ export class BlockMonitorApp {
                     if (senderIndex >= 0) {
                         const address = addresses[senderIndex];
                         const watchers = await this.store.loadWatcherTokensOfAddress(address);
-                        const message = BlockMonitorApp.createMessage(transaction, transferTransaction);
+                        const message = await BlockMonitorApp.createMessage(transaction, transferTransaction);
                         await this.notifier.post(watchers, 'Outgoing transaction', message);
                     }
 
@@ -107,28 +121,72 @@ export class BlockMonitorApp {
                     if (receiverIndex >= 0){
                         const address = addresses[receiverIndex];
                         const watchers = await this.store.loadWatcherTokensOfAddress(address);
-                        const message = BlockMonitorApp.createMessage(transaction, transferTransaction);
+                        const message = await BlockMonitorApp.createMessage(transaction, transferTransaction);
                         await this.notifier.post(watchers, 'Incoming transaction', message);
                     }
+
+                    if (transferTransaction.containAssets()) {
+                        for (const asset of transferTransaction.assets()) {
+                            const assetFullName = `${asset.assetId.namespaceId}:${asset.assetId.name}`;
+                            this.logger.log(assetFullName);
+                            const assetIndex = assets.indexOf(assetFullName);
+                            if (assetIndex >= 0) {
+                                const watchers = await this.store.loadWatcherTokensOfAsset(assetFullName);
+                                const message = await BlockMonitorApp.createAssetMessage(transaction, transferTransaction, asset);
+                                await this.notifier.post(watchers, `Asset ${assetFullName} transferred`, message);
+                            }
+                        }
+                    }
                 }
+
+
             }
             this.logging(`Checked block ${block.height}`);
         }
     }
 
-    private static createMessage(wrapTransaction: Transaction, transfer: TransferTransaction): string {
+    private static async createMessage(wrapTransaction: Transaction, transfer: TransferTransaction): Promise<string> {
         let message = "";
         message += `from: ${wrapTransaction.signer.address.pretty()}\n`;
         message += `to: ${transfer.recipient.pretty()}\n`;
         message += 'amount: ';
         if (transfer.containAssets()) {
-            message += transfer.assets().map((asset) => `${asset.quantity} ${asset.assetId.namespaceId}:${asset.assetId.name}`).join("\n");
+            const assetMessages: Array<string> = [];
+            for (const asset of transfer.assets()) {
+                assetMessages.push(`${await this.getAmount(asset)} ${asset.assetId.namespaceId}:${asset.assetId.name}`);
+            }
+            message += assetMessages.join('\n');
+
         } else {
             message += `${transfer.xem().relativeQuantity()} XEM`;
         }
 
         return message;
     }
+
+    private static async createAssetMessage(wrapTransaction: Transaction, transfer: TransferTransaction, asset: Asset): Promise<string> {
+        let message = "";
+        message += `from: ${wrapTransaction.signer.address.pretty()}\n`;
+        message += `to: ${transfer.recipient.pretty()}\n`;
+        message += `amount: ${await BlockMonitorApp.getAmount(asset)}`;
+        return message;
+    }
+
+    private static async getAmount(asset: Asset): Promise<Decimal>{
+        const divisibility = await this.getAssetDivisibility(asset);
+        return getDivided(asset.quantity, divisibility);
+    }
+
+    private static async getAssetDivisibility(asset: Asset): Promise<number>{
+        // TODO: Load cache
+        const assetHttp = new AssetHttp();
+        const assetDefinition = await assetHttp.getAssetDefinition(asset.assetId).toPromise();
+        return assetDefinition.properties.divisibility;
+    }
+
 }
 
 
+function getDivided(value: number, divisibility: number): Decimal {
+    return new Decimal(value).div(10 ** divisibility);
+}

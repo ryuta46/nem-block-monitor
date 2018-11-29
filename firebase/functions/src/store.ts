@@ -7,7 +7,9 @@ export interface Store {
     saveLastBlock(lastBlock: number): Promise<any>;
 
     loadWatchedAddresses(): Promise<string[]>;
+    loadWatchedAssets(): Promise<string[]>;
     loadWatcherTokensOfAddress(address: string): Promise<string[]>;
+    loadWatcherTokensOfAsset(asset: string): Promise<string[]>;
 }
 
 
@@ -39,15 +41,33 @@ export class FirestoreStore implements Store {
         return addresses.map(collection => collection.id);
     }
 
+    async loadWatchedAssets(): Promise<string[]> {
+        const assets = await admin.firestore().doc(`${this.network}/assets`).getCollections();
+        return assets.map(collection => collection.id);
+    }
+
+
     async loadWatcherTokensOfAddress(address: string): Promise<string[]> {
         const watchers = await admin.firestore().collection(`${this.network}/addresses/${address}`).get();
         return Promise.all(watchers.docs.map(async (userIdDoc) => {
-            const userDoc = await admin.firestore().doc(`users/${userIdDoc.id}`).get();
-            if (!userDoc.exists) {
-                return null;
-            }
-            return userDoc.data()['token'] as string;
+            return await FirestoreStore.loadTokenOfUser(userIdDoc.id);
         }));
     }
+
+    async loadWatcherTokensOfAsset(asset: string): Promise<string[]> {
+        const watchers = await admin.firestore().collection(`${this.network}/assets/${asset}`).get();
+        return Promise.all(watchers.docs.map(async (userIdDoc) => {
+            return await FirestoreStore.loadTokenOfUser(userIdDoc.id);
+        }));
+    }
+
+    private static async loadTokenOfUser(userId: string): Promise<string>{
+        const userDoc = await admin.firestore().doc(`users/${userId}`).get();
+        if (!userDoc.exists) {
+            return null;
+        }
+        return userDoc.data()['token'] as string;
+    }
+
 }
 

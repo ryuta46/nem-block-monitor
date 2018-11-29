@@ -20,5 +20,8 @@ service cloud.firestore {
     match /mainnet/{targetType}/{target}/{userId} {
     	allow create, update, delete: if isUserAuthenticated(userId);
     }
+    match /testnet/{targetType}/{target}/{userId} {
+    	allow create, update, delete: if isUserAuthenticated(userId);
+    }
   }
 }
