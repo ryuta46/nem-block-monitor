@@ -33,7 +33,7 @@ class Preference {
       _dto = _PreferenceDTO.fromJson(decoded);
     } else {
       _dto = _PreferenceDTO(
-          "mainnet",
+          "testnet",
           {
             "mainnet": "https://nismain.ttechdev.com:7891",
             "testnet": "https://nistest.ttechdev.com:7891",
@@ -53,7 +53,7 @@ class Preference {
 
 
   FutureOr<void> setNetwork(String newNetwork) async {
-    _dto = await _save(_PreferenceDTO(this.network, _dto.nodes));
+    _dto = await _save(_PreferenceDTO(newNetwork, _dto.nodes));
   }
 
   String get network => _dto.network;
