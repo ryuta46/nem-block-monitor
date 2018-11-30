@@ -5,13 +5,18 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nem_block_monitor_app/app_style.dart';
 import 'package:nem_block_monitor_app/net/nem/model/account/address.dart';
 import 'package:nem_block_monitor_app/pages/watch/watch_bloc.dart';
+import 'package:nem_block_monitor_app/preference.dart';
 import 'package:nem_block_monitor_app/repository/firestore_user_data_repository.dart';
 import 'package:nem_block_monitor_app/widgets/expandable_fab.dart';
 
 class WatchPage extends StatefulWidget {
 
   @override
-  _WatchPageState createState() => _WatchPageState(WatchBloc(FirestoreUserDataRepository.instance));
+  _WatchPageState createState() => _WatchPageState(
+    WatchBloc(
+      FirestoreUserDataRepository.instance,
+      Preference.instance.network
+  ));
 }
 
 class _WatchPageState extends State<WatchPage> {

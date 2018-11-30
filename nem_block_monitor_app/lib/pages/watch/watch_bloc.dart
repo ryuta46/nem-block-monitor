@@ -72,7 +72,9 @@ class WatchBloc extends Bloc<WatchEvent, WatchState> {
 
   final UserDataRepository repository;
 
-  WatchBloc(this.repository);
+  WatchBloc(this.repository, String network) {
+    repository.setTargetNetwork(network);
+  }
 
   WatchState get initialState => WatchState.initial();
 
