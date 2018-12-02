@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nem_block_monitor_app/net/nem/node_http.dart';
 import 'package:nem_block_monitor_app/pages/home_page.dart';
 
 import 'package:firebase_analytics/firebase_analytics.dart';
@@ -102,6 +103,9 @@ class _AppState extends State<App> {
     if (_token == null || _userId == null) {
       return;
     }
+
+    //final peerList = await NodeHttp(Uri.parse("https://nismain.ttechdev.com:7891")).getPeerList();
+    //for(int i= 0;i< 5; ++i) { print(peerList[i].endpoint.urlString); }
 
     final userData = FirestoreUserDataRepository.instance;
     await userData.fetchUserData(_userId);
