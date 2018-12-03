@@ -19,7 +19,7 @@ export class BlockMonitorApp {
     constructor(readonly store: Store, readonly notifier: Notifier, readonly logger: Logger ){};
 
     async run() {
-        //await this.runWith(NetworkTypes.MAIN_NET);
+        await this.runWith(NetworkTypes.MAIN_NET);
         await this.runWith(NetworkTypes.TEST_NET);
     }
 
