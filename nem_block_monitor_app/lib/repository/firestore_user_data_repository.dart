@@ -157,7 +157,7 @@ class FirestoreUserDataRepository extends UserDataRepository {
   }
 
   @override
-  FutureOr<void> removeLabel(String address, String label) async {
+  FutureOr<void> removeLabel(String address) async {
     Firestore.instance.runTransaction((transaction) async {
       final labelsRef = Firestore.instance.document('users/$_userId/label/$_network');
       final labelsDocument = await labelsRef.get();

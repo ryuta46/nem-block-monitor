@@ -30,5 +30,5 @@ abstract class UserDataRepository {
   Future<BuiltMap<String, String>> get labels;
 
   FutureOr<void> addLabel(String address, String label);
-  FutureOr<void> removeLabel(String address, String label);
+  FutureOr<void> removeLabel(String address);
 }
