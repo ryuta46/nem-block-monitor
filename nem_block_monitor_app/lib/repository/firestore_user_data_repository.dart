@@ -140,14 +140,11 @@ class FirestoreUserDataRepository extends UserDataRepository {
   FutureOr<void> addLabel(String address, String label) async {
     Firestore.instance.runTransaction((transaction) async {
       final labelsRef = Firestore.instance.document('users/$_userId/label/$_network');
-      final labelsDocument = await labelsRef.get();
-      if (!labelsDocument.exists) {
-        await labelsRef.setData({address: label}, merge: true);
-      }
+      await labelsRef.setData({address: label}, merge: true);
 
       final watchRef = Firestore.instance.document(
           '$_network/$keyAddresses/$address/$_userId');
-      await watchRef.setData({"label": label});
+      await watchRef.setData({"label": label}, merge: true);
     });
 
     if (!_labels.containsKey(_network)) {
@@ -164,7 +161,7 @@ class FirestoreUserDataRepository extends UserDataRepository {
       if (labelsDocument.exists) {
         final labelsData = labelsDocument.data;
         labelsData.remove(address);
-        await labelsRef.updateData(labelsData);
+        await labelsRef.setData(labelsData);
       }
 
       final watchRef = Firestore.instance.document('$_network/$keyAddresses/$address/$_userId');
@@ -177,9 +174,13 @@ class FirestoreUserDataRepository extends UserDataRepository {
       if (watchData.isEmpty) {
         await watchRef.delete();
       } else {
-        await watchRef.updateData(watchData);
+        await watchRef.setData(watchData);
       }
     });
+
+    if (_labels.containsKey(_network)) {
+      _labels[_network].remove(address);
+    }
   }
 
 
@@ -230,7 +231,7 @@ class FirestoreUserDataRepository extends UserDataRepository {
       if (watchData.isEmpty) {
         await watchRef.delete();
       } else {
-        await watchRef.updateData(watchData);
+        await watchRef.setData(watchData);
       }
     });
   }

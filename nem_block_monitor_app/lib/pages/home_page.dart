@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:nem_block_monitor_app/pages/blocks/blocks_page.dart';
+import 'package:nem_block_monitor_app/pages/label/label_page.dart';
 import 'package:nem_block_monitor_app/pages/setting/setting_page.dart';
 import 'package:nem_block_monitor_app/pages/watch/watch_page.dart';
 
@@ -59,6 +60,7 @@ class _HomeState extends State<HomePage> {
     switch(childIndex) {
       case 0: return BlocksPage();
       case 1: return WatchPage();
+      case 2: return LabelPage();
       case 4: return SettingPage();
       default: return BlocksPage();
     }
