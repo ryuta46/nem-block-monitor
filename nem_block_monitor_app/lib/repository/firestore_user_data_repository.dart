@@ -52,6 +52,9 @@ class FirestoreUserDataRepository extends UserDataRepository {
       key: (v) => v,
       value: (v) => _WatchList(v));
 
+  // network -> address -> label
+  Map<String, Map<String, String>> _labels = {};
+
   static FirestoreUserDataRepository instance = FirestoreUserDataRepository();
 
   get _userRef => Firestore.instance.document('users/$_userId');
@@ -77,6 +80,14 @@ class FirestoreUserDataRepository extends UserDataRepository {
         final entriesCollection = watchData.collection(watchList.key);
         final entries = (await entriesCollection.getDocuments()).documents.map((document) => document.documentID);
         watchList.setList(network, entries ?? []);
+      }
+
+      final labels = await Firestore.instance.document('users/$_userId/label/$network').get();
+
+      if (labels.exists) {
+        _labels[network] = labels.data.map((key, value) => MapEntry(key, value as String));
+      } else {
+        _labels[network] = {};
       }
     }
   }
@@ -120,6 +131,58 @@ class FirestoreUserDataRepository extends UserDataRepository {
   @override
   FutureOr<void> removeWatchHarvest(String address) async => _removeWatchEntry(keyHarvests, address);
 
+  @override
+  Future<BuiltMap<String, String>> get labels async {
+    return BuiltMap<String, String>(_labels[_network] ?? {});
+  }
+
+  @override
+  FutureOr<void> addLabel(String address, String label) async {
+    Firestore.instance.runTransaction((transaction) async {
+      final labelsRef = Firestore.instance.document('users/$_userId/label/$_network');
+      final labelsDocument = await labelsRef.get();
+      if (!labelsDocument.exists) {
+        await labelsRef.setData({address: label}, merge: true);
+      }
+
+      final watchRef = Firestore.instance.document(
+          '$_network/$keyAddresses/$address/$_userId');
+      await watchRef.setData({"label": label});
+    });
+
+    if (!_labels.containsKey(_network)) {
+      _labels[_network] = {};
+    }
+    _labels[_network][address] = label;
+  }
+
+  @override
+  FutureOr<void> removeLabel(String address, String label) async {
+    Firestore.instance.runTransaction((transaction) async {
+      final labelsRef = Firestore.instance.document('users/$_userId/label/$_network');
+      final labelsDocument = await labelsRef.get();
+      if (labelsDocument.exists) {
+        final labelsData = labelsDocument.data;
+        labelsData.remove(address);
+        await labelsRef.updateData(labelsData);
+      }
+
+      final watchRef = Firestore.instance.document('$_network/$keyAddresses/$address/$_userId');
+      final watchDocument = await watchRef.get();
+
+      final watchData = watchDocument.data;
+      watchData.remove("label");
+
+      // If key is only 'label', delete the entry. Otherwise, deletes key only
+      if (watchData.isEmpty) {
+        await watchRef.delete();
+      } else {
+        await watchRef.updateData(watchData);
+      }
+    });
+  }
+
+
   BuiltList<String> _getList(String key) {
     final watchList = _watchLists[key];
     return BuiltList<String>(watchList.getList(_network));
@@ -145,7 +208,7 @@ class FirestoreUserDataRepository extends UserDataRepository {
 
       final watchRef = Firestore.instance.document(
           '$network/$key/$entry/$_userId');
-      await watchRef.setData({"active": true});
+      await watchRef.setData({"active": true}, merge: true);
     });
   }
 
@@ -157,7 +220,18 @@ class FirestoreUserDataRepository extends UserDataRepository {
 
       final watchRef = Firestore.instance.document(
           '$network/$key/$entry/$_userId');
-      await watchRef.delete();
+
+      final watchDocument = await watchRef.get();
+      final watchData = watchDocument.data;
+
+      watchData.remove("active");
+
+      // If key is only 'active', delete the entry. Otherwise, sets deletes key only
+      if (watchData.isEmpty) {
+        await watchRef.delete();
+      } else {
+        await watchRef.updateData(watchData);
+      }
     });
   }
 }

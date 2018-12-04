@@ -27,4 +27,8 @@ abstract class UserDataRepository {
   FutureOr<void> addWatchHarvest(String address);
   FutureOr<void> removeWatchHarvest(String address);
 
+  Future<BuiltMap<String, String>> get labels;
+
+  FutureOr<void> addLabel(String address, String label);
+  FutureOr<void> removeLabel(String address, String label);
 }
