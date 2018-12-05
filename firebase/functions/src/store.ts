@@ -8,8 +8,16 @@ export interface Store {
 
     loadWatchedAddresses(): Promise<string[]>;
     loadWatchedAssets(): Promise<string[]>;
-    loadWatcherTokensOfAddress(address: string): Promise<string[]>;
+    loadWatchersOfAddress(address: string): Promise<AddressWatcher[]>;
     loadWatcherTokensOfAsset(asset: string): Promise<string[]>;
+}
+
+export class AddressWatcher {
+    constructor(
+        readonly userId: string,
+        readonly token: string,
+        readonly label: string,
+        ){}
 }
 
 
@@ -47,10 +55,15 @@ export class FirestoreStore implements Store {
     }
 
 
-    async loadWatcherTokensOfAddress(address: string): Promise<string[]> {
+    async loadWatchersOfAddress(address: string): Promise<AddressWatcher[]> {
         const watchers = await admin.firestore().collection(`${this.network}/addresses/${address}`).get();
         return Promise.all(watchers.docs.map(async (userIdDoc) => {
-            return await FirestoreStore.loadTokenOfUser(userIdDoc.id);
+            const label = userIdDoc.data()['label'] || '';
+            let token = '';
+            if (userIdDoc.data()['active']) {
+                token = await FirestoreStore.loadTokenOfUser(userIdDoc.id)
+            }
+            return new AddressWatcher(userIdDoc.id, token, label);
         }));
     }
 

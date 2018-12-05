@@ -1,4 +1,5 @@
 import {
+    Address,
     Asset, AssetHttp,
     Block,
     BlockHeight,
@@ -9,7 +10,7 @@ import {
     TransactionTypes,
     TransferTransaction
 } from "nem-library";
-import {Store} from "./store";
+import {AddressWatcher, Store} from "./store";
 import {Logger} from "./logger";
 import {Notifier} from "./notifier";
 import {Decimal} from 'decimal.js'
@@ -110,20 +111,47 @@ export class BlockMonitorApp {
                     this.logging(`Sender ${sender.address.plain()}`);
 
                     const senderIndex = addresses.indexOf(sender.address.plain());
+                    let senderWatchers: AddressWatcher[] = [];
+                    let receiverWatchers: AddressWatcher[] = [];
+
                     if (senderIndex >= 0) {
                         const address = addresses[senderIndex];
-                        const watchers = await this.store.loadWatcherTokensOfAddress(address);
-                        const message = await BlockMonitorApp.createMessage(transaction, transferTransaction);
-                        await this.notifier.post(watchers, 'Outgoing transaction', message);
+                        senderWatchers = await this.store.loadWatchersOfAddress(address);
+                    }
+                    const receiverIndex = addresses.indexOf(transferTransaction.recipient.plain());
+                    if (receiverIndex >= 0) {
+                        const address = addresses[receiverIndex];
+                        receiverWatchers = await this.store.loadWatchersOfAddress(address);
                     }
 
-                    const receiverIndex = addresses.indexOf(transferTransaction.recipient.plain());
-                    if (receiverIndex >= 0){
-                        const address = addresses[receiverIndex];
-                        const watchers = await this.store.loadWatcherTokensOfAddress(address);
-                        const message = await BlockMonitorApp.createMessage(transaction, transferTransaction);
-                        await this.notifier.post(watchers, 'Incoming transaction', message);
+                    if (senderWatchers.length > 0 || receiverWatchers.length > 0) {
+                        const addressMessage = await AddressMessage.create(transaction, transferTransaction);
+                        // Label Transform
+                        const tasks = senderWatchers.filter(it => it.token.length > 0).map(senderWatcher => {
+                            let peerLabel = "";
+                            const peerWatcher = receiverWatchers.find(it => it.userId === senderWatcher.userId);
+                            if (peerWatcher) {
+                                peerLabel = peerWatcher.label
+                            }
+                            return this.notifier.post([senderWatcher.token],
+                                'Outgoing transaction',
+                                addressMessage.toString(senderWatcher.label, peerLabel));
+                        });
+
+                        tasks.concat(receiverWatchers.filter(it => it.token.length > 0).map(receiverWatcher => {
+                            let peerLabel = "";
+                            const peerWatcher = senderWatchers.find(it => it.userId === receiverWatcher.userId);
+                            if (peerWatcher) {
+                                peerLabel = peerWatcher.label
+                            }
+                            return this.notifier.post([receiverWatcher.token],
+                                'Incoming transaction',
+                                addressMessage.toString(peerLabel, receiverWatcher.label));
+                        }));
+
+                        await Promise.all(tasks);
                     }
+
 
                     if (transferTransaction.containAssets()) {
                         for (const asset of transferTransaction.assets()) {
@@ -145,24 +173,6 @@ export class BlockMonitorApp {
         }
     }
 
-    private static async createMessage(wrapTransaction: Transaction, transfer: TransferTransaction): Promise<string> {
-        let message = "";
-        message += `from: ${wrapTransaction.signer.address.pretty()}\n`;
-        message += `to: ${transfer.recipient.pretty()}\n`;
-        message += 'amount: ';
-        if (transfer.containAssets()) {
-            const assetMessages: Array<string> = [];
-            for (const asset of transfer.assets()) {
-                assetMessages.push(`${await this.getAmount(asset)} ${asset.assetId.namespaceId}:${asset.assetId.name}`);
-            }
-            message += assetMessages.join('\n');
-
-        } else {
-            message += `${transfer.xem().relativeQuantity()} XEM`;
-        }
-
-        return message;
-    }
 
     private static async createAssetMessage(wrapTransaction: Transaction, transfer: TransferTransaction, asset: Asset): Promise<string> {
         let message = "";
@@ -172,7 +182,7 @@ export class BlockMonitorApp {
         return message;
     }
 
-    private static async getAmount(asset: Asset): Promise<Decimal>{
+    static async getAmount(asset: Asset): Promise<Decimal>{
         const divisibility = await this.getAssetDivisibility(asset);
         return getDivided(asset.quantity, divisibility);
     }
@@ -189,4 +199,36 @@ export class BlockMonitorApp {
 
 function getDivided(value: number, divisibility: number): Decimal {
     return new Decimal(value).div(10 ** divisibility);
+}
+
+
+class AddressMessage {
+    constructor(readonly sender: Address, readonly receiver: Address, readonly assetMessage: string){}
+
+    static async create(wrapTransaction: Transaction, transfer: TransferTransaction): Promise<AddressMessage> {
+        let assetMessage = "";
+        if (transfer.containAssets()) {
+            const assetMessages: Array<string> = [];
+            for (const asset of transfer.assets()) {
+                assetMessages.push(`${await BlockMonitorApp.getAmount(asset)} ${asset.assetId.namespaceId}:${asset.assetId.name}`);
+            }
+            assetMessage = assetMessages.join('\n');
+
+        } else {
+            assetMessage = `${transfer.xem().relativeQuantity()} XEM`;
+        }
+
+        return new AddressMessage(wrapTransaction.signer.address, transfer.recipient, assetMessage);
+    }
+
+    toString(senderLabel: string, receiverLabel: string ): string {
+        const sender = senderLabel === "" ? this.sender.pretty() : senderLabel;
+        const receiver = receiverLabel === "" ? this.receiver.pretty() : receiverLabel;
+
+        return `from: ${sender}\n`
+            + `to: ${receiver}\n`
+            + `amount: ${this.assetMessage}`;
+    }
+
+
 }
