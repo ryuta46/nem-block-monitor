@@ -57,7 +57,7 @@ class FirestoreUserDataRepository extends UserDataRepository {
 
   static FirestoreUserDataRepository instance = FirestoreUserDataRepository();
 
-  get _userRef => Firestore.instance.document('users/$_userId');
+  DocumentReference get _userRef => Firestore.instance.document('users/$_userId');
 
   @override
   void setTargetNetwork(String network) {
@@ -72,7 +72,9 @@ class FirestoreUserDataRepository extends UserDataRepository {
     _userId = id;
     final snapShot = await _userRef.get();
 
-    _token = (snapShot.data["token"] ?? "") as String;
+    if (snapShot.exists) {
+      _token = (snapShot.data["token"] ?? "") as String;
+    }
 
     for (var network in ["mainnet", "testnet"]) {
       final watchData = Firestore.instance.document('users/$_userId/watch/$network');
