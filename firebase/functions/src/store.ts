@@ -8,15 +8,15 @@ export interface Store {
 
     loadWatchedAddresses(): Promise<string[]>;
     loadWatchedAssets(): Promise<string[]>;
-    loadWatchersOfAddress(address: string): Promise<AddressWatcher[]>;
-    loadWatcherTokensOfAsset(asset: string): Promise<string[]>;
+    loadWatchersOfAddress(address: string): Promise<Watcher[]>;
+    loadWatchersOfAsset(asset: string): Promise<Watcher[]>;
 }
 
-export class AddressWatcher {
+export class Watcher {
     constructor(
         readonly userId: string,
         readonly token: string,
-        readonly label: string,
+        readonly labels: Map<string, string>
         ){}
 }
 
@@ -55,31 +55,38 @@ export class FirestoreStore implements Store {
     }
 
 
-    async loadWatchersOfAddress(address: string): Promise<AddressWatcher[]> {
+    async loadWatchersOfAddress(address: string): Promise<Watcher[]> {
         const watchers = await admin.firestore().collection(`${this.network}/addresses/${address}`).get();
         return Promise.all(watchers.docs.map(async (userIdDoc) => {
-            const label = userIdDoc.data()['label'] || '';
-            let token = '';
-            if (userIdDoc.data()['active']) {
-                token = await FirestoreStore.loadTokenOfUser(userIdDoc.id)
-            }
-            return new AddressWatcher(userIdDoc.id, token, label);
+            return await this.loadWatcher(userIdDoc.id);
         }));
     }
 
-    async loadWatcherTokensOfAsset(asset: string): Promise<string[]> {
+    async loadWatchersOfAsset(asset: string): Promise<Watcher[]> {
         const watchers = await admin.firestore().collection(`${this.network}/assets/${asset}`).get();
         return Promise.all(watchers.docs.map(async (userIdDoc) => {
-            return await FirestoreStore.loadTokenOfUser(userIdDoc.id);
+            return await this.loadWatcher(userIdDoc.id);
         }));
     }
 
-    private static async loadTokenOfUser(userId: string): Promise<string>{
+    private async loadWatcher(userId: string): Promise<Watcher>{
         const userDoc = await admin.firestore().doc(`users/${userId}`).get();
+
         if (!userDoc.exists) {
             return null;
         }
-        return userDoc.data()['token'] as string;
+        const token = userDoc.data()['token'] as string;
+
+        const labelDoc = await admin.firestore().doc(`users/${userId}/label/${this.network}`).get();
+        const labels = new Map<string, string>();
+        if (labelDoc.exists) {
+            const data = labelDoc.data();
+
+            for(const key of Object.keys(data)) {
+                labels[key] = labelDoc.data()[key] as string
+            }
+        }
+        return new Watcher(userId, token, labels);
     }
 
 }

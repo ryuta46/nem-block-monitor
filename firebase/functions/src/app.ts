@@ -1,17 +1,9 @@
-import {
-    Asset,
-    Block,
-    MultisigTransaction,
-    NEMLibrary,
-    NetworkTypes, Transaction,
-    TransactionTypes,
-    TransferTransaction
-} from "nem-library";
-import {AddressWatcher, Store} from "./store";
+import {Block, MultisigTransaction, NEMLibrary, NetworkTypes, TransactionTypes, TransferTransaction} from "nem-library";
+import {Store} from "./store";
 import {Logger} from "./logger";
 import {Notifier} from "./notifier";
 import {NisApi} from "./nisApi";
-import {AddressMessage} from "./addressMessage";
+import {NotificationMessage} from "./notificationMessage";
 
 export class BlockMonitorApp {
 
@@ -89,51 +81,39 @@ export class BlockMonitorApp {
                 }
 
                 if (transferTransaction !== null) {
+
+                    const tasks: Promise<any>[] = [];
+
                     const sender = transaction.signer;
                     this.logging(`Sender ${sender.address.plain()}`);
 
                     const senderIndex = addresses.indexOf(sender.address.plain());
-                    let senderWatchers: AddressWatcher[] = [];
-                    let receiverWatchers: AddressWatcher[] = [];
-
-                    if (senderIndex >= 0) {
-                        const address = addresses[senderIndex];
-                        senderWatchers = await this.store.loadWatchersOfAddress(address);
-                    }
                     const receiverIndex = addresses.indexOf(transferTransaction.recipient.plain());
-                    if (receiverIndex >= 0) {
-                        const address = addresses[receiverIndex];
-                        receiverWatchers = await this.store.loadWatchersOfAddress(address);
+
+                    if (senderIndex >= 0 || receiverIndex  >= 0) {
+                        const message = await NotificationMessage.createAddressTransfer(transaction, transferTransaction);
+
+                        if (senderIndex >= 0) {
+                            // Label Transform
+                            const address = addresses[senderIndex];
+                            const senderWatchers = await this.store.loadWatchersOfAddress(address);
+                            tasks.concat(senderWatchers.map(watcher => {
+                                return this.notifier.post([watcher.token],
+                                    'Outgoing transaction',
+                                    message.toString(watcher.labels));
+                            }));
+                        }
+
+                        if (receiverIndex >= 0) {
+                            const address = addresses[receiverIndex];
+                            const receiverWatchers = await this.store.loadWatchersOfAddress(address);
+                            tasks.concat(receiverWatchers.map(watcher => {
+                                return this.notifier.post([watcher.token],
+                                    'Incoming transaction',
+                                    message.toString(watcher.labels));
+                            }));
+                        }
                     }
-
-                    if (senderWatchers.length > 0 || receiverWatchers.length > 0) {
-                        const addressMessage = await AddressMessage.create(transaction, transferTransaction);
-                        // Label Transform
-                        const tasks = senderWatchers.filter(it => it.token.length > 0).map(senderWatcher => {
-                            let peerLabel = "";
-                            const peerWatcher = receiverWatchers.find(it => it.userId === senderWatcher.userId);
-                            if (peerWatcher) {
-                                peerLabel = peerWatcher.label
-                            }
-                            return this.notifier.post([senderWatcher.token],
-                                'Outgoing transaction',
-                                addressMessage.toString(senderWatcher.label, peerLabel));
-                        });
-
-                        tasks.concat(receiverWatchers.filter(it => it.token.length > 0).map(receiverWatcher => {
-                            let peerLabel = "";
-                            const peerWatcher = senderWatchers.find(it => it.userId === receiverWatcher.userId);
-                            if (peerWatcher) {
-                                peerLabel = peerWatcher.label
-                            }
-                            return this.notifier.post([receiverWatcher.token],
-                                'Incoming transaction',
-                                addressMessage.toString(peerLabel, receiverWatcher.label));
-                        }));
-
-                        await Promise.all(tasks);
-                    }
-
 
                     if (transferTransaction.containAssets()) {
                         for (const asset of transferTransaction.assets()) {
@@ -141,26 +121,26 @@ export class BlockMonitorApp {
                             this.logger.log(assetFullName);
                             const assetIndex = assets.indexOf(assetFullName);
                             if (assetIndex >= 0) {
-                                const watchers = await this.store.loadWatcherTokensOfAsset(assetFullName);
-                                const message = await BlockMonitorApp.createAssetMessage(transaction, transferTransaction, asset);
-                                await this.notifier.post(watchers, `Asset ${assetFullName} transferred`, message);
+                                const watchers = await this.store.loadWatchersOfAsset(assetFullName);
+                                const message = await NotificationMessage.createAssetTransfer(transaction, transferTransaction, asset);
+
+                                tasks.concat(watchers.map (watcher => {
+                                    return this.notifier.post([watcher.token],
+                                        `Asset ${assetFullName} transferred`,
+                                        message.toString(watcher.labels));
+                                }));
+
                             }
                         }
                     }
+                    if (tasks.length > 0) {
+                        await Promise.all(tasks);
+                    }
+
                 }
-
-
             }
             this.logging(`Checked block ${block.height}`);
         }
-    }
-
-    private static async createAssetMessage(wrapTransaction: Transaction, transfer: TransferTransaction, asset: Asset): Promise<string> {
-        let message = "";
-        message += `from: ${wrapTransaction.signer.address.pretty()}\n`;
-        message += `to: ${transfer.recipient.pretty()}\n`;
-        message += `amount: ${await NisApi.getAmount(asset)}`;
-        return message;
     }
 }
 

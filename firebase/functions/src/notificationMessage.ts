@@ -11,8 +11,7 @@ export class NotificationMessage {
         readonly type: NotificationType,
         readonly sender: Address,
         readonly receiver: Address,
-        readonly assetMessage: string,
-        readonly transactionHash: string){}
+        readonly assetMessage: string){}
 
     static async createAddressTransfer(wrapTransaction: Transaction, transfer: TransferTransaction): Promise<NotificationMessage> {
         let assetMessage = "";
@@ -30,8 +29,7 @@ export class NotificationMessage {
             NotificationType.ADDRESS,
             wrapTransaction.signer.address,
             transfer.recipient,
-            assetMessage,
-            wrapTransaction.getTransactionInfo().hash.data);
+            assetMessage);
     }
 
     static async createAssetTransfer(wrapTransaction: Transaction, transfer: TransferTransaction, asset: Asset): Promise<NotificationMessage> {
@@ -40,8 +38,8 @@ export class NotificationMessage {
             NotificationType.ASSET,
             wrapTransaction.signer.address,
             transfer.recipient,
-            `${await NisApi.getAmount(asset)} ${asset.assetId.namespaceId}:${asset.assetId.name}`,
-            wrapTransaction.getTransactionInfo().hash.data);
+            `${await NisApi.getAmount(asset)} ${asset.assetId.namespaceId}:${asset.assetId.name}`);
+            //wrapTransaction.getTransactionInfo().hash.data
     }
 
     toString(addressTransformation: Map<string, string> ): string {
