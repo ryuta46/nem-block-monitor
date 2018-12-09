@@ -7,11 +7,18 @@ import {NotificationMessage} from "./notificationMessage";
 
 export class BlockMonitorApp {
 
-    constructor(readonly store: Store, readonly notifier: Notifier, readonly logger: Logger ){};
+    constructor(
+        readonly store: Store, readonly notifier: Notifier, readonly logger: Logger,
+        readonly networks: Array<NetworkTypes> = [NetworkTypes.MAIN_NET, NetworkTypes.TEST_NET],
+        readonly lastHeight: number|null = null,
+        readonly currentHeight: number|null = null,
+        readonly saveHeight: boolean = true
+    ){};
 
     async run() {
-        await this.runWith(NetworkTypes.MAIN_NET);
-        await this.runWith(NetworkTypes.TEST_NET);
+        for (const network of this.networks) {
+            await this.runWith(network);
+        }
     }
 
     private static initializeLibrary(networkType: NetworkTypes) {
@@ -31,8 +38,8 @@ export class BlockMonitorApp {
             this.store.setTargetNetwork("testnet");
         }
 
-        const lastBlock = await this.store.loadLastBlock();
-        const currentBlock = await NisApi.getBlockHeight();
+        const lastBlock = this.lastHeight || await this.store.loadLastBlock();
+        const currentBlock = this.currentHeight || await NisApi.getBlockHeight();
 
         this.logging(`Last block   :${lastBlock}`);
         this.logging(`Current block:${currentBlock}`);
@@ -55,7 +62,9 @@ export class BlockMonitorApp {
 
         await this.notifyIfRelated(blocks, addresses, assets);
 
-        await this.store.saveLastBlock(currentBlock);
+        if (this.saveHeight) {
+            await this.store.saveLastBlock(currentBlock);
+        }
     }
 
     private logging(message) {

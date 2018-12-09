@@ -1,5 +1,15 @@
 import {Decimal} from 'decimal.js'
-import {Asset, AssetHttp, Block, BlockHeight, BlockHttp, ChainHttp} from "nem-library";
+import {
+    AccountHttp,
+    Address,
+    Asset,
+    AssetHttp,
+    Block,
+    BlockHeight,
+    BlockHttp,
+    ChainHttp,
+    Transaction
+} from "nem-library";
 
 export class NisApi {
     static async getBlockHeight(): Promise<BlockHeight> {
@@ -18,6 +28,16 @@ export class NisApi {
             .map( height => this.getBlockByHeight(height));
 
         return Promise.all(tasks);
+    }
+
+    static async getIncomingTransactions(address: Address, id: number = undefined): Promise<Transaction[]> {
+        const accountHttp = new AccountHttp();
+        if (id) {
+            return accountHttp.incomingTransactions(address, {id: id}).toPromise();
+        } else {
+            return accountHttp.incomingTransactions(address).toPromise();
+        }
+
     }
 
 

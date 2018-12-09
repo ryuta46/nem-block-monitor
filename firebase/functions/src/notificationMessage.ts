@@ -11,10 +11,13 @@ export class NotificationMessage {
         readonly type: NotificationType,
         readonly sender: Address,
         readonly receiver: Address,
-        readonly assetMessage: string){}
+        readonly assetMessage: string,
+        readonly hash: string){}
 
     static async createAddressTransfer(wrapTransaction: Transaction, transfer: TransferTransaction): Promise<NotificationMessage> {
         let assetMessage = "";
+        const hash = await this.fetchTransactionHash(transfer) || "" ;
+
         if (transfer.containAssets()) {
             const assetMessages: Array<string> = [];
             for (const asset of transfer.assets()) {
@@ -29,17 +32,38 @@ export class NotificationMessage {
             NotificationType.ADDRESS,
             wrapTransaction.signer.address,
             transfer.recipient,
-            assetMessage);
+            assetMessage,
+            hash);
     }
 
     static async createAssetTransfer(wrapTransaction: Transaction, transfer: TransferTransaction, asset: Asset): Promise<NotificationMessage> {
+        const hash = await this.fetchTransactionHash(transfer) || "";
 
         return new NotificationMessage(
             NotificationType.ASSET,
             wrapTransaction.signer.address,
             transfer.recipient,
-            `${await NisApi.getAmount(asset)} ${asset.assetId.namespaceId}:${asset.assetId.name}`);
-            //wrapTransaction.getTransactionInfo().hash.data
+            `${await NisApi.getAmount(asset)} ${asset.assetId.namespaceId}:${asset.assetId.name}`,
+            hash);
+
+    }
+
+    static async fetchTransactionHash(transfer: TransferTransaction): Promise<string|null> {
+        let id: number;
+
+        while(true) {
+            const transactions = await NisApi.getIncomingTransactions(transfer.recipient, id);
+            for (const transaction of transactions) {
+                if (transaction.signature === transfer.signature) {
+                    return transaction.getTransactionInfo().hash.data
+                }
+            }
+
+            if (transactions.length === 0) {
+                return null;
+            }
+            id = transactions[transactions.length - 1].getTransactionInfo().id;
+        }
     }
 
     toString(addressTransformation: Map<string, string> ): string {

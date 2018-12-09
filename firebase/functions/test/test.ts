@@ -1,8 +1,8 @@
 import {BlockMonitorApp} from "../src/app";
-import {FirestoreStore, Store} from "../src/store";
+import {FirestoreStore} from "../src/store";
 import {ConsoleLogger} from "../src/logger";
-import {NEMLibrary, NetworkTypes} from "nem-library";
-import {CloudMessagingNotifier, ConsoleNotifier} from "../src/notifier";
+import {NetworkTypes} from "nem-library";
+import {CloudMessagingNotifier} from "../src/notifier";
 import * as admin from "firebase-admin";
 
 
@@ -35,9 +35,13 @@ class DummyStore implements Store {
 }
 */
 
-
-
-const app = new BlockMonitorApp(new FirestoreStore(), new CloudMessagingNotifier(), new ConsoleLogger());
+const app = new BlockMonitorApp(
+    new FirestoreStore(), new CloudMessagingNotifier(), new ConsoleLogger(),
+    [NetworkTypes.MAIN_NET],
+    1928117,
+    1928118,
+    false
+);
 app.run().then((result) => {
     console.log("end");
 });
