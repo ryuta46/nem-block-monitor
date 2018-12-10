@@ -10,6 +10,9 @@ export interface Store {
     loadWatchedAssets(): Promise<string[]>;
     loadWatchersOfAddress(address: string): Promise<Watcher[]>;
     loadWatchersOfAsset(asset: string): Promise<Watcher[]>;
+
+    loadDivisibilityCache(): Promise<Map<string, number>>;
+    saveDivisibilityCache(divisibility: Map<string, number>): Promise<any>;
 }
 
 export class Watcher {
@@ -23,6 +26,8 @@ export class Watcher {
 
 export class FirestoreStore implements Store {
     private network: string = 'testnet';
+    private asstWatcherCache = new Map<string, Watcher[]>();
+    private addressWatcherCache = new Map<string, Watcher[]>();
 
     setTargetNetwork(network: string) {
         this.network = network;
@@ -56,17 +61,31 @@ export class FirestoreStore implements Store {
 
 
     async loadWatchersOfAddress(address: string): Promise<Watcher[]> {
-        const watchers = await admin.firestore().collection(`${this.network}/addresses/${address}`).get();
-        return Promise.all(watchers.docs.map(async (userIdDoc) => {
-            return await this.loadWatcher(userIdDoc.id);
-        }));
+        if (this.addressWatcherCache.has(address)) {
+            return this.addressWatcherCache.get(address);
+        }
+        else {
+            const watchers = await admin.firestore().collection(`${this.network}/addresses/${address}`).get();
+            const watcherData = await Promise.all(watchers.docs.map(async (userIdDoc) => {
+                return await this.loadWatcher(userIdDoc.id);
+            }));
+            this.addressWatcherCache.set(address, watcherData);
+            return watcherData;
+        }
     }
 
     async loadWatchersOfAsset(asset: string): Promise<Watcher[]> {
-        const watchers = await admin.firestore().collection(`${this.network}/assets/${asset}`).get();
-        return Promise.all(watchers.docs.map(async (userIdDoc) => {
-            return await this.loadWatcher(userIdDoc.id);
-        }));
+        if (this.asstWatcherCache.has(asset)) {
+            return this.asstWatcherCache.get(asset);
+        }
+        else {
+            const watchers = await admin.firestore().collection(`${this.network}/assets/${asset}`).get();
+            const watcherData = await Promise.all(watchers.docs.map(async (userIdDoc) => {
+                return await this.loadWatcher(userIdDoc.id);
+            }));
+            this.asstWatcherCache.set(asset, watcherData);
+            return watcherData
+        }
     }
 
     private async loadWatcher(userId: string): Promise<Watcher>{
@@ -83,10 +102,36 @@ export class FirestoreStore implements Store {
             const data = labelDoc.data();
 
             for(const key of Object.keys(data)) {
-                labels[key] = labelDoc.data()[key] as string
+                labels[key] = data[key] as string
             }
         }
         return new Watcher(userId, token, labels);
+    }
+
+    async loadDivisibilityCache(): Promise<Map<string, number>>{
+        const divisibilityDoc = await admin.firestore().doc(`${this.network}/divisibility`).get();
+
+        const divisibility = new Map<string, number>();
+        if (divisibilityDoc.exists) {
+            const data = divisibilityDoc.data();
+
+            for(const key of Object.keys(data)) {
+                divisibility[key] = data[key] as number
+            }
+        }
+        return divisibility;
+    }
+
+    async saveDivisibilityCache(divisibility: Map<string, number>): Promise<any> {
+        const divisibilityRef = admin.firestore().doc(`${this.network}/divisibility`);
+        const divisibilityObject = {};
+        for (const entry of divisibility.entries()){
+            divisibilityObject[entry[0]] = entry[1];
+        }
+
+        return divisibilityRef.set(
+            divisibilityObject
+        );
     }
 
 }

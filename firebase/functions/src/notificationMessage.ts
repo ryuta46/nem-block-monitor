@@ -1,3 +1,4 @@
+import {Decimal} from 'decimal.js'
 import {Address, Asset, Transaction, TransferTransaction} from "nem-library";
 import {NisApi} from "./nisApi";
 
@@ -8,63 +9,13 @@ export enum NotificationType {
 
 export class NotificationMessage {
     constructor(
+        readonly height: number,
         readonly type: NotificationType,
         readonly sender: Address,
         readonly receiver: Address,
         readonly assetMessage: string,
-        readonly hash: string){}
+        readonly signature: string){}
 
-    static async createAddressTransfer(wrapTransaction: Transaction, transfer: TransferTransaction): Promise<NotificationMessage> {
-        let assetMessage = "";
-        const hash = await this.fetchTransactionHash(transfer) || "" ;
-
-        if (transfer.containAssets()) {
-            const assetMessages: Array<string> = [];
-            for (const asset of transfer.assets()) {
-                assetMessages.push(`${await NisApi.getAmount(asset)} ${asset.assetId.namespaceId}:${asset.assetId.name}`);
-            }
-            assetMessage = assetMessages.join('\n');
-        } else {
-            assetMessage = `${transfer.xem().relativeQuantity()} XEM`;
-        }
-
-        return new NotificationMessage(
-            NotificationType.ADDRESS,
-            wrapTransaction.signer.address,
-            transfer.recipient,
-            assetMessage,
-            hash);
-    }
-
-    static async createAssetTransfer(wrapTransaction: Transaction, transfer: TransferTransaction, asset: Asset): Promise<NotificationMessage> {
-        const hash = await this.fetchTransactionHash(transfer) || "";
-
-        return new NotificationMessage(
-            NotificationType.ASSET,
-            wrapTransaction.signer.address,
-            transfer.recipient,
-            `${await NisApi.getAmount(asset)} ${asset.assetId.namespaceId}:${asset.assetId.name}`,
-            hash);
-
-    }
-
-    static async fetchTransactionHash(transfer: TransferTransaction): Promise<string|null> {
-        let id: number;
-
-        while(true) {
-            const transactions = await NisApi.getIncomingTransactions(transfer.recipient, id);
-            for (const transaction of transactions) {
-                if (transaction.signature === transfer.signature) {
-                    return transaction.getTransactionInfo().hash.data
-                }
-            }
-
-            if (transactions.length === 0) {
-                return null;
-            }
-            id = transactions[transactions.length - 1].getTransactionInfo().id;
-        }
-    }
 
     toString(addressTransformation: Map<string, string> ): string {
         const senderLabel = addressTransformation[this.sender.plain()];
@@ -79,3 +30,64 @@ export class NotificationMessage {
     }
 }
 
+export class NotificationMessageFactory {
+    private _isCacheDirty = false;
+
+    get isCacheDirty(): Boolean {
+        return this._isCacheDirty;
+    }
+
+    constructor(readonly divisibilityCache: Map<string, number>){
+    }
+
+    async createAddressTransfer(height: number, wrapTransaction: Transaction, transfer: TransferTransaction): Promise<NotificationMessage> {
+        let assetMessage = "";
+
+        if (transfer.containAssets()) {
+            const assetMessages: Array<string> = [];
+            for (const asset of transfer.assets()) {
+                assetMessages.push(`${await this.getAmount(asset)} ${asset.assetId.namespaceId}:${asset.assetId.name}`);
+            }
+            assetMessage = assetMessages.join('\n');
+        } else {
+            assetMessage = `${transfer.xem().relativeQuantity()} XEM`;
+        }
+
+        return new NotificationMessage(
+            height,
+            NotificationType.ADDRESS,
+            wrapTransaction.signer.address,
+            transfer.recipient,
+            assetMessage,
+            wrapTransaction.signature);
+    }
+
+    async createAssetTransfer(height: number, wrapTransaction: Transaction, transfer: TransferTransaction, asset: Asset): Promise<NotificationMessage> {
+
+        return new NotificationMessage(
+            height,
+            NotificationType.ASSET,
+            wrapTransaction.signer.address,
+            transfer.recipient,
+            `${await this.getAmount(asset)} ${asset.assetId.namespaceId}:${asset.assetId.name}`,
+            wrapTransaction.signature);
+    }
+
+    async getAmount(asset: Asset): Promise<Decimal>{
+        const assetFullName = `${asset.assetId.namespaceId}:${asset.assetId.name}`;
+        let divisibility: number;
+        if (this.divisibilityCache.has(assetFullName)) {
+            divisibility = this.divisibilityCache.get(assetFullName);
+        } else {
+            divisibility = await NisApi.getAssetDivisibility(asset);
+            this.divisibilityCache.set(assetFullName, divisibility);
+            this._isCacheDirty = true;
+        }
+        return getDivided(asset.quantity, divisibility);
+    }
+
+}
+
+function getDivided(value: number, divisibility: number): Decimal {
+    return new Decimal(value).div(10 ** divisibility);
+}

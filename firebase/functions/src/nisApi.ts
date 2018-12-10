@@ -1,4 +1,3 @@
-import {Decimal} from 'decimal.js'
 import {
     AccountHttp,
     Address,
@@ -40,20 +39,10 @@ export class NisApi {
 
     }
 
-
-    static async getAmount(asset: Asset): Promise<Decimal>{
-        const divisibility = await this.getAssetDivisibility(asset);
-        return getDivided(asset.quantity, divisibility);
-    }
-
-    private static async getAssetDivisibility(asset: Asset): Promise<number>{
-        // TODO: Load cache
+    static async getAssetDivisibility(asset: Asset): Promise<number>{
         const assetHttp = new AssetHttp();
         const assetDefinition = await assetHttp.getAssetDefinition(asset.assetId).toPromise();
         return assetDefinition.properties.divisibility;
     }
 }
 
-function getDivided(value: number, divisibility: number): Decimal {
-    return new Decimal(value).div(10 ** divisibility);
-}

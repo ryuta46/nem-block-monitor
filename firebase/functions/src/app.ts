@@ -3,7 +3,7 @@ import {Store} from "./store";
 import {Logger} from "./logger";
 import {Notifier} from "./notifier";
 import {NisApi} from "./nisApi";
-import {NotificationMessage} from "./notificationMessage";
+import {NotificationMessage, NotificationMessageFactory} from "./notificationMessage";
 
 export class BlockMonitorApp {
 
@@ -74,7 +74,12 @@ export class BlockMonitorApp {
 
     private async notifyIfRelated(blocks: Block[], addresses: string[], assets: string[]) {
         this.logging(`Checking ${blocks.length} blocks, address: ${addresses}`);
+
+        const messageFactory = new NotificationMessageFactory(await this.store.loadDivisibilityCache());
+
         for(const block of blocks) {
+            const tasks: Promise<any>[] = [];
+
             this.logging(`Checking block ${block.height} ....`);
             for (const transaction of block.transactions) {
                 let transferTransaction: TransferTransaction = null;
@@ -91,8 +96,6 @@ export class BlockMonitorApp {
 
                 if (transferTransaction !== null) {
 
-                    const tasks: Promise<any>[] = [];
-
                     const sender = transaction.signer;
                     this.logging(`Sender ${sender.address.plain()}`);
 
@@ -100,7 +103,7 @@ export class BlockMonitorApp {
                     const receiverIndex = addresses.indexOf(transferTransaction.recipient.plain());
 
                     if (senderIndex >= 0 || receiverIndex  >= 0) {
-                        const message = await NotificationMessage.createAddressTransfer(transaction, transferTransaction);
+                        const message = await messageFactory.createAddressTransfer(block.height, transaction, transferTransaction);
 
                         if (senderIndex >= 0) {
                             // Label Transform
@@ -131,25 +134,30 @@ export class BlockMonitorApp {
                             const assetIndex = assets.indexOf(assetFullName);
                             if (assetIndex >= 0) {
                                 const watchers = await this.store.loadWatchersOfAsset(assetFullName);
-                                const message = await NotificationMessage.createAssetTransfer(transaction, transferTransaction, asset);
+                                const message = await messageFactory.createAssetTransfer(block.height, transaction, transferTransaction, asset);
 
                                 tasks.concat(watchers.map (watcher => {
                                     return this.notifier.post([watcher.token],
                                         `Asset ${assetFullName} transferred`,
                                         message.toString(watcher.labels));
                                 }));
-
                             }
                         }
                     }
-                    if (tasks.length > 0) {
-                        await Promise.all(tasks);
-                    }
-
                 }
             }
+
+            if (tasks.length > 0) {
+                await Promise.all(tasks);
+            }
+
             this.logging(`Checked block ${block.height}`);
         }
+
+        if (messageFactory.isCacheDirty) {
+            await this.store.saveDivisibilityCache(messageFactory.divisibilityCache);
+        }
+
     }
 }
 
