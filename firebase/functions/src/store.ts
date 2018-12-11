@@ -1,5 +1,5 @@
-
 import * as admin from 'firebase-admin';
+import {NotificationMessage} from "./notificationMessage";
 
 export interface Store {
     setTargetNetwork(network: string);
@@ -13,6 +13,8 @@ export interface Store {
 
     loadDivisibilityCache(): Promise<Map<string, number>>;
     saveDivisibilityCache(divisibility: Map<string, number>): Promise<any>;
+
+    saveNotifications(userId: string, notifications: NotificationMessage[])
 }
 
 export class Watcher {
@@ -123,15 +125,39 @@ export class FirestoreStore implements Store {
     }
 
     async saveDivisibilityCache(divisibility: Map<string, number>): Promise<any> {
-        const divisibilityRef = admin.firestore().doc(`${this.network}/divisibility`);
         const divisibilityObject = {};
         for (const entry of divisibility.entries()){
             divisibilityObject[entry[0]] = entry[1];
         }
 
+        const divisibilityRef = admin.firestore().doc(`${this.network}/divisibility`);
         return divisibilityRef.set(
             divisibilityObject
         );
+    }
+
+    async saveNotifications(userId: string, notifications: NotificationMessage[]): Promise<any> {
+        const docRef = admin.firestore().doc(`users/${userId}/notification/${this.network}`);
+        const doc = await docRef.get();
+
+        const notificationObjects: Object[] = notifications.map(notification => notification.toObject());
+        if (!doc.exists) {
+            if (notificationObjects.length > 50) {
+                notificationObjects.splice(0, notificationObjects.length - 50);
+            }
+            return docRef.set({
+                "data": notificationObjects
+            });
+        } else {
+            const docData = doc.data();
+            const currentData = docData["data"] as Object[];
+            notificationObjects.push(...notificationObjects);
+            if (currentData.length > 50) {
+                currentData.splice(0, currentData.length - 50);
+            }
+
+            return docRef.set({"data": currentData});
+        }
     }
 
 }

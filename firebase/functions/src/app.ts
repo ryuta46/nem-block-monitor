@@ -78,6 +78,7 @@ export class BlockMonitorApp {
         const messageFactory = new NotificationMessageFactory(await this.store.loadDivisibilityCache());
 
         for(const block of blocks) {
+            const notifications = new Map<string, NotificationMessage[]>();
             const tasks: Promise<any>[] = [];
 
             this.logging(`Checking block ${block.height} ....`);
@@ -104,6 +105,7 @@ export class BlockMonitorApp {
 
                     if (senderIndex >= 0 || receiverIndex  >= 0) {
                         const message = await messageFactory.createAddressTransfer(block.height, transaction, transferTransaction);
+                        const watcherIds: string[] = [];
 
                         if (senderIndex >= 0) {
                             // Label Transform
@@ -114,6 +116,10 @@ export class BlockMonitorApp {
                                     'Outgoing transaction',
                                     message.toString(watcher.labels));
                             }));
+
+                            senderWatchers.map(watcher => {
+                                if (!(watcher.userId in watcherIds)) { watcherIds.push(watcher.userId) }
+                            });
                         }
 
                         if (receiverIndex >= 0) {
@@ -124,6 +130,20 @@ export class BlockMonitorApp {
                                     'Incoming transaction',
                                     message.toString(watcher.labels));
                             }));
+
+                            receiverWatchers.map(watcher => {
+                                if (!(watcher.userId in watcherIds)) { watcherIds.push(watcher.userId) }
+                            });
+                        }
+
+                        for (const id of watcherIds) {
+                            if (notifications.has(id)) {
+                                const current: NotificationMessage[] = notifications.get(id);
+                                current.push(message);
+                                notifications.set(id, current);
+                            } else {
+                                notifications.set(id, [message]);
+                            }
                         }
                     }
 
@@ -141,10 +161,27 @@ export class BlockMonitorApp {
                                         `Asset ${assetFullName} transferred`,
                                         message.toString(watcher.labels));
                                 }));
+
+
+                                for (const watcher of watchers) {
+                                    const id = watcher.userId;
+                                    if (notifications.has(id)) {
+                                        const current: NotificationMessage[] = notifications.get(id);
+                                        current.push(message);
+                                        notifications.set(id, current);
+                                    } else {
+                                        notifications.set(id, [message]);
+                                    }
+                                }
                             }
                         }
                     }
                 }
+            }
+
+            for (const entry of notifications.entries()) {
+
+                tasks.concat(this.store.saveNotifications(entry[0], entry[1]));
             }
 
             if (tasks.length > 0) {

@@ -7,13 +7,41 @@ export enum NotificationType {
     ASSET
 }
 
+class NotificationAsset {
+    constructor(
+        readonly namespaceId: string,
+        readonly name: string,
+        readonly quantity: number,
+        readonly divisibility: number){}
+
+    get amount(): Decimal {
+        return getDivided(this.quantity, this.divisibility);
+    }
+
+    toString(): string {
+        if ((this.namespaceId === "nem") && (this.name === "xem")) {
+            return `${this.amount} XEM`;
+        } else {
+            return `${this.amount} ${this.namespaceId}:${this.name}`;
+        }
+    }
+    toObject(): Object {
+        return {
+            "namespaceId": this.namespaceId,
+            "name": this.name,
+            "quantity": this.quantity,
+            "divisibility": this.divisibility
+        };
+    }
+}
+
 export class NotificationMessage {
     constructor(
         readonly height: number,
         readonly type: NotificationType,
         readonly sender: Address,
         readonly receiver: Address,
-        readonly assetMessage: string,
+        readonly assets: NotificationAsset[],
         readonly signature: string){}
 
 
@@ -26,8 +54,20 @@ export class NotificationMessage {
 
         return `from: ${sender}\n`
             + `to: ${receiver}\n`
-            + `amount: ${this.assetMessage}`;
+            + `amount: ${this.assets.map(asset => asset.toString()).join('\n')}`;
     }
+
+    toObject() {
+        return {
+            "height": this.height,
+            "type": this.type,
+            "sender": this.sender.plain(),
+            "receiver": this.receiver.plain(),
+            "assets": this.assets.map(asset => asset.toObject()),
+            "signature": this.signature
+        }
+    }
+
 }
 
 export class NotificationMessageFactory {
@@ -41,16 +81,14 @@ export class NotificationMessageFactory {
     }
 
     async createAddressTransfer(height: number, wrapTransaction: Transaction, transfer: TransferTransaction): Promise<NotificationMessage> {
-        let assetMessage = "";
+        const assets: NotificationAsset[] = [];
 
         if (transfer.containAssets()) {
-            const assetMessages: Array<string> = [];
             for (const asset of transfer.assets()) {
-                assetMessages.push(`${await this.getAmount(asset)} ${asset.assetId.namespaceId}:${asset.assetId.name}`);
+                assets.push(new NotificationAsset(asset.assetId.namespaceId, asset.assetId.name, asset.quantity, await this.getDivisibility(asset)));
             }
-            assetMessage = assetMessages.join('\n');
         } else {
-            assetMessage = `${transfer.xem().relativeQuantity()} XEM`;
+            assets.push(new NotificationAsset("nem", "xem", transfer.xem().absoluteQuantity(), 6));
         }
 
         return new NotificationMessage(
@@ -58,7 +96,7 @@ export class NotificationMessageFactory {
             NotificationType.ADDRESS,
             wrapTransaction.signer.address,
             transfer.recipient,
-            assetMessage,
+            assets,
             wrapTransaction.signature);
     }
 
@@ -69,21 +107,21 @@ export class NotificationMessageFactory {
             NotificationType.ASSET,
             wrapTransaction.signer.address,
             transfer.recipient,
-            `${await this.getAmount(asset)} ${asset.assetId.namespaceId}:${asset.assetId.name}`,
+            [ new NotificationAsset(asset.assetId.namespaceId, asset.assetId.name, asset.quantity, await this.getDivisibility(asset)) ],
             wrapTransaction.signature);
     }
 
-    async getAmount(asset: Asset): Promise<Decimal>{
+    async getDivisibility(asset: Asset): Promise<number>{
         const assetFullName = `${asset.assetId.namespaceId}:${asset.assetId.name}`;
         let divisibility: number;
         if (this.divisibilityCache.has(assetFullName)) {
-            divisibility = this.divisibilityCache.get(assetFullName);
+            return this.divisibilityCache.get(assetFullName);
         } else {
             divisibility = await NisApi.getAssetDivisibility(asset);
             this.divisibilityCache.set(assetFullName, divisibility);
             this._isCacheDirty = true;
+            return divisibility;
         }
-        return getDivided(asset.quantity, divisibility);
     }
 
 }
