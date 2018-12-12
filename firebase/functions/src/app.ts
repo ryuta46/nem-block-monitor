@@ -17,7 +17,11 @@ export class BlockMonitorApp {
 
     async run() {
         for (const network of this.networks) {
-            await this.runWith(network);
+            try {
+                await this.runWith(network);
+            } catch (e) {
+                this.logging(`Error occurred:${e}`)
+            }
         }
     }
 
@@ -98,8 +102,6 @@ export class BlockMonitorApp {
                 if (transferTransaction !== null) {
 
                     const sender = transaction.signer;
-                    this.logging(`Sender ${sender.address.plain()}`);
-
                     const senderIndex = addresses.indexOf(sender.address.plain());
                     const receiverIndex = addresses.indexOf(transferTransaction.recipient.plain());
 
@@ -108,8 +110,9 @@ export class BlockMonitorApp {
                         const watcherIds: string[] = [];
 
                         if (senderIndex >= 0) {
-                            // Label Transform
                             const address = addresses[senderIndex];
+                            this.logging(`sender ${address} is watched`);
+
                             const senderWatchers = await this.store.loadWatchersOfAddress(address);
                             tasks.concat(senderWatchers.map(watcher => {
                                 return this.notifier.post([watcher.token],
@@ -124,6 +127,8 @@ export class BlockMonitorApp {
 
                         if (receiverIndex >= 0) {
                             const address = addresses[receiverIndex];
+                            this.logging(`receiver ${address} is watched`);
+
                             const receiverWatchers = await this.store.loadWatchersOfAddress(address);
                             tasks.concat(receiverWatchers.map(watcher => {
                                 return this.notifier.post([watcher.token],
@@ -153,6 +158,8 @@ export class BlockMonitorApp {
                             this.logger.log(assetFullName);
                             const assetIndex = assets.indexOf(assetFullName);
                             if (assetIndex >= 0) {
+                                this.logging(`asset ${assetFullName} is watched`);
+
                                 const watchers = await this.store.loadWatchersOfAsset(assetFullName);
                                 const message = await messageFactory.createAssetTransfer(block.height, transaction, transferTransaction, asset);
 

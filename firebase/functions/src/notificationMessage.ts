@@ -112,6 +112,9 @@ export class NotificationMessageFactory {
     }
 
     async getDivisibility(asset: Asset): Promise<number>{
+        if ((asset.assetId.namespaceId === "nem") && (asset.assetId.name === "xem")) {
+            return 6;
+        }
         const assetFullName = `${asset.assetId.namespaceId}:${asset.assetId.name}`;
         let divisibility: number;
         if (this.divisibilityCache.has(assetFullName)) {
