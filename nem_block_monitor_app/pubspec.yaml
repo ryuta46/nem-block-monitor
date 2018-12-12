@@ -33,6 +33,8 @@ dependencies:
 
   built_collection: ^4.0.0
 
+  decimal: ^0.3.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:nem_block_monitor_app/app_style.dart';
 import 'package:nem_block_monitor_app/net/nem/model/block/block.dart';
-import 'package:nem_block_monitor_app/net/nem/util/Timestamp.dart';
+import 'package:nem_block_monitor_app/net/nem/util/timestamp.dart';
 
 class BlockBriefTile extends StatelessWidget {
   final Block block;

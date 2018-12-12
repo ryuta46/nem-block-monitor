@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:nem_block_monitor_app/pages/blocks/blocks_page.dart';
+import 'package:nem_block_monitor_app/pages/history/history_page.dart';
 import 'package:nem_block_monitor_app/pages/label/label_page.dart';
 import 'package:nem_block_monitor_app/pages/setting/setting_page.dart';
 import 'package:nem_block_monitor_app/pages/watch/watch_page.dart';
@@ -32,16 +33,16 @@ class _HomeState extends State<HomePage> {
         type: BottomNavigationBarType.fixed,
         items: [
           BottomNavigationBarItem(
-            icon: Icon(Icons.assignment),
-            title: Text('BLOCKS'),
-          ),
-          BottomNavigationBarItem(
             icon: Icon(Icons.remove_red_eye),
             title: Text('WATCH'),
           ),
           BottomNavigationBarItem(
               icon: Icon(Icons.label),
               title: Text('LABEL')
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.history),
+            title: Text('HISTORY'),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.search),
@@ -58,9 +59,9 @@ class _HomeState extends State<HomePage> {
 
   Widget _getChild(int childIndex) {
     switch(childIndex) {
-      case 0: return BlocksPage();
-      case 1: return WatchPage();
-      case 2: return LabelPage();
+      case 0: return WatchPage();
+      case 1: return LabelPage();
+      case 2: return HistoryPage();
       case 4: return SettingPage();
       default: return BlocksPage();
     }

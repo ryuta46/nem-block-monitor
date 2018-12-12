@@ -4,6 +4,8 @@ import 'dart:async';
 
 import 'package:built_collection/built_collection.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:nem_block_monitor_app/model/notification.dart';
+import 'package:nem_block_monitor_app/net/nem/model/account/address.dart';
 import 'package:nem_block_monitor_app/repository/user_data_repository.dart';
 
 class _WatchList {
@@ -185,6 +187,43 @@ class FirestoreUserDataRepository extends UserDataRepository {
     }
   }
 
+  Future<BuiltList<NotificationMessage>> getNotificationMessages() async {
+    final notificationRef = Firestore.instance.document('users/$_userId/notification/$_network');
+    final notificationDocument = await notificationRef.get();
+    if (!notificationDocument.exists) {
+      return BuiltList<NotificationMessage>();
+    }
+    final fetchedLabels = await labels;
+
+    final notifications = List<NotificationMessage>();
+    final notificationData = notificationDocument.data["data"] as List<dynamic>;
+    for (var notification in notificationData) {
+      final assets = List<NotificationAsset>();
+      final assetData = notification["assets"] as List<dynamic>;
+      for (var asset in assetData) {
+        assets.add(NotificationAsset(
+          asset["namespaceId"] as String,
+          asset["name"] as String,
+          asset["quantity"] as int,
+          asset["divisibility"] as int
+        ));
+      }
+
+      final notificationMessage = NotificationMessage(
+          notification["height"] as int,
+          NotificationTypeValues.types[notification["typs"] as int],
+          Address(notification["sender"]),
+          Address(notification["receiver"]),
+          assets,
+          notification["signature"] as String);
+
+      notificationMessage.setLabel(fetchedLabels.toMap());
+
+      notifications.add(notificationMessage);
+    }
+
+    return BuiltList<NotificationMessage>(notifications);
+  }
 
   BuiltList<String> _getList(String key) {
     final watchList = _watchLists[key];
