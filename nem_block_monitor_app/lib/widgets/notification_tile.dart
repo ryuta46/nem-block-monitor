@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:nem_block_monitor_app/app_style.dart';
 import 'package:nem_block_monitor_app/model/notification.dart';
+import 'package:nem_block_monitor_app/net/nem/util/timestamp.dart';
 
 class NotificationTile extends StatelessWidget {
   final NotificationMessage notification;
@@ -16,7 +17,17 @@ class NotificationTile extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text("#${notification.height.toString()}"),
+            Row( mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Text("${Timestamp.dateStringFromNemesis(notification.timestamp)}"),
+                Container(
+                    color: AppStyle.colorGreen,
+                    child: Text("${notification.network} #${notification.height.toString()}", style: AppStyle.textWhite),
+                  padding: EdgeInsets.all(4.0),
+                  margin: EdgeInsets.all(4.0),
+                ),
+              ],
+            ),
             Text("${notification.senderText}", style: AppStyle.textSmall,),
             Text("↓"),
             Text("${notification.receiverText}", style: AppStyle.textSmall,),

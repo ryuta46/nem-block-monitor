@@ -188,7 +188,7 @@ class FirestoreUserDataRepository extends UserDataRepository {
   }
 
   Future<BuiltList<NotificationMessage>> getNotificationMessages() async {
-    final notificationRef = Firestore.instance.document('users/$_userId/notification/$_network');
+    final notificationRef = Firestore.instance.document('users/$_userId/notification/history');
     final notificationDocument = await notificationRef.get();
     if (!notificationDocument.exists) {
       return BuiltList<NotificationMessage>();
@@ -210,6 +210,8 @@ class FirestoreUserDataRepository extends UserDataRepository {
       }
 
       final notificationMessage = NotificationMessage(
+          notification["network"] as String,
+          notification["timestamp"] as int,
           notification["height"] as int,
           NotificationTypeValues.types[notification["typs"] as int],
           Address(notification["sender"]),

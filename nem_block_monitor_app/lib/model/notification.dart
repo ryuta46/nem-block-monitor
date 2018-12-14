@@ -34,6 +34,8 @@ class NotificationAsset {
 }
 
 class NotificationMessage  {
+  final String network;
+  final int timestamp;
   final int height;
   final NotificationType type;
   final Address sender;
@@ -44,7 +46,7 @@ class NotificationMessage  {
   String _senderLabel = "";
   String _receiverLabel = "";
 
-  NotificationMessage(this.height, this.type, this.sender, this.receiver, this.assets, this.signature);
+  NotificationMessage(this.network, this.timestamp, this.height, this.type, this.sender, this.receiver, this.assets, this.signature);
 
   setLabel(Map<String, String> labels) {
     if (labels.containsKey(sender.plain)) {
