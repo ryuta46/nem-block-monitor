@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nem_block_monitor_app/app_style.dart';
 import 'package:nem_block_monitor_app/net/nem/model/account/address.dart';
+import 'package:nem_block_monitor_app/net/nem/util/external_launcher.dart';
 import 'package:nem_block_monitor_app/pages/watch/watch_bloc.dart';
 import 'package:nem_block_monitor_app/preference.dart';
 import 'package:nem_block_monitor_app/repository/firestore_user_data_repository.dart';
@@ -65,7 +66,9 @@ class _WatchPageState extends State<WatchPage> {
                         trailing: IconButton(
                           icon: Icon(Icons.delete),
                           onPressed: () => _showRemoveAddressDialog(context, item.title),
-                        ));
+                        ),
+                        onTap: () => ExternalLauncher.openExplorerOfAddress(Address(item.title))
+                    );
                   }
                   else if (item is _WatchAssetItem){
                     return ListTile(
@@ -73,7 +76,15 @@ class _WatchPageState extends State<WatchPage> {
                         trailing: IconButton(
                           icon: Icon(Icons.delete),
                           onPressed: () => _showRemoveAssetDialog(context, item.title),
-                        ));
+                        ),
+                        onTap: () {
+                          final elements = item.title.split(":");
+                          if (elements.length == 2) {
+                            ExternalLauncher.openExplorerOfAsset(
+                                elements[0], elements[1]);
+                          }
+                        }
+                    );
                   }
                   else {
                     return ListTile(
