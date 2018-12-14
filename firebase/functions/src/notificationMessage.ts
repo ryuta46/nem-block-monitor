@@ -92,7 +92,7 @@ export class NotificationMessageFactory {
                 assets.push(new NotificationAsset(asset.assetId.namespaceId, asset.assetId.name, asset.quantity, await this.getDivisibility(asset)));
             }
         } else {
-            assets.push(new NotificationAsset("nem", "xem", transfer.xem().absoluteQuantity(), 6));
+            assets.push(new NotificationAsset("nem", "xem", Math.round(transfer.xem().absoluteQuantity()), 6));
         }
 
         return new NotificationMessage(
