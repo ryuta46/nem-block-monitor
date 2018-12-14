@@ -46,8 +46,11 @@ class _WatchPageState extends State<WatchPage> {
 
           return Scaffold(
             body: ListView.builder(
-                itemCount: items.length * 2 - 1,
+                itemCount: items.length * 2,
                 itemBuilder: (context, index) {
+                  if (index == items.length * 2 - 1) {
+                    return Container(width: 16, height: 80); // For bottom margin
+                  }
                   if (index % 2 == 1) {
                     return Divider();
                   }
@@ -88,7 +91,7 @@ class _WatchPageState extends State<WatchPage> {
                   }
                   else {
                     return ListTile(
-                        title: Text(item.title),
+                      title: Text(item.title),
                     );
                   }
                 }
