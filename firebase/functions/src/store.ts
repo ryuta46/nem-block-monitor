@@ -151,7 +151,7 @@ export class FirestoreStore implements Store {
         } else {
             const docData = doc.data();
             const currentData = docData["data"] as Object[];
-            notificationObjects.push(...notificationObjects);
+            currentData.push(...notificationObjects);
             if (currentData.length > 50) {
                 currentData.splice(0, currentData.length - 50);
             }
