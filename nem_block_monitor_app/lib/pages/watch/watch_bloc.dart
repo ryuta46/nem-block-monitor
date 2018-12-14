@@ -39,7 +39,8 @@ class WatchLoadEvent extends WatchEvent {
 
 class WatchAddAddressEvent extends WatchEvent {
   final String address;
-  WatchAddAddressEvent(this.address);
+  final String label;
+  WatchAddAddressEvent(this.address, this.label);
 }
 
 class WatchRemoveAddressEvent extends WatchEvent {
@@ -82,8 +83,8 @@ class WatchBloc extends Bloc<WatchEvent, WatchState> {
     dispatch(WatchLoadEvent());
   }
 
-  void addAddress(String address) {
-    dispatch(WatchAddAddressEvent(address));
+  void addAddress(String address, String label) {
+    dispatch(WatchAddAddressEvent(address, label));
   }
 
   void removeAddress(String address) {
@@ -121,6 +122,9 @@ class WatchBloc extends Bloc<WatchEvent, WatchState> {
     }
     else if (event is WatchAddAddressEvent) {
       await repository.addWatchAddress(event.address);
+      if (event.label.isNotEmpty) {
+        await repository.addLabel(event.address, event.label);
+      }
     }
     else if (event is WatchRemoveAddressEvent) {
       await repository.removeWatchAddress(event.address);

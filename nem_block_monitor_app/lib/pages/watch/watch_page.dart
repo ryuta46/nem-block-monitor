@@ -146,18 +146,30 @@ class _WatchPageState extends State<WatchPage> {
 
 
   void _showAddAddressDialog(BuildContext context) {
-    final inputText = TextEditingController();
+    final inputTextAddress = TextEditingController();
+    final inputTextLabel = TextEditingController();
     showDialog(
       context: context,
       builder: (BuildContext context) => AlertDialog(
         title: Text("Add address"),
-        content: TextField(
-          controller: inputText,
-          decoration: InputDecoration(
-              labelText: "New watch address",
-              hintText: "eg. NA..."
-          ),
-        ),
+        content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              TextField(
+                controller: inputTextAddress,
+                decoration: InputDecoration(
+                    labelText: "New watch address",
+                    hintText: "eg. NA..."
+                ),
+              ),
+              TextField(
+                controller: inputTextLabel,
+                decoration: InputDecoration(
+                    labelText: "Label (optional)",
+                    hintText: "eg. My wallet"
+                ),
+              ),
+            ]),
         actions: <Widget>[
           FlatButton(
               child: const Text('CANCEL'),
@@ -167,7 +179,7 @@ class _WatchPageState extends State<WatchPage> {
           FlatButton(
               child: const Text('OK'),
               onPressed: () {
-                Navigator.pop(context, inputText.text);
+                Navigator.pop(context, [inputTextAddress.text, inputTextLabel.text]);
               })
         ],
       ),
@@ -175,7 +187,9 @@ class _WatchPageState extends State<WatchPage> {
       if (value == null) {
         return;
       }
-      _bloc.addAddress(Address(value).plain);
+      final address = value[0];
+      final label = value[1];
+      _bloc.addAddress(address, label);
     });
   }
 
