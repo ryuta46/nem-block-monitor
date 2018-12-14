@@ -30,7 +30,7 @@ class _HistoryPageState extends State<HistoryPage> {
             return Center(child: CircularProgressIndicator());
           }
 
-          final items = state.notifications;
+          final items = state.notifications.reversed.toList();
 
           return Scaffold(
             body: ListView.builder(
