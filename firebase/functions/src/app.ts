@@ -36,11 +36,14 @@ export class BlockMonitorApp {
 
     private async runWith(networkType: NetworkTypes) {
         BlockMonitorApp.initializeLibrary(networkType);
+        let network: string;
         if (networkType === NetworkTypes.MAIN_NET) {
-            this.store.setTargetNetwork("mainnet");
+            network = "mainnet";
         } else {
-            this.store.setTargetNetwork("testnet");
+            network = "testnet";
         }
+        this.store.setTargetNetwork(network);
+
 
         const lastBlock = this.lastHeight || await this.store.loadLastBlock();
         const currentBlock = this.currentHeight || await NisApi.getBlockHeight();
@@ -64,7 +67,7 @@ export class BlockMonitorApp {
         const addresses = await this.store.loadWatchedAddresses();
         const assets = await this.store.loadWatchedAssets();
 
-        await this.notifyIfRelated(blocks, addresses, assets);
+        await this.notifyIfRelated(network, blocks, addresses, assets);
 
         if (this.saveHeight) {
             await this.store.saveLastBlock(currentBlock);
@@ -76,7 +79,7 @@ export class BlockMonitorApp {
     }
 
 
-    private async notifyIfRelated(blocks: Block[], addresses: string[], assets: string[]) {
+    private async notifyIfRelated(network: string, blocks: Block[], addresses: string[], assets: string[]) {
         this.logging(`Checking ${blocks.length} blocks, address: ${addresses}`);
 
         const messageFactory = new NotificationMessageFactory(await this.store.loadDivisibilityCache());
@@ -106,7 +109,7 @@ export class BlockMonitorApp {
                     const receiverIndex = addresses.indexOf(transferTransaction.recipient.plain());
 
                     if (senderIndex >= 0 || receiverIndex  >= 0) {
-                        const message = await messageFactory.createAddressTransfer(block.height, transaction, transferTransaction);
+                        const message = await messageFactory.createAddressTransfer(network, block.height, transaction, transferTransaction);
                         const watcherIds: string[] = [];
 
                         if (senderIndex >= 0) {
@@ -161,7 +164,7 @@ export class BlockMonitorApp {
                                 this.logging(`asset ${assetFullName} is watched`);
 
                                 const watchers = await this.store.loadWatchersOfAsset(assetFullName);
-                                const message = await messageFactory.createAssetTransfer(block.height, transaction, transferTransaction, asset);
+                                const message = await messageFactory.createAssetTransfer(network, block.height, transaction, transferTransaction, asset);
 
                                 tasks.concat(watchers.map (watcher => {
                                     return this.notifier.post([watcher.token],

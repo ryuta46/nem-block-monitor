@@ -37,9 +37,14 @@ class DummyStore implements Store {
 
 const app = new BlockMonitorApp(
     new FirestoreStore(), new CloudMessagingNotifier(), new ConsoleLogger(),
+//    [NetworkTypes.MAIN_NET],
+//    1932922,
+//    1932923,
     [NetworkTypes.MAIN_NET],
-    1932922,
-    1932923,
+    1935507,
+    1935508,
+    //1932922,
+    //1932923,
     false
 );
 app.run().then((result) => {

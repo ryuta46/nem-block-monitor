@@ -137,7 +137,7 @@ export class FirestoreStore implements Store {
     }
 
     async saveNotifications(userId: string, notifications: NotificationMessage[]): Promise<any> {
-        const docRef = admin.firestore().doc(`users/${userId}/notification/${this.network}`);
+        const docRef = admin.firestore().doc(`users/${userId}/notification/history`);
         const doc = await docRef.get();
 
         const notificationObjects: Object[] = notifications.map(notification => notification.toObject());

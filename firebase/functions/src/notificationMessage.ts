@@ -37,6 +37,8 @@ class NotificationAsset {
 
 export class NotificationMessage {
     constructor(
+        readonly network: string,
+        readonly timestamp: number,
         readonly height: number,
         readonly type: NotificationType,
         readonly sender: Address,
@@ -59,6 +61,8 @@ export class NotificationMessage {
 
     toObject() {
         return {
+            "network": this.network,
+            "timestamp": this.timestamp,
             "height": this.height,
             "type": this.type,
             "sender": this.sender.plain(),
@@ -80,7 +84,7 @@ export class NotificationMessageFactory {
     constructor(readonly divisibilityCache: Map<string, number>){
     }
 
-    async createAddressTransfer(height: number, wrapTransaction: Transaction, transfer: TransferTransaction): Promise<NotificationMessage> {
+    async createAddressTransfer(network: string, height: number, wrapTransaction: Transaction, transfer: TransferTransaction): Promise<NotificationMessage> {
         const assets: NotificationAsset[] = [];
 
         if (transfer.containAssets()) {
@@ -92,6 +96,8 @@ export class NotificationMessageFactory {
         }
 
         return new NotificationMessage(
+            network,
+            wrapTransaction.toDTO().timeStamp,
             height,
             NotificationType.ADDRESS,
             wrapTransaction.signer.address,
@@ -100,9 +106,11 @@ export class NotificationMessageFactory {
             wrapTransaction.signature);
     }
 
-    async createAssetTransfer(height: number, wrapTransaction: Transaction, transfer: TransferTransaction, asset: Asset): Promise<NotificationMessage> {
+    async createAssetTransfer(network: string, height: number, wrapTransaction: Transaction, transfer: TransferTransaction, asset: Asset): Promise<NotificationMessage> {
 
         return new NotificationMessage(
+            network,
+            wrapTransaction.toDTO().timeStamp,
             height,
             NotificationType.ASSET,
             wrapTransaction.signer.address,
