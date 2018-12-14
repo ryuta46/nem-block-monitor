@@ -38,9 +38,11 @@ class _WatchPageState extends State<WatchPage> {
 
           List<_WatchListItem> items = []
             ..add(_WatchListHeader("Addresses"))
-            ..addAll(state.addresses.map((address) => _WatchAddressItem(address)))
+            ..addAll(state.addresses.map((addressEntry) =>
+                _WatchAddressItem(addressEntry.address, addressEntry.label, addressEntry.enables)))
             ..add(_WatchListHeader("Assets"))
-            ..addAll(state.assets.map((asset) => _WatchAssetItem(asset)));
+            ..addAll(state.assets.map((assetEntry) =>
+                _WatchAssetItem(assetEntry.assetFullName, assetEntry.enables)));
             //..add(WatchListHeader("Harvests"))
             //..addAll(state.harvests.map((harvest) => WatchHarvestItem(harvest)));
 
@@ -66,6 +68,9 @@ class _WatchPageState extends State<WatchPage> {
                   else if (item is _WatchAddressItem){
                     return ListTile(
                         title: Text(Address(item.title).pretty),
+                        leading: IconButton(
+                            icon: Icon(item.enables ? Icons.notifications_active : Icons.notifications_off),
+                            onPressed: () => _bloc.enableAddress(item.title, !item.enables)),
                         trailing: IconButton(
                           icon: Icon(Icons.delete),
                           onPressed: () => _showRemoveAddressDialog(context, item.title),
@@ -76,6 +81,9 @@ class _WatchPageState extends State<WatchPage> {
                   else if (item is _WatchAssetItem){
                     return ListTile(
                         title: Text(item.title),
+                        leading: IconButton(
+                            icon: Icon(item.enables ? Icons.notifications_active : Icons.notifications_off),
+                            onPressed: () => _bloc.enableAsset(item.title, !item.enables)),
                         trailing: IconButton(
                           icon: Icon(Icons.delete),
                           onPressed: () => _showRemoveAssetDialog(context, item.title),
@@ -299,11 +307,14 @@ class _WatchListItem {
 }
 
 class _WatchAddressItem extends _WatchListItem {
-  _WatchAddressItem(String title): super(title);
+  final String label;
+  final bool enables;
+  _WatchAddressItem(String title, this.label, this.enables): super(title);
 }
 
 class _WatchAssetItem extends _WatchListItem{
-  _WatchAssetItem(String title): super(title);
+  final bool enables;
+  _WatchAssetItem(String title, this.enables): super(title);
 }
 
 class _WatchListHeader extends _WatchListItem {

@@ -68,9 +68,11 @@ export class FirestoreStore implements Store {
         }
         else {
             const watchers = await admin.firestore().collection(`${this.network}/addresses/${address}`).get();
-            const watcherData = await Promise.all(watchers.docs.map(async (userIdDoc) => {
-                return await this.loadWatcher(userIdDoc.id);
-            }));
+            const watcherData = await Promise.all(watchers.docs
+                .filter((userIdDoc) => userIdDoc.data()['active'] === true)
+                .map(async (userIdDoc) => {
+                    return await this.loadWatcher(userIdDoc.id);
+                }));
             this.addressWatcherCache.set(address, watcherData);
             return watcherData;
         }
@@ -82,9 +84,12 @@ export class FirestoreStore implements Store {
         }
         else {
             const watchers = await admin.firestore().collection(`${this.network}/assets/${asset}`).get();
-            const watcherData = await Promise.all(watchers.docs.map(async (userIdDoc) => {
-                return await this.loadWatcher(userIdDoc.id);
-            }));
+            const watcherData = await Promise.all(watchers.docs
+                .filter((userIdDoc) => userIdDoc.data()['active'] === true)
+                .map(async (userIdDoc) => {
+                    return await this.loadWatcher(userIdDoc.id);
+                }));
+
             this.asstWatcherCache.set(asset, watcherData);
             return watcherData
         }

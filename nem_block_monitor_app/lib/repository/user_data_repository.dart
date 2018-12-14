@@ -13,20 +13,22 @@ abstract class UserDataRepository {
   Future<String> get token;
   FutureOr<void> setToken(String token);
 
-  Future<BuiltList<String>> get watchAddresses;
+  Future<BuiltMap<String, bool>> get watchAddresses;
 
   FutureOr<void> addWatchAddress(String address);
   FutureOr<void> removeWatchAddress(String address);
+  FutureOr<void> enableWatchAddress(String address, bool enables);
 
-  Future<BuiltList<String>> get watchAssets;
+  Future<BuiltMap<String, bool>> get watchAssets;
 
   FutureOr<void> addWatchAsset(String assetFullName);
   FutureOr<void> removeWatchAsset(String assetFullName);
+  FutureOr<void> enableWatchAsset(String assetFullName, bool enables);
 
-  Future<BuiltList<String>> get watchHarvests;
+  //Future<BuiltList<String>> get watchHarvests;
 
-  FutureOr<void> addWatchHarvest(String address);
-  FutureOr<void> removeWatchHarvest(String address);
+  //FutureOr<void> addWatchHarvest(String address);
+  //FutureOr<void> removeWatchHarvest(String address);
 
   Future<BuiltMap<String, String>> get labels;
 

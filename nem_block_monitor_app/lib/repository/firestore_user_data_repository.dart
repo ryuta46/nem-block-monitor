@@ -10,16 +10,15 @@ import 'package:nem_block_monitor_app/repository/user_data_repository.dart';
 
 class _WatchList {
   final String key;
-  final Map<String, List<String>> _lists;
+  final Map<String, Map<String, bool>> _lists;
 
   _WatchList(this.key): _lists = {};
 
   void add(String network, String newEntry) {
-    if (_lists.containsKey(network)) {
-      _lists[network].add(newEntry);
-    } else {
-      _lists[network] = [newEntry];
+    if (!_lists.containsKey(network)) {
+      _lists[network] = Map();
     }
+    _lists[network][newEntry] = true;
   }
 
   void remove(String network, String newEntry) {
@@ -28,13 +27,19 @@ class _WatchList {
     }
   }
 
-  void setList(String network, Iterable<String> list) {
-    _lists[network] = List<String>()..addAll(list);
+  void enable(String network, String entry, bool enables) {
+    if (_lists.containsKey(network) && _lists[network].containsKey(entry)) {
+      _lists[network][entry] = enables;
+    }
   }
 
-  List<String> getList(String network) {
+  void setList(String network, Iterable<MapEntry<String, bool>> list) {
+    _lists[network] = Map<String, bool>()..addEntries(list);
+  }
+
+  Map<String, bool> getList(String network) {
     if (!_lists.containsKey(network)) {
-      return [];
+      return Map();
     }
     else {
       return _lists[network];
@@ -82,7 +87,9 @@ class FirestoreUserDataRepository extends UserDataRepository {
       final watchData = Firestore.instance.document('users/$_userId/watch/$network');
       for (var watchList in _watchLists.values) {
         final entriesCollection = watchData.collection(watchList.key);
-        final entries = (await entriesCollection.getDocuments()).documents.map((document) => document.documentID);
+        final entries = (await entriesCollection.getDocuments()).documents.map(
+                (document) => MapEntry<String, bool>(document.documentID, document.data["active"])
+        );
         watchList.setList(network, entries ?? []);
       }
 
@@ -109,7 +116,7 @@ class FirestoreUserDataRepository extends UserDataRepository {
 
 
   @override
-  Future<BuiltList<String>> get watchAddresses async => _getList(keyAddresses);
+  Future<BuiltMap<String, bool>> get watchAddresses async => _getList(keyAddresses);
 
   @override
   FutureOr<void> addWatchAddress(String address) async => _addWatchEntry(keyAddresses, address);
@@ -118,7 +125,10 @@ class FirestoreUserDataRepository extends UserDataRepository {
   FutureOr<void> removeWatchAddress(String address) async => _removeWatchEntry(keyAddresses, address);
 
   @override
-  Future<BuiltList<String>> get watchAssets async =>  _getList(keyAssets);
+  FutureOr<void> enableWatchAddress(String address, bool enables) async => _enableWatchEntry(keyAddresses, address, enables);
+
+  @override
+  Future<BuiltMap<String, bool>> get watchAssets async =>  _getList(keyAssets);
 
   @override
   FutureOr<void> addWatchAsset(String assetFullName) async => _addWatchEntry(keyAssets, assetFullName);
@@ -127,13 +137,17 @@ class FirestoreUserDataRepository extends UserDataRepository {
   FutureOr<void> removeWatchAsset(String assetFullName) async => _removeWatchEntry(keyAssets, assetFullName);
 
   @override
-  Future<BuiltList<String>> get watchHarvests async => _getList(keyHarvests);
+  FutureOr<void> enableWatchAsset(String assetFullName, bool enables) async => _enableWatchEntry(keyAssets, assetFullName, enables);
 
-  @override
-  FutureOr<void> addWatchHarvest(String address) async => _addWatchEntry(keyHarvests, address);
 
-  @override
-  FutureOr<void> removeWatchHarvest(String address) async => _removeWatchEntry(keyHarvests, address);
+  //@override
+  //Future<BuiltList<String>> get watchHarvests async => _getList(keyHarvests);
+
+  //@override
+  //FutureOr<void> addWatchHarvest(String address) async => _addWatchEntry(keyHarvests, address);
+
+  //@override
+  //FutureOr<void> removeWatchHarvest(String address) async => _removeWatchEntry(keyHarvests, address);
 
   @override
   Future<BuiltMap<String, String>> get labels async {
@@ -227,32 +241,39 @@ class FirestoreUserDataRepository extends UserDataRepository {
     return BuiltList<NotificationMessage>(notifications);
   }
 
-  BuiltList<String> _getList(String key) {
+  BuiltMap<String, bool> _getList(String key) {
     final watchList = _watchLists[key];
-    return BuiltList<String>(watchList.getList(_network));
+    return BuiltMap<String, bool>(watchList.getList(_network));
   }
 
   FutureOr<void> _addWatchEntry(String key, String entry) async {
-    _addToFirestore(_network, key, entry);
+    await _addToFirestore(_network, key, entry);
     final watchList = _watchLists[key];
     watchList.add(_network, entry);
   }
 
   FutureOr<void> _removeWatchEntry(String key, String entry) async {
-    _removeFromFirestore(_network, key, entry);
+    await _removeFromFirestore(_network, key, entry);
     final watchList = _watchLists[key];
     watchList.remove(_network, entry);
+  }
+
+  FutureOr<void> _enableWatchEntry(String key, String entry, bool enables) async {
+    await _enableOnFirestore(_network, key, entry, enables);
+    final watchList = _watchLists[key];
+    watchList.enable(_network, entry, enables);
   }
 
   FutureOr<void> _addToFirestore(String network, String key, String entry) async {
     Firestore.instance.runTransaction((transaction) async {
       final userWatchRef = Firestore.instance.document(
           'users/$_userId/watch/$network/$key/$entry');
-      await userWatchRef.setData({"active": true});
+      await transaction.set(userWatchRef, {"active": true});
 
       final watchRef = Firestore.instance.document(
           '$network/$key/$entry/$_userId');
-      await watchRef.setData({"active": true}, merge: true);
+
+      await transaction.set(watchRef, {"active": true});
     });
   }
 
@@ -260,22 +281,37 @@ class FirestoreUserDataRepository extends UserDataRepository {
     Firestore.instance.runTransaction((transaction) async {
       final userWatchRef = Firestore.instance.document(
           'users/$_userId/watch/$network/$key/$entry');
-      await userWatchRef.delete();
+
+      await transaction.delete(userWatchRef);
 
       final watchRef = Firestore.instance.document(
           '$network/$key/$entry/$_userId');
 
-      final watchDocument = await watchRef.get();
-      final watchData = watchDocument.data;
+      await transaction.delete(watchRef);
+    });
+  }
 
-      watchData.remove("active");
+  FutureOr<void> _enableOnFirestore(String network, String key, String entry, bool enables) async {
+    Firestore.instance.runTransaction((transaction) async {
+      final userWatchRef = Firestore.instance.document(
+          'users/$_userId/watch/$network/$key/$entry');
 
-      // If key is only 'active', delete the entry. Otherwise, sets deletes key only
-      if (watchData.isEmpty) {
-        await watchRef.delete();
-      } else {
-        await watchRef.setData(watchData);
+      final watchRef = Firestore.instance.document(
+          '$network/$key/$entry/$_userId');
+
+      final userWatchDoc = await transaction.get(userWatchRef);
+      final watchDoc = await transaction.get(watchRef);
+
+      if (userWatchDoc.exists && watchDoc.exists) {
+        final userWatchData = userWatchDoc.data;
+        final watchData = watchDoc.data;
+        userWatchData["active"] = enables;
+        watchData["active"] = enables;
+
+        await transaction.set(userWatchRef, userWatchData);
+        await transaction.set(watchRef, watchData);
       }
     });
+
   }
 }
