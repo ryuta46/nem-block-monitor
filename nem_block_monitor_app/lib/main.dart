@@ -1,13 +1,13 @@
-import 'package:flutter/material.dart';
-import 'package:nem_block_monitor_app/net/nem/node_http.dart';
-import 'package:nem_block_monitor_app/pages/home_page.dart';
-
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:nem_block_monitor_app/pages/home_page.dart';
 import 'package:nem_block_monitor_app/preference.dart';
 import 'package:nem_block_monitor_app/repository/firestore_user_data_repository.dart';
+
 
 
 class App extends StatefulWidget {
@@ -27,6 +27,7 @@ class _AppState extends State<App> {
   String _userId;
   bool _isLoadingSetting = true;
   bool _isLoadingUserData = true;
+  FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin;
 
   @override
   Widget build(BuildContext context) {
@@ -51,6 +52,7 @@ class _AppState extends State<App> {
 
     _loadSetting();
     _setupMessagingCallbacks();
+    _setupLocalNotification();
     _signIn();
   }
 
@@ -70,6 +72,7 @@ class _AppState extends State<App> {
   _setupMessagingCallbacks() {
     _firebaseMessaging.configure(
       onMessage: (Map<String, dynamic> message) async {
+        await _displayLocalNotification(message);
         print("onMessage: $message");
       },
       onLaunch: (Map<String, dynamic> message) async {
@@ -90,6 +93,32 @@ class _AppState extends State<App> {
       _token = token;
       await _updateUserData();
     });
+  }
+
+  _setupLocalNotification() {
+    final androidSettings = AndroidInitializationSettings('app_icon');
+
+    final iosSettings = IOSInitializationSettings();
+    final settings = InitializationSettings(androidSettings, iosSettings);
+
+    _flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+    _flutterLocalNotificationsPlugin.initialize(settings,
+        onSelectNotification: _onSelectNotification);
+  }
+
+  Future _onSelectNotification(String payload) async {
+  }
+
+  Future _displayLocalNotification(Map<String, dynamic> message) async {
+    var androidPlatformChannelSpecifics = AndroidNotificationDetails(
+        "com.ttechsoft.nemblockmonitor", "com.ttechsoft.nemblockmonitor", 'block notification',
+        style: AndroidNotificationStyle.BigText,
+        importance: Importance.Max, priority: Priority.High);
+    var iOSPlatformChannelSpecifics = IOSNotificationDetails();
+    var platformChannelSpecifics =  NotificationDetails(
+        androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
+    await _flutterLocalNotificationsPlugin.show(
+        0, message["notification"]["title"], message["notification"]["body"], platformChannelSpecifics);
   }
 
   _signIn() {
