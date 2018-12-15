@@ -2,7 +2,7 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:nem_block_monitor_app/net/nem/model/asset/mosaic_id.dart';
 
-part 'package:nem_block_monitor_app/net/nem/model/asset/mosaic_id_dto.g.dart';
+part 'mosaic_id_dto.g.dart';
 
 @JsonSerializable(createToJson: false)
 class MosaicIdDTO {

@@ -1,7 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:nem_block_monitor_app/net/nem/model/node/node.dart';
 
-part 'package:nem_block_monitor_app/net/nem/model/node/node_dto.g.dart';
+part 'node_dto.g.dart';
 
 @JsonSerializable(createToJson: false)
 class NodeEndPointDTO {

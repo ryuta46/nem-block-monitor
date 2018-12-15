@@ -4,7 +4,7 @@ import 'dart:convert';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-part 'package:nem_block_monitor_app/preference.g.dart';
+part 'preference.g.dart';
 
 @JsonSerializable(createToJson: true)
 class _PreferenceDTO {

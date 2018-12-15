@@ -6,10 +6,11 @@ class BaseHttp {
   Uri baseUri;
   BaseHttp(final this.baseUri);
 
-  Future<T> get<T>(Function factory, String path) async {
-    final uri = baseUri.replace(path: path);
+  Future<T> get<T>(Function factory, String path, {Map<String, String> query}) async {
+    final uri = baseUri.replace(path: path).replace(queryParameters: query);
 
     final response = await http.get(uri);
+
     final decoded = jsonDecode(response.body);
 
     return factory(decoded) as T;

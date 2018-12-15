@@ -5,7 +5,7 @@ import 'package:nem_block_monitor_app/net/nem/model/block/network_type.dart';
 import 'package:nem_block_monitor_app/net/nem/model/account/public_account.dart';
 import 'package:nem_block_monitor_app/net/nem/model/transaction/transaction_mapping.dart';
 
-part 'package:nem_block_monitor_app/net/nem/model/block/block_dto.g.dart';
+part 'block_dto.g.dart';
 
 @JsonSerializable(createToJson: false)
 class BlockDTO {

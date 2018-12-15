@@ -4,7 +4,7 @@ import 'package:nem_block_monitor_app/net/nem/model/asset/mosaic_levy.dart';
 import 'package:nem_block_monitor_app/net/nem/model/asset/mosaic_levy_type.dart';
 import 'package:nem_block_monitor_app/net/nem/model/account/address.dart';
 
-part 'package:nem_block_monitor_app/net/nem/model/asset/mosaic_levy_dto.g.dart';
+part 'mosaic_levy_dto.g.dart';
 
 @JsonSerializable(createToJson: false)
 class MosaicLevyDTO {

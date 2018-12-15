@@ -1,6 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 
-part 'package:nem_block_monitor_app/net/nem/model/transaction/hash_data_dto.g.dart';
+part 'hash_data_dto.g.dart';
 
 @JsonSerializable(createToJson: false)
 class HashDataDTO {

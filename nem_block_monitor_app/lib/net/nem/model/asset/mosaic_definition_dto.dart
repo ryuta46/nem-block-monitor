@@ -5,7 +5,7 @@ import 'package:nem_block_monitor_app/net/nem/model/asset/mosaic_levy_dto.dart';
 import 'package:nem_block_monitor_app/net/nem/model/account/public_account.dart';
 import 'package:nem_block_monitor_app/net/nem/model/block/network_type.dart';
 
-part 'package:nem_block_monitor_app/net/nem/model/asset/mosaic_definition_dto.g.dart';
+part 'mosaic_definition_dto.g.dart';
 
 @JsonSerializable(createToJson: false)
 class MosaicDefinitionDTO {
