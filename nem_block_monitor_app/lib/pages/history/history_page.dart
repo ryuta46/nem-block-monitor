@@ -6,29 +6,27 @@ import 'package:nem_block_monitor_app/net/nem/model/account/address.dart';
 import 'package:nem_block_monitor_app/net/nem/util/external_launcher.dart';
 import 'package:nem_block_monitor_app/pages/history/history_bloc.dart';
 import 'package:nem_block_monitor_app/preference.dart';
-import 'package:nem_block_monitor_app/repository/firestore_user_data_repository.dart';
 import 'package:nem_block_monitor_app/widgets/notification_tile.dart';
 
 class HistoryPage extends StatefulWidget {
 
   @override
-  _HistoryPageState createState() => _HistoryPageState(
-      HistoryBloc(
-          FirestoreUserDataRepository.instance,
-      ));
+  _HistoryPageState createState() => _HistoryPageState();
 }
 
 class _HistoryPageState extends State<HistoryPage> {
-  final HistoryBloc _bloc;
-
-  _HistoryPageState(this._bloc) {
-    _bloc.onLoaded();
+  @override
+  void initState() {
+    super.initState();
+    final HistoryBloc bloc = BlocProvider.of<HistoryBloc>(context);
+    bloc.onLoaded();
   }
 
   @override
   Widget build(BuildContext context) {
+    final HistoryBloc bloc = BlocProvider.of<HistoryBloc>(context);
     return BlocBuilder<HistoryEvent, HistoryState>(
-        bloc: _bloc,
+        bloc: bloc,
         builder: (BuildContext context, HistoryState state) {
           if (state.isLoading) {
             return Center(child: CircularProgressIndicator());

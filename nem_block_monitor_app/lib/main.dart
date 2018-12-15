@@ -3,7 +3,8 @@ import 'package:firebase_analytics/observer.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:nem_block_monitor_app/pages/history/history_bloc.dart';
 import 'package:nem_block_monitor_app/pages/home_page.dart';
 import 'package:nem_block_monitor_app/preference.dart';
 import 'package:nem_block_monitor_app/repository/firestore_user_data_repository.dart';
@@ -21,25 +22,28 @@ class _AppState extends State<App> {
   static FirebaseAnalyticsObserver observer =
   FirebaseAnalyticsObserver(analytics: analytics);
 
+  final HistoryBloc _historyBloc = HistoryBloc(FirestoreUserDataRepository.instance);
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
   final FirebaseAuth _auth = FirebaseAuth.instance;
   String _token;
   String _userId;
   bool _isLoadingSetting = true;
   bool _isLoadingUserData = true;
-  FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin;
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-        title: 'Firebase Analytics Demo',
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-        ),
-        navigatorObservers: <NavigatorObserver>[observer],
-        home: (_isLoadingSetting || _isLoadingUserData)
-            ? Center( child: CircularProgressIndicator())
-            : HomePage()
+    return BlocProvider<HistoryBloc>(
+        bloc: _historyBloc,
+        child: MaterialApp(
+            title: 'Firebase Analytics Demo',
+            theme: ThemeData(
+              primarySwatch: Colors.blue,
+            ),
+            navigatorObservers: <NavigatorObserver>[observer],
+            home: (_isLoadingSetting || _isLoadingUserData)
+                ? Center( child: CircularProgressIndicator())
+                : HomePage()
+        )
     );
   }
 
@@ -52,7 +56,6 @@ class _AppState extends State<App> {
 
     _loadSetting();
     _setupMessagingCallbacks();
-    _setupLocalNotification();
     _signIn();
   }
 
@@ -72,7 +75,7 @@ class _AppState extends State<App> {
   _setupMessagingCallbacks() {
     _firebaseMessaging.configure(
       onMessage: (Map<String, dynamic> message) async {
-        await _displayLocalNotification(message);
+        _historyBloc.onNeedUpdate();
         print("onMessage: $message");
       },
       onLaunch: (Map<String, dynamic> message) async {
@@ -93,32 +96,6 @@ class _AppState extends State<App> {
       _token = token;
       await _updateUserData();
     });
-  }
-
-  _setupLocalNotification() {
-    final androidSettings = AndroidInitializationSettings('app_icon');
-
-    final iosSettings = IOSInitializationSettings();
-    final settings = InitializationSettings(androidSettings, iosSettings);
-
-    _flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
-    _flutterLocalNotificationsPlugin.initialize(settings,
-        onSelectNotification: _onSelectNotification);
-  }
-
-  Future _onSelectNotification(String payload) async {
-  }
-
-  Future _displayLocalNotification(Map<String, dynamic> message) async {
-    var androidPlatformChannelSpecifics = AndroidNotificationDetails(
-        "com.ttechsoft.nemblockmonitor", "com.ttechsoft.nemblockmonitor", 'block notification',
-        style: AndroidNotificationStyle.BigText,
-        importance: Importance.Max, priority: Priority.High);
-    var iOSPlatformChannelSpecifics = IOSNotificationDetails();
-    var platformChannelSpecifics =  NotificationDetails(
-        androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
-    await _flutterLocalNotificationsPlugin.show(
-        0, message["notification"]["title"], message["notification"]["body"], platformChannelSpecifics);
   }
 
   _signIn() {
@@ -143,6 +120,7 @@ class _AppState extends State<App> {
 
     setState(() {
       _isLoadingUserData = false;
+      _historyBloc.onLoaded();
     });
   }
 
