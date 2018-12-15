@@ -15,10 +15,6 @@ class HomePage extends StatefulWidget {
 
 class _HomeState extends State<HomePage> {
   int _currentIndex = 0;
-  final List<Widget> _children = [
-    BlocksPage(),
-    WatchPage()
-  ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,18 +32,10 @@ class _HomeState extends State<HomePage> {
             icon: Icon(Icons.remove_red_eye),
             title: Text('WATCH'),
           ),
-          //BottomNavigationBarItem(
-          //    icon: Icon(Icons.label),
-          //    title: Text('LABEL')
-          //),
           BottomNavigationBarItem(
             icon: Icon(Icons.history),
             title: Text('HISTORY'),
           ),
-          //BottomNavigationBarItem(
-          //  icon: Icon(Icons.search),
-          //  title: Text('SEARCH'),
-          //),
           BottomNavigationBarItem(
             icon: Icon(Icons.settings),
             title: Text('SETTINGS'),

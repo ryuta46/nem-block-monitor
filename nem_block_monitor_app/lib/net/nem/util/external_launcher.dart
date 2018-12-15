@@ -20,4 +20,9 @@ class ExternalLauncher {
     final url = "http://explorer.nemchina.com/#/mosaic?m=$name&ns=$namespaceId";
     return openUrl(url);
   }
+
+  static openExplorerOfHash(String hash) async{
+    final url = "http://explorer.nemchina.com/#/s_tx?hash=$hash";
+    return openUrl(url);
+  }
 }
