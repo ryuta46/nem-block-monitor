@@ -36,18 +36,18 @@ class _HomeState extends State<HomePage> {
             icon: Icon(Icons.remove_red_eye),
             title: Text('WATCH'),
           ),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.label),
-              title: Text('LABEL')
-          ),
+          //BottomNavigationBarItem(
+          //    icon: Icon(Icons.label),
+          //    title: Text('LABEL')
+          //),
           BottomNavigationBarItem(
             icon: Icon(Icons.history),
             title: Text('HISTORY'),
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.search),
-            title: Text('SEARCH'),
-          ),
+          //BottomNavigationBarItem(
+          //  icon: Icon(Icons.search),
+          //  title: Text('SEARCH'),
+          //),
           BottomNavigationBarItem(
             icon: Icon(Icons.settings),
             title: Text('SETTINGS'),
@@ -60,9 +60,9 @@ class _HomeState extends State<HomePage> {
   Widget _getChild(int childIndex) {
     switch(childIndex) {
       case 0: return WatchPage();
-      case 1: return LabelPage();
-      case 2: return HistoryPage();
-      case 4: return SettingPage();
+      //case 1: return LabelPage();
+      case 1: return HistoryPage();
+      case 2: return SettingPage();
       default: return BlocksPage();
     }
   }

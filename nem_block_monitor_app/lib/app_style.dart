@@ -11,4 +11,6 @@ class AppStyle {
   static final textWhite = TextStyle(fontSize: 14.0, color: Colors.white);
 
   static final colorGreen = Colors.green;
+
+  static final colorAccent = Colors.blue;
 }

@@ -43,8 +43,6 @@ class _WatchPageState extends State<WatchPage> {
             ..add(_WatchListHeader("Assets"))
             ..addAll(state.assets.map((assetEntry) =>
                 _WatchAssetItem(assetEntry.assetFullName, assetEntry.enables)));
-            //..add(WatchListHeader("Harvests"))
-            //..addAll(state.harvests.map((harvest) => WatchHarvestItem(harvest)));
 
           return Scaffold(
             body: ListView.builder(
@@ -66,35 +64,32 @@ class _WatchPageState extends State<WatchPage> {
                     );
                   }
                   else if (item is _WatchAddressItem){
-                    return ListTile(
-                        title: Text(Address(item.title).pretty),
-                        leading: IconButton(
-                            icon: Icon(item.enables ? Icons.notifications_active : Icons.notifications_off),
-                            onPressed: () => _bloc.enableAddress(item.title, !item.enables)),
-                        trailing: IconButton(
-                          icon: Icon(Icons.delete),
-                          onPressed: () => _showRemoveAddressDialog(context, item.title),
+                    final leading = Icon(item.enables ? Icons.notifications_active : Icons.notifications_off);
+                    final onTap = () => _showEditAddressDialog(context, item.title, item.label, item.enables);
+
+                    if (item.label.isNotEmpty) {
+                      return ListTile(
+                        title: Container(
+                          child: Text(item.label),
+                          margin: EdgeInsets.only(bottom: 8),
                         ),
-                        onTap: () => ExternalLauncher.openExplorerOfAddress(Address(item.title))
-                    );
+                        subtitle: Text(Address(item.title).pretty),
+                        leading: leading,
+                        onTap: onTap,
+                      );
+                    } else {
+                      return ListTile(
+                        title: Text(Address(item.title).pretty),
+                        leading: leading,
+                        onTap: onTap,
+                      );
+                    }
                   }
                   else if (item is _WatchAssetItem){
                     return ListTile(
                         title: Text(item.title),
-                        leading: IconButton(
-                            icon: Icon(item.enables ? Icons.notifications_active : Icons.notifications_off),
-                            onPressed: () => _bloc.enableAsset(item.title, !item.enables)),
-                        trailing: IconButton(
-                          icon: Icon(Icons.delete),
-                          onPressed: () => _showRemoveAssetDialog(context, item.title),
-                        ),
-                        onTap: () {
-                          final elements = item.title.split(":");
-                          if (elements.length == 2) {
-                            ExternalLauncher.openExplorerOfAsset(
-                                elements[0], elements[1]);
-                          }
-                        }
+                        leading: Icon(item.enables ? Icons.notifications_active : Icons.notifications_off),
+                        onTap: () => _showEditAssetDialog(context, item.title, item.enables)
                     );
                   }
                   else {
@@ -201,6 +196,44 @@ class _WatchPageState extends State<WatchPage> {
     });
   }
 
+  void _showEditAddressDialog(BuildContext context, String address, String label, bool enables) {
+    final buttonStyle = TextStyle(color: AppStyle.colorAccent, fontSize: 18);
+    final List<_EditAction> actions = [
+      _EditAction("Edit Label", () => _showEditLabelDialog(context, address, label)),
+      _EditAction("View on Explorer", () => ExternalLauncher.openExplorerOfAddress(Address(address))),
+      _EditAction((enables ? "Disable" : "Enable") + " Notification", () => _bloc.enableAddress(address, !enables)),
+      _EditAction("Remove", () => _showRemoveAddressDialog(context, address)),
+    ];
+    showDialog(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        content: ButtonTheme(
+          padding: EdgeInsets.all(0),
+          child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children:
+              actions.map((action) =>
+                  InkWell(
+                      child: Container(
+                        alignment: Alignment.center,
+                        child: Text(action.text, style: buttonStyle),
+                        padding: EdgeInsets.all(8.0),
+                      ),
+                      onTap: () {
+                        Navigator.pop(context, null);
+                        action.action();
+                      }
+                  ),
+              ).toList(),
+          ),
+        ),
+      )
+    ).then<void>((value) {
+    });
+  }
+
+
   void _showRemoveAddressDialog(BuildContext context, String address) {
     showDialog(
       context: context,
@@ -299,6 +332,84 @@ class _WatchPageState extends State<WatchPage> {
       _bloc.removeAsset(asset);
     });
   }
+
+  void _showEditAssetDialog(BuildContext context, String assetFullName, bool enables) {
+    final buttonStyle = TextStyle(color: AppStyle.colorAccent, fontSize: 18);
+    final List<_EditAction> actions = [
+      _EditAction("View on Explorer", () {
+        final elements = assetFullName.split(":");
+        if (elements.length == 2) {
+          ExternalLauncher.openExplorerOfAsset(
+              elements[0], elements[1]);
+        }
+      }),
+      _EditAction((enables ? "Disable" : "Enable") + " Notification", () => _bloc.enableAsset(assetFullName, !enables)),
+      _EditAction("Remove", () => _showRemoveAssetDialog(context, assetFullName)),
+    ];
+    showDialog(
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+          content: ButtonTheme(
+            padding: EdgeInsets.all(0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children:
+              actions.map((action) =>
+                  InkWell(
+                      child: Container(
+                        alignment: Alignment.center,
+                        child: Text(action.text, style: buttonStyle),
+                        padding: EdgeInsets.all(8.0),
+                      ),
+                      onTap: () {
+                        Navigator.pop(context, null);
+                        action.action();
+                      }
+                  ),
+              ).toList(),
+            ),
+          ),
+        )
+    ).then<void>((value) {
+    });
+  }
+
+  void _showEditLabelDialog(BuildContext context, String address, String label) {
+    final inputTextLabel = TextEditingController();
+    inputTextLabel.text = label;
+    showDialog(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        title: Text("Label Edit"),
+        content: TextField(
+          controller: inputTextLabel,
+          decoration: InputDecoration(
+              labelText: "Label for ${Address(address).pretty}",
+              hintText: "eg. My wallet"
+          ),
+        ),
+        actions: <Widget>[
+          FlatButton(
+              child: const Text('CANCEL'),
+              onPressed: () => Navigator.pop(context, null)
+          ),
+
+          FlatButton(
+              child: const Text('OK'),
+              onPressed: () {
+                Navigator.pop(context, inputTextLabel.text);
+              })
+        ],
+      ),
+    ).then<void>((value) {
+      if (value == null) {
+        return;
+      }
+      _bloc.editLabel(address, value);
+    });
+  }
+
 }
 
 class _WatchListItem {
@@ -319,4 +430,13 @@ class _WatchAssetItem extends _WatchListItem{
 
 class _WatchListHeader extends _WatchListItem {
   _WatchListHeader(String title): super(title);
+}
+
+
+class _EditAction {
+  final String text;
+  final Function action;
+
+  _EditAction(this.text, this.action);
+
 }

@@ -88,6 +88,13 @@ class WatchEnableAssetEvent extends WatchEvent {
   WatchEnableAssetEvent(this.asset, this.enables);
 }
 
+class WatchEditLabelEvent extends WatchEvent {
+  final String address;
+  final String label;
+
+  WatchEditLabelEvent(this.address, this.label);
+}
+
 
 class WatchBloc extends Bloc<WatchEvent, WatchState> {
 
@@ -126,6 +133,9 @@ class WatchBloc extends Bloc<WatchEvent, WatchState> {
 
   void enableAsset(String asset, bool enables) {
     dispatch(WatchEnableAssetEvent(asset, enables));
+  }
+  void editLabel(String address, String label) {
+    dispatch(WatchEditLabelEvent(address, label));
   }
 
   Future<WatchState> _getSuccessEvent() async{
@@ -174,6 +184,13 @@ class WatchBloc extends Bloc<WatchEvent, WatchState> {
     }
     else if (event is WatchEnableAssetEvent) {
       await repository.enableWatchAsset(event.asset, event.enables);
+    }
+    else if (event is WatchEditLabelEvent) {
+      if (event.label.isNotEmpty) {
+        await repository.addLabel(event.address, event.label);
+      } else {
+        await repository.removeLabel(event.address);
+      }
     }
     yield await _getSuccessEvent();
   }
