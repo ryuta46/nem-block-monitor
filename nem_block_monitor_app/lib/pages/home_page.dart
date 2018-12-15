@@ -5,6 +5,7 @@ import 'package:nem_block_monitor_app/pages/history/history_page.dart';
 import 'package:nem_block_monitor_app/pages/label/label_page.dart';
 import 'package:nem_block_monitor_app/pages/setting/setting_page.dart';
 import 'package:nem_block_monitor_app/pages/watch/watch_page.dart';
+import 'package:nem_block_monitor_app/preference.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -19,7 +20,7 @@ class _HomeState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('My Flutter App'),
+        title: Text(_getTitle(_currentIndex)),
       ),
       body: _getChild(_currentIndex),
       bottomNavigationBar: BottomNavigationBar(
@@ -48,12 +49,23 @@ class _HomeState extends State<HomePage> {
   Widget _getChild(int childIndex) {
     switch(childIndex) {
       case 0: return WatchPage();
-      //case 1: return LabelPage();
+    //case 1: return LabelPage();
       case 1: return HistoryPage();
       case 2: return SettingPage();
       default: return BlocksPage();
     }
   }
+
+  String _getTitle(int childIndex) {
+    final network = Preference.instance.network;
+    switch(childIndex) {
+      case 0: return "Watch List ($network)";
+      case 1: return "Notification History";
+      case 2: return "Settings";
+      default: return "";
+    }
+  }
+
 
   void onTabTapped(int index) {
     setState(() {
