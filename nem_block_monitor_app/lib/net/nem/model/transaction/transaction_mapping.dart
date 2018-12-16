@@ -149,7 +149,7 @@ class TransactionMapping {
   static Future<TransferTransaction> getTransfer(Transaction base, Map<String, dynamic> dict) async {
     final messageDict = dict["message"] as Map<String, dynamic>;
     Message message;
-    if (messageDict == null) {
+    if (!messageDict.containsKey("type") || !messageDict.containsKey("payload")) {
       message = null;
     } else {
       message = Message(
