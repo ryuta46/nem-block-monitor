@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nem_block_monitor_app/net/nem/account_http.dart';
-import 'package:nem_block_monitor_app/net/nem/model/account/address.dart';
-import 'package:nem_block_monitor_app/net/nem/util/external_launcher.dart';
 import 'package:nem_block_monitor_app/pages/history/history_bloc.dart';
+import 'package:nem_block_monitor_app/pages/transaction/transaction_page.dart';
 import 'package:nem_block_monitor_app/preference.dart';
 import 'package:nem_block_monitor_app/widgets/notification_tile.dart';
 
@@ -46,64 +45,21 @@ class _HistoryPageState extends State<HistoryPage> {
 
                   return InkWell(
                     child: NotificationTile(notification: item),
-                    onTap: () => _showOpenHashDialog(context, item.network, item.sender, item.signature),
-                    );
+                    onTap: () {
+                      final uri =  Uri.parse(Preference.instance.getNode(item.network));
+                      final AccountHttp accountHttp = AccountHttp(uri);
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => TransactionPage(
+                              accountHttp: accountHttp, notification: item)
+                          )
+                      );
+                  });
                 }
             ),
           );
         });
   }
-
-
-  void _showOpenHashDialog(BuildContext context, String network, Address sender, String signature) {
-    bool isDialogOpened = true;
-    showDialog(
-      context: context,
-      barrierDismissible: true,
-      builder: (BuildContext context) => AlertDialog(
-        title: Text("Searching hash"),
-        content: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[CircularProgressIndicator()],
-        )
-      ),
-    ).then<void>((value) {
-      isDialogOpened = false;
-      if (value == null) {
-        return;
-      }
-    });
-
-    final uri =  Uri.parse(Preference.instance.getNode(network));
-    final AccountHttp accountHttp = AccountHttp(uri);
-
-    searchHash(accountHttp, sender, signature).then((hash) {
-      if (isDialogOpened) {
-        ExternalLauncher.openExplorerOfHash(hash);
-        isDialogOpened = false;
-        Navigator.pop(context, null);
-      }
-    });
-  }
-
-  Future<String> searchHash(AccountHttp accountHttp, Address sender, String signature) async {
-    int id = -1;
-    while(true) {
-      final transactions = await accountHttp.getOutgoingTransactions(sender, id: id);
-
-      for (var transaction in transactions) {
-        if (transaction.transaction.signature == signature) {
-          return transaction.meta.hash;
-        }
-      }
-
-      if (transactions.isEmpty) {
-        return null;
-      }
-      id = transactions.last.meta.id;
-    }
-  }
-
 }
 
 
