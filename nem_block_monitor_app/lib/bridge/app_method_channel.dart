@@ -3,7 +3,7 @@
 import 'package:flutter/services.dart';
 import 'package:nem_block_monitor_app/net/nem/model/block/network_type.dart';
 
-class NemMethodChannel {
+class AppMethodChannel {
   static const platform = const MethodChannel('nemblockmonitorapp.ttechsoft.com/nem');
 
 
@@ -16,5 +16,9 @@ class NemMethodChannel {
     } on PlatformException catch(e) {
       return "";
     }
+  }
+
+  static Future<void> toOssLicense() {
+    return platform.invokeMethod('toOssLicense', {});
   }
 }

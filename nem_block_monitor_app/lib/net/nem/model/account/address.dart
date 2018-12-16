@@ -1,5 +1,5 @@
 
-import 'package:nem_block_monitor_app/bridge/nem_method_channel.dart';
+import 'package:nem_block_monitor_app/bridge/app_method_channel.dart';
 import 'package:nem_block_monitor_app/net/nem/model/block/network_type.dart';
 
 class Address {
@@ -21,7 +21,7 @@ class Address {
         networkType = Address._checkNetworkType(address);
 
   static Future<Address> fromPublicKey(String publicKey, NetworkType networkType) async {
-    final address = await NemMethodChannel.calculateAddress(publicKey, networkType);
+    final address = await AppMethodChannel.calculateAddress(publicKey, networkType);
     return Address(address);
   }
 

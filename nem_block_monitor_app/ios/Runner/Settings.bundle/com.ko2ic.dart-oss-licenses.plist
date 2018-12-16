@@ -1,0 +1,693 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>PreferenceSpecifiers</key>
+	<array>
+		<dict>
+			<key>File</key>
+			<string>com.ko2ic.dart-oss-licenses/rational</string>
+			<key>Title</key>
+			<string>rational</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+
+		<dict>
+			<key>File</key>
+			<string>com.ko2ic.dart-oss-licenses/built_value</string>
+			<key>Title</key>
+			<string>built_value</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+
+		<dict>
+			<key>File</key>
+			<string>com.ko2ic.dart-oss-licenses/web_socket_channel</string>
+			<key>Title</key>
+			<string>web_socket_channel</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+
+		<dict>
+			<key>File</key>
+			<string>com.ko2ic.dart-oss-licenses/meta</string>
+			<key>Title</key>
+			<string>meta</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+
+		<dict>
+			<key>File</key>
+			<string>com.ko2ic.dart-oss-licenses/json_serializable</string>
+			<key>Title</key>
+			<string>json_serializable</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+
+		<dict>
+			<key>File</key>
+			<string>com.ko2ic.dart-oss-licenses/matcher</string>
+			<key>Title</key>
+			<string>matcher</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+
+		<dict>
+			<key>File</key>
+			<string>com.ko2ic.dart-oss-licenses/firebase_analytics</string>
+			<key>Title</key>
+			<string>firebase_analytics</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+
+		<dict>
+			<key>File</key>
+			<string>com.ko2ic.dart-oss-licenses/url_launcher</string>
+			<key>Title</key>
+			<string>url_launcher</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+
+		<dict>
+			<key>File</key>
+			<string>com.ko2ic.dart-oss-licenses/build_runner_core</string>
+			<key>Title</key>
+			<string>build_runner_core</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+
+		<dict>
+			<key>File</key>
+			<string>com.ko2ic.dart-oss-licenses/boolean_selector</string>
+			<key>Title</key>
+			<string>boolean_selector</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+
+		<dict>
+			<key>File</key>
+			<string>com.ko2ic.dart-oss-licenses/cupertino_icons</string>
+			<key>Title</key>
+			<string>cupertino_icons</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+
+		<dict>
+			<key>File</key>
+			<string>com.ko2ic.dart-oss-licenses/mime</string>
+			<key>Title</key>
+			<string>mime</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+
+		<dict>
+			<key>File</key>
+			<string>com.ko2ic.dart-oss-licenses/code_builder</string>
+			<key>Title</key>
+			<string>code_builder</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+
+		<dict>
+			<key>File</key>
+			<string>com.ko2ic.dart-oss-licenses/watcher</string>
+			<key>Title</key>
+			<string>watcher</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+
+		<dict>
+			<key>File</key>
+			<string>com.ko2ic.dart-oss-licenses/quiver</string>
+			<key>Title</key>
+			<string>quiver</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+
+		<dict>
+			<key>File</key>
+			<string>com.ko2ic.dart-oss-licenses/package_config</string>
+			<key>Title</key>
+			<string>package_config</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+
+		<dict>
+			<key>File</key>
+			<string>com.ko2ic.dart-oss-licenses/collection</string>
+			<key>Title</key>
+			<string>collection</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+
+		<dict>
+			<key>File</key>
+			<string>com.ko2ic.dart-oss-licenses/firebase_messaging</string>
+			<key>Title</key>
+			<string>firebase_messaging</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+
+		<dict>
+			<key>File</key>
+			<string>com.ko2ic.dart-oss-licenses/bloc</string>
+			<key>Title</key>
+			<string>bloc</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+
+		<dict>
+			<key>File</key>
+			<string>com.ko2ic.dart-oss-licenses/html</string>
+			<key>Title</key>
+			<string>html</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+
+		<dict>
+			<key>File</key>
+			<string>com.ko2ic.dart-oss-licenses/kernel</string>
+			<key>Title</key>
+			<string>kernel</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+
+		<dict>
+			<key>File</key>
+			<string>com.ko2ic.dart-oss-licenses/pool</string>
+			<key>Title</key>
+			<string>pool</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+
+		<dict>
+			<key>File</key>
+			<string>com.ko2ic.dart-oss-licenses/platform</string>
+			<key>Title</key>
+			<string>platform</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+
+		<dict>
+			<key>File</key>
+			<string>com.ko2ic.dart-oss-licenses/glob</string>
+			<key>Title</key>
+			<string>glob</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+
+		<dict>
+			<key>File</key>
+			<string>com.ko2ic.dart-oss-licenses/shared_preferences</string>
+			<key>Title</key>
+			<string>shared_preferences</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+
+		<dict>
+			<key>File</key>
+			<string>com.ko2ic.dart-oss-licenses/pubspec_parse</string>
+			<key>Title</key>
+			<string>pubspec_parse</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+
+		<dict>
+			<key>File</key>
+			<string>com.ko2ic.dart-oss-licenses/pub_semver</string>
+			<key>Title</key>
+			<string>pub_semver</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+
+		<dict>
+			<key>File</key>
+			<string>com.ko2ic.dart-oss-licenses/source_gen</string>
+			<key>Title</key>
+			<string>source_gen</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+
+		<dict>
+			<key>File</key>
+			<string>com.ko2ic.dart-oss-licenses/intl</string>
+			<key>Title</key>
+			<string>intl</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+
+		<dict>
+			<key>File</key>
+			<string>com.ko2ic.dart-oss-licenses/path</string>
+			<key>Title</key>
+			<string>path</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+
+		<dict>
+			<key>File</key>
+			<string>com.ko2ic.dart-oss-licenses/build</string>
+			<key>Title</key>
+			<string>build</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+
+		<dict>
+			<key>File</key>
+			<string>com.ko2ic.dart-oss-licenses/http_parser</string>
+			<key>Title</key>
+			<string>http_parser</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+
+		<dict>
+			<key>File</key>
+			<string>com.ko2ic.dart-oss-licenses/test_api</string>
+			<key>Title</key>
+			<string>test_api</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+
+		<dict>
+			<key>File</key>
+			<string>com.ko2ic.dart-oss-licenses/vector_math</string>
+			<key>Title</key>
+			<string>vector_math</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+
+		<dict>
+			<key>File</key>
+			<string>com.ko2ic.dart-oss-licenses/http_multi_server</string>
+			<key>Title</key>
+			<string>http_multi_server</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+
+		<dict>
+			<key>File</key>
+			<string>com.ko2ic.dart-oss-licenses/decimal</string>
+			<key>Title</key>
+			<string>decimal</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+
+		<dict>
+			<key>File</key>
+			<string>com.ko2ic.dart-oss-licenses/analyzer</string>
+			<key>Title</key>
+			<string>analyzer</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+
+		<dict>
+			<key>File</key>
+			<string>com.ko2ic.dart-oss-licenses/dart_style</string>
+			<key>Title</key>
+			<string>dart_style</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+
+		<dict>
+			<key>File</key>
+			<string>com.ko2ic.dart-oss-licenses/flutter_bloc</string>
+			<key>Title</key>
+			<string>flutter_bloc</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+
+		<dict>
+			<key>File</key>
+			<string>com.ko2ic.dart-oss-licenses/cloud_firestore</string>
+			<key>Title</key>
+			<string>cloud_firestore</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+
+		<dict>
+			<key>File</key>
+			<string>com.ko2ic.dart-oss-licenses/async</string>
+			<key>Title</key>
+			<string>async</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+
+		<dict>
+			<key>File</key>
+			<string>com.ko2ic.dart-oss-licenses/firebase_core</string>
+			<key>Title</key>
+			<string>firebase_core</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+
+		<dict>
+			<key>File</key>
+			<string>com.ko2ic.dart-oss-licenses/build_config</string>
+			<key>Title</key>
+			<string>build_config</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+
+		<dict>
+			<key>File</key>
+			<string>com.ko2ic.dart-oss-licenses/firebase_auth</string>
+			<key>Title</key>
+			<string>firebase_auth</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+
+		<dict>
+			<key>File</key>
+			<string>com.ko2ic.dart-oss-licenses/charcode</string>
+			<key>Title</key>
+			<string>charcode</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+
+		<dict>
+			<key>File</key>
+			<string>com.ko2ic.dart-oss-licenses/http</string>
+			<key>Title</key>
+			<string>http</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+
+		<dict>
+			<key>File</key>
+			<string>com.ko2ic.dart-oss-licenses/json_annotation</string>
+			<key>Title</key>
+			<string>json_annotation</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+
+		<dict>
+			<key>File</key>
+			<string>com.ko2ic.dart-oss-licenses/io</string>
+			<key>Title</key>
+			<string>io</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+
+		<dict>
+			<key>File</key>
+			<string>com.ko2ic.dart-oss-licenses/shelf_web_socket</string>
+			<key>Title</key>
+			<string>shelf_web_socket</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+
+		<dict>
+			<key>File</key>
+			<string>com.ko2ic.dart-oss-licenses/pedantic</string>
+			<key>Title</key>
+			<string>pedantic</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+
+		<dict>
+			<key>File</key>
+			<string>com.ko2ic.dart-oss-licenses/built_collection</string>
+			<key>Title</key>
+			<string>built_collection</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+
+		<dict>
+			<key>File</key>
+			<string>com.ko2ic.dart-oss-licenses/flutter_local_notifications</string>
+			<key>Title</key>
+			<string>flutter_local_notifications</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+
+		<dict>
+			<key>File</key>
+			<string>com.ko2ic.dart-oss-licenses/term_glyph</string>
+			<key>Title</key>
+			<string>term_glyph</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+
+		<dict>
+			<key>File</key>
+			<string>com.ko2ic.dart-oss-licenses/stream_channel</string>
+			<key>Title</key>
+			<string>stream_channel</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+
+		<dict>
+			<key>File</key>
+			<string>com.ko2ic.dart-oss-licenses/utf</string>
+			<key>Title</key>
+			<string>utf</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+
+		<dict>
+			<key>File</key>
+			<string>com.ko2ic.dart-oss-licenses/source_span</string>
+			<key>Title</key>
+			<string>source_span</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+
+		<dict>
+			<key>File</key>
+			<string>com.ko2ic.dart-oss-licenses/shelf</string>
+			<key>Title</key>
+			<string>shelf</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+
+		<dict>
+			<key>File</key>
+			<string>com.ko2ic.dart-oss-licenses/string_scanner</string>
+			<key>Title</key>
+			<string>string_scanner</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+
+		<dict>
+			<key>File</key>
+			<string>com.ko2ic.dart-oss-licenses/js</string>
+			<key>Title</key>
+			<string>js</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+
+		<dict>
+			<key>File</key>
+			<string>com.ko2ic.dart-oss-licenses/front_end</string>
+			<key>Title</key>
+			<string>front_end</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+
+		<dict>
+			<key>File</key>
+			<string>com.ko2ic.dart-oss-licenses/args</string>
+			<key>Title</key>
+			<string>args</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+
+		<dict>
+			<key>File</key>
+			<string>com.ko2ic.dart-oss-licenses/typed_data</string>
+			<key>Title</key>
+			<string>typed_data</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+
+		<dict>
+			<key>File</key>
+			<string>com.ko2ic.dart-oss-licenses/rxdart</string>
+			<key>Title</key>
+			<string>rxdart</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+
+		<dict>
+			<key>File</key>
+			<string>com.ko2ic.dart-oss-licenses/crypto</string>
+			<key>Title</key>
+			<string>crypto</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+
+		<dict>
+			<key>File</key>
+			<string>com.ko2ic.dart-oss-licenses/build_resolvers</string>
+			<key>Title</key>
+			<string>build_resolvers</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+
+		<dict>
+			<key>File</key>
+			<string>com.ko2ic.dart-oss-licenses/csslib</string>
+			<key>Title</key>
+			<string>csslib</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+
+		<dict>
+			<key>File</key>
+			<string>com.ko2ic.dart-oss-licenses/stack_trace</string>
+			<key>Title</key>
+			<string>stack_trace</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+
+		<dict>
+			<key>File</key>
+			<string>com.ko2ic.dart-oss-licenses/plugin</string>
+			<key>Title</key>
+			<string>plugin</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+
+		<dict>
+			<key>File</key>
+			<string>com.ko2ic.dart-oss-licenses/convert</string>
+			<key>Title</key>
+			<string>convert</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+
+		<dict>
+			<key>File</key>
+			<string>com.ko2ic.dart-oss-licenses/build_runner</string>
+			<key>Title</key>
+			<string>build_runner</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+
+		<dict>
+			<key>File</key>
+			<string>com.ko2ic.dart-oss-licenses/fixnum</string>
+			<key>Title</key>
+			<string>fixnum</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+
+		<dict>
+			<key>File</key>
+			<string>com.ko2ic.dart-oss-licenses/stream_transform</string>
+			<key>Title</key>
+			<string>stream_transform</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+
+		<dict>
+			<key>File</key>
+			<string>com.ko2ic.dart-oss-licenses/timing</string>
+			<key>Title</key>
+			<string>timing</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+
+		<dict>
+			<key>File</key>
+			<string>com.ko2ic.dart-oss-licenses/graphs</string>
+			<key>Title</key>
+			<string>graphs</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+
+		<dict>
+			<key>File</key>
+			<string>com.ko2ic.dart-oss-licenses/logging</string>
+			<key>Title</key>
+			<string>logging</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+
+		<dict>
+			<key>File</key>
+			<string>com.ko2ic.dart-oss-licenses/yaml</string>
+			<key>Title</key>
+			<string>yaml</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+	
+	</array>
+</dict>
+</plist>

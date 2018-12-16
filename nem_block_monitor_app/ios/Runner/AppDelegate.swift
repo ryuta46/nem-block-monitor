@@ -27,6 +27,14 @@ import NemSwift
                 result(address.value)
                 return
             }
+        case "toOssLicense":
+            if let url = URL(string: UIApplicationOpenSettingsURLString) {
+                if #available(iOS 10.0, *) {
+                    UIApplication.shared.open(url, options: [:], completionHandler: nil)
+                } else {
+                    UIApplication.shared.openURL(url)
+                }
+            }
         default:
             result(FlutterMethodNotImplemented)
             break

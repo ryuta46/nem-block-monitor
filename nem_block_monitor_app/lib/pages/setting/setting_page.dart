@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nem_block_monitor_app/bridge/app_method_channel.dart';
 import 'package:nem_block_monitor_app/preference.dart';
 
 class SettingPage extends StatefulWidget {
@@ -29,6 +30,11 @@ class _SettingPageState extends State<SettingPage> {
       title: Text("node"),
       subtitle: Text(_preference.node),
       onTap: () => _showNodeSelectDialog(context),
+    ));
+
+    items.add(ListTile(
+      title: Text("Licenses"),
+      onTap: () async => await AppMethodChannel.toOssLicense(),
     ));
 
     return Container(

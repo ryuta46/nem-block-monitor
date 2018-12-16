@@ -1,0 +1,1155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- rational -->
+    <string name="define_int_rational">year;owner</string>
+    <string name="library_rational_author">Alexandre Ardhuin</string>
+    <string name="library_rational_libraryName">rational</string>
+    <string name="library_rational_libraryDescription">The rational package allows you to deal with rational numbers</string>
+    <string name="library_rational_libraryWebsite">
+    https://github.com/a14n/dart-rational
+    </string>
+    <string name="library_rational_isOpenSource">true</string>
+    <string name="library_rational_repositoryLink">https://github.com/a14n/dart-rational</string>
+    <string name="library_rational_licenseId">apache_2_0</string>
+    <!-- Custom variables section -->
+    <string name="library_rational_year">TODO</string>
+    <string name="library_rational_owner">Alexandre Ardhuin</string>
+
+    <!-- built_value -->
+    <string name="define_int_built_value">year;owner</string>
+    <string name="library_built_value_author">David Morgan</string>
+    <string name="library_built_value_libraryName">built_value</string>
+    <string name="library_built_value_libraryDescription">Value types with builders, Dart classes as enums, and serialization. This library is the runtime dependency.
+</string>
+    <string name="library_built_value_libraryWebsite">
+    https://github.com/google/built_value.dart
+    </string>
+    <string name="library_built_value_isOpenSource">true</string>
+    <string name="library_built_value_repositoryLink">https://github.com/google/built_value.dart</string>
+    <string name="library_built_value_licenseId">bsd_3</string>
+    <!-- Custom variables section -->
+    <string name="library_built_value_year">2015</string>
+    <string name="library_built_value_owner">Google Inc</string>
+
+    <!-- web_socket_channel -->
+    <string name="define_int_web_socket_channel">year;owner</string>
+    <string name="library_web_socket_channel_author">Dart Team</string>
+    <string name="library_web_socket_channel_libraryName">web_socket_channel</string>
+    <string name="library_web_socket_channel_libraryDescription">StreamChannel wrappers for WebSockets.</string>
+    <string name="library_web_socket_channel_libraryWebsite">
+    https://github.com/dart-lang/web_socket_channel
+    </string>
+    <string name="library_web_socket_channel_isOpenSource">true</string>
+    <string name="library_web_socket_channel_repositoryLink">https://github.com/dart-lang/web_socket_channel</string>
+    <string name="library_web_socket_channel_licenseId">bsd_3</string>
+    <!-- Custom variables section -->
+    <string name="library_web_socket_channel_year">2016</string>
+    <string name="library_web_socket_channel_owner">the Dart project authors</string>
+
+    <!-- meta -->
+    <string name="define_int_meta">year;owner</string>
+    <string name="library_meta_author">Dart Team</string>
+    <string name="library_meta_libraryName">meta</string>
+    <string name="library_meta_libraryDescription">This library contains the definitions of annotations that provide additional semantic information about the program being annotated. These annotations are intended to be used by tools to provide a better user experience.
+</string>
+    <string name="library_meta_libraryWebsite">
+    https://github.com/dart-lang/sdk/tree/master/pkg/meta
+    </string>
+    <string name="library_meta_isOpenSource">true</string>
+    <string name="library_meta_repositoryLink">https://github.com/dart-lang/sdk</string>
+    <string name="library_meta_licenseId">bsd_3</string>
+    <!-- Custom variables section -->
+    <string name="library_meta_year">2016</string>
+    <string name="library_meta_owner">the Dart project authors</string>
+
+    <!-- json_serializable -->
+    <string name="define_int_json_serializable">year;owner</string>
+    <string name="library_json_serializable_author">Dart Team</string>
+    <string name="library_json_serializable_libraryName">json_serializable</string>
+    <string name="library_json_serializable_libraryDescription">Generates utilities to aid in serializing to/from JSON.</string>
+    <string name="library_json_serializable_libraryWebsite">
+    https://github.com/dart-lang/json_serializable
+    </string>
+    <string name="library_json_serializable_isOpenSource">true</string>
+    <string name="library_json_serializable_repositoryLink">https://github.com/dart-lang/json_serializable</string>
+    <string name="library_json_serializable_licenseId">bsd_3</string>
+    <!-- Custom variables section -->
+    <string name="library_json_serializable_year">2017</string>
+    <string name="library_json_serializable_owner">the Dart project authors</string>
+
+    <!-- matcher -->
+    <string name="define_int_matcher">year;owner</string>
+    <string name="library_matcher_author">Dart Team</string>
+    <string name="library_matcher_libraryName">matcher</string>
+    <string name="library_matcher_libraryDescription">Support for specifying test expectations</string>
+    <string name="library_matcher_libraryWebsite">
+    https://github.com/dart-lang/matcher
+    </string>
+    <string name="library_matcher_isOpenSource">true</string>
+    <string name="library_matcher_repositoryLink">https://github.com/dart-lang/matcher</string>
+    <string name="library_matcher_licenseId">bsd_3</string>
+    <!-- Custom variables section -->
+    <string name="library_matcher_year">2014</string>
+    <string name="library_matcher_owner">the Dart project authors</string>
+
+    <!-- firebase_analytics -->
+    <string name="define_int_firebase_analytics">year;owner</string>
+    <string name="library_firebase_analytics_author">Flutter Team</string>
+    <string name="library_firebase_analytics_libraryName">firebase_analytics</string>
+    <string name="library_firebase_analytics_libraryDescription">Flutter plugin for Google Analytics for Firebase, an app measurement solution that provides insight on app usage and user engagement on Android and iOS.</string>
+    <string name="library_firebase_analytics_libraryWebsite">
+    https://github.com/flutter/plugins/tree/master/packages/firebase_analytics
+    </string>
+    <string name="library_firebase_analytics_isOpenSource">true</string>
+    <string name="library_firebase_analytics_repositoryLink">https://github.com/flutter/plugins</string>
+    <string name="library_firebase_analytics_licenseId">bsd_3</string>
+    <!-- Custom variables section -->
+    <string name="library_firebase_analytics_year">2017</string>
+    <string name="library_firebase_analytics_owner">The Chromium Authors</string>
+
+    <!-- url_launcher -->
+    <string name="define_int_url_launcher">year;owner</string>
+    <string name="library_url_launcher_author">Flutter Team</string>
+    <string name="library_url_launcher_libraryName">url_launcher</string>
+    <string name="library_url_launcher_libraryDescription">Flutter plugin for launching a URL on Android and iOS. Supports web, phone, SMS, and email schemes.</string>
+    <string name="library_url_launcher_libraryWebsite">
+    https://github.com/flutter/plugins/tree/master/packages/url_launcher
+    </string>
+    <string name="library_url_launcher_isOpenSource">true</string>
+    <string name="library_url_launcher_repositoryLink">https://github.com/flutter/plugins</string>
+    <string name="library_url_launcher_licenseId">bsd_3</string>
+    <!-- Custom variables section -->
+    <string name="library_url_launcher_year">2017</string>
+    <string name="library_url_launcher_owner">The Chromium Authors</string>
+
+    <!-- build_runner_core -->
+    <string name="define_int_build_runner_core">year;owner</string>
+    <string name="library_build_runner_core_author">Dart Team</string>
+    <string name="library_build_runner_core_libraryName">build_runner_core</string>
+    <string name="library_build_runner_core_libraryDescription">Core tools to write binaries that run builders.</string>
+    <string name="library_build_runner_core_libraryWebsite">
+    https://github.com/dart-lang/build/tree/master/build_runner_core
+    </string>
+    <string name="library_build_runner_core_isOpenSource">true</string>
+    <string name="library_build_runner_core_repositoryLink">https://github.com/dart-lang/build</string>
+    <string name="library_build_runner_core_licenseId">bsd_3</string>
+    <!-- Custom variables section -->
+    <string name="library_build_runner_core_year">2018</string>
+    <string name="library_build_runner_core_owner">the Dart project authors</string>
+
+    <!-- boolean_selector -->
+    <string name="define_int_boolean_selector">year;owner</string>
+    <string name="library_boolean_selector_author">Dart Team</string>
+    <string name="library_boolean_selector_libraryName">boolean_selector</string>
+    <string name="library_boolean_selector_libraryDescription">A flexible syntax for boolean expressions.</string>
+    <string name="library_boolean_selector_libraryWebsite">
+    https://github.com/dart-lang/boolean_selector
+    </string>
+    <string name="library_boolean_selector_isOpenSource">true</string>
+    <string name="library_boolean_selector_repositoryLink">https://github.com/dart-lang/boolean_selector</string>
+    <string name="library_boolean_selector_licenseId">bsd_3</string>
+    <!-- Custom variables section -->
+    <string name="library_boolean_selector_year">2016</string>
+    <string name="library_boolean_selector_owner">the Dart project authors</string>
+
+    <!-- cupertino_icons -->
+    <string name="define_int_cupertino_icons">year;owner</string>
+    <string name="library_cupertino_icons_author">Flutter Team</string>
+    <string name="library_cupertino_icons_libraryName">cupertino_icons</string>
+    <string name="library_cupertino_icons_libraryDescription">Default icons asset for Cupertino widgets</string>
+    <string name="library_cupertino_icons_libraryWebsite">
+    https://github.com/flutter/cupertino_icons
+    </string>
+    <string name="library_cupertino_icons_isOpenSource">true</string>
+    <string name="library_cupertino_icons_repositoryLink">https://github.com/flutter/cupertino_icons</string>
+    <string name="library_cupertino_icons_licenseId">mit</string>
+    <!-- Custom variables section -->
+    <string name="library_cupertino_icons_year">2016</string>
+    <string name="library_cupertino_icons_owner">Drifty (http://drifty.com/)</string>
+
+    <!-- mime -->
+    <string name="define_int_mime">year;owner</string>
+    <string name="library_mime_author">Dart Team</string>
+    <string name="library_mime_libraryName">mime</string>
+    <string name="library_mime_libraryDescription">Helper-package for working with MIME.</string>
+    <string name="library_mime_libraryWebsite">
+    https://www.github.com/dart-lang/mime
+    </string>
+    <string name="library_mime_isOpenSource">true</string>
+    <string name="library_mime_repositoryLink">https://www.github.com/dart-lang/mime</string>
+    <string name="library_mime_licenseId">bsd_3</string>
+    <!-- Custom variables section -->
+    <string name="library_mime_year">2015</string>
+    <string name="library_mime_owner">the Dart project authors</string>
+
+    <!-- code_builder -->
+    <string name="define_int_code_builder">year;owner</string>
+    <string name="library_code_builder_author">Dart Team</string>
+    <string name="library_code_builder_libraryName">code_builder</string>
+    <string name="library_code_builder_libraryDescription">A fluent API for generating Dart code</string>
+    <string name="library_code_builder_libraryWebsite">
+    https://github.com/dart-lang/code_builder
+    </string>
+    <string name="library_code_builder_isOpenSource">true</string>
+    <string name="library_code_builder_repositoryLink">https://github.com/dart-lang/code_builder</string>
+    <string name="library_code_builder_licenseId">bsd_3</string>
+    <!-- Custom variables section -->
+    <string name="library_code_builder_year">2016</string>
+    <string name="library_code_builder_owner">the Dart project authors</string>
+
+    <!-- watcher -->
+    <string name="define_int_watcher">year;owner</string>
+    <string name="library_watcher_author">Dart Team</string>
+    <string name="library_watcher_libraryName">watcher</string>
+    <string name="library_watcher_libraryDescription">A file system watcher. It monitors changes to contents of directories and sends notifications when files have been added, removed, or modified.
+</string>
+    <string name="library_watcher_libraryWebsite">
+    https://github.com/dart-lang/watcher
+    </string>
+    <string name="library_watcher_isOpenSource">true</string>
+    <string name="library_watcher_repositoryLink">https://github.com/dart-lang/watcher</string>
+    <string name="library_watcher_licenseId">bsd_3</string>
+    <!-- Custom variables section -->
+    <string name="library_watcher_year">2014</string>
+    <string name="library_watcher_owner">the Dart project authors</string>
+
+    <!-- quiver -->
+    <string name="define_int_quiver">year;owner</string>
+    <string name="library_quiver_author">Justin Fagnani,Yegor Jbanov,Chris Bracken,Alexandre Ardhuin,David Morgan,John McDole,Matan Lurey,GÃ¼nter ZÃ¶chbauer,Sean Eagan,Victor Berchet,Wil Pirino,Adam Lofts,Alec Henninger,Mark Fielbig</string>
+    <string name="library_quiver_libraryName">quiver</string>
+    <string name="library_quiver_libraryDescription">A set of utility libraries for Dart</string>
+    <string name="library_quiver_libraryWebsite">
+    https://github.com/google/quiver-dart
+    </string>
+    <string name="library_quiver_isOpenSource">true</string>
+    <string name="library_quiver_repositoryLink">https://github.com/google/quiver-dart</string>
+    <string name="library_quiver_licenseId">apache_2_0</string>
+    <!-- Custom variables section -->
+    <string name="library_quiver_year">TODO</string>
+    <string name="library_quiver_owner">Justin Fagnani,Yegor Jbanov,Chris Bracken,Alexandre Ardhuin,David Morgan,John McDole,Matan Lurey,GÃ¼nter ZÃ¶chbauer,Sean Eagan,Victor Berchet,Wil Pirino,Adam Lofts,Alec Henninger,Mark Fielbig</string>
+
+    <!-- package_config -->
+    <string name="define_int_package_config">year;owner</string>
+    <string name="library_package_config_author">Dart Team</string>
+    <string name="library_package_config_libraryName">package_config</string>
+    <string name="library_package_config_libraryDescription">Support for working with Package Resolution config files.</string>
+    <string name="library_package_config_libraryWebsite">
+    https://github.com/dart-lang/package_config
+    </string>
+    <string name="library_package_config_isOpenSource">true</string>
+    <string name="library_package_config_repositoryLink">https://github.com/dart-lang/package_config</string>
+    <string name="library_package_config_licenseId">bsd_3</string>
+    <!-- Custom variables section -->
+    <string name="library_package_config_year">2015</string>
+    <string name="library_package_config_owner">the Dart project authors</string>
+
+    <!-- collection -->
+    <string name="define_int_collection">year;owner</string>
+    <string name="library_collection_author">Dart Team</string>
+    <string name="library_collection_libraryName">collection</string>
+    <string name="library_collection_libraryDescription">Collections and utilities functions and classes related to collections.</string>
+    <string name="library_collection_libraryWebsite">
+    https://www.github.com/dart-lang/collection
+    </string>
+    <string name="library_collection_isOpenSource">true</string>
+    <string name="library_collection_repositoryLink">https://www.github.com/dart-lang/collection</string>
+    <string name="library_collection_licenseId">bsd_3</string>
+    <!-- Custom variables section -->
+    <string name="library_collection_year">2015</string>
+    <string name="library_collection_owner">the Dart project authors</string>
+
+    <!-- firebase_messaging -->
+    <string name="define_int_firebase_messaging">year;owner</string>
+    <string name="library_firebase_messaging_author">Flutter Team</string>
+    <string name="library_firebase_messaging_libraryName">firebase_messaging</string>
+    <string name="library_firebase_messaging_libraryDescription">Flutter plugin for Firebase Cloud Messaging, a cross-platform messaging solution that lets you reliably deliver messages on Android and iOS.</string>
+    <string name="library_firebase_messaging_libraryWebsite">
+    https://github.com/flutter/plugins/tree/master/packages/firebase_messaging
+    </string>
+    <string name="library_firebase_messaging_isOpenSource">true</string>
+    <string name="library_firebase_messaging_repositoryLink">https://github.com/flutter/plugins</string>
+    <string name="library_firebase_messaging_licenseId">bsd_3</string>
+    <!-- Custom variables section -->
+    <string name="library_firebase_messaging_year">2017</string>
+    <string name="library_firebase_messaging_owner">The Chromium Authors</string>
+
+    <!-- bloc -->
+    <string name="define_int_bloc">year;owner</string>
+    <string name="library_bloc_author">felix.angelov</string>
+    <string name="library_bloc_libraryName">bloc</string>
+    <string name="library_bloc_libraryDescription">The goal of this package is to make it easy to implement the BLoC (Business Logic Component) design pattern.</string>
+    <string name="library_bloc_libraryWebsite">
+    https://github.com/felangel/bloc/tree/master/packages/bloc
+    </string>
+    <string name="library_bloc_isOpenSource">true</string>
+    <string name="library_bloc_repositoryLink">https://github.com/felangel/bloc</string>
+    <string name="library_bloc_licenseId">mit</string>
+    <!-- Custom variables section -->
+    <string name="library_bloc_year">2018</string>
+    <string name="library_bloc_owner">Felix Angelov</string>
+
+    <!-- html -->
+    <string name="define_int_html">year;owner</string>
+    <string name="library_html_author">Dart Team</string>
+    <string name="library_html_libraryName">html</string>
+    <string name="library_html_libraryDescription">A library for working with HTML documents. Previously known as html5lib.</string>
+    <string name="library_html_libraryWebsite">
+    https://github.com/dart-lang/html
+    </string>
+    <string name="library_html_isOpenSource">true</string>
+    <string name="library_html_repositoryLink">https://github.com/dart-lang/html</string>
+    <string name="library_html_licenseId">mit</string>
+    <!-- Custom variables section -->
+    <string name="library_html_year">2006-2012</string>
+    <string name="library_html_owner">The Authors</string>
+
+    <!-- kernel -->
+    <string name="define_int_kernel">year;owner</string>
+    <string name="library_kernel_author">Dart Team</string>
+    <string name="library_kernel_libraryName">kernel</string>
+    <string name="library_kernel_libraryDescription">Dart IR (Intermediate Representation)</string>
+    <string name="library_kernel_libraryWebsite">
+    https://github.com/dart-lang/sdk/tree/master/pkg/kernel
+    </string>
+    <string name="library_kernel_isOpenSource">true</string>
+    <string name="library_kernel_repositoryLink">https://github.com/dart-lang/sdk</string>
+    <string name="library_kernel_licenseId">bsd_3</string>
+    <!-- Custom variables section -->
+    <string name="library_kernel_year">2016</string>
+    <string name="library_kernel_owner">the Dart project authors</string>
+
+    <!-- pool -->
+    <string name="define_int_pool">year;owner</string>
+    <string name="library_pool_author">Dart Team</string>
+    <string name="library_pool_libraryName">pool</string>
+    <string name="library_pool_libraryDescription">A class for managing a finite pool of resources.</string>
+    <string name="library_pool_libraryWebsite">
+    https://github.com/dart-lang/pool
+    </string>
+    <string name="library_pool_isOpenSource">true</string>
+    <string name="library_pool_repositoryLink">https://github.com/dart-lang/pool</string>
+    <string name="library_pool_licenseId">bsd_3</string>
+    <!-- Custom variables section -->
+    <string name="library_pool_year">2014</string>
+    <string name="library_pool_owner">the Dart project authors</string>
+
+    <!-- platform -->
+    <string name="define_int_platform">year;owner</string>
+    <string name="library_platform_author">Todd Volkert</string>
+    <string name="library_platform_libraryName">platform</string>
+    <string name="library_platform_libraryDescription">A pluggable, mockable platform abstraction for Dart.</string>
+    <string name="library_platform_libraryWebsite">
+    https://github.com/google/platform.dart
+    </string>
+    <string name="library_platform_isOpenSource">true</string>
+    <string name="library_platform_repositoryLink">https://github.com/google/platform.dart</string>
+    <string name="library_platform_licenseId">bsd_3</string>
+    <!-- Custom variables section -->
+    <string name="library_platform_year">2017</string>
+    <string name="library_platform_owner">the Dart project authors</string>
+
+    <!-- glob -->
+    <string name="define_int_glob">year;owner</string>
+    <string name="library_glob_author">Dart Team</string>
+    <string name="library_glob_libraryName">glob</string>
+    <string name="library_glob_libraryDescription">Bash-style filename globbing.</string>
+    <string name="library_glob_libraryWebsite">
+    https://github.com/dart-lang/glob
+    </string>
+    <string name="library_glob_isOpenSource">true</string>
+    <string name="library_glob_repositoryLink">https://github.com/dart-lang/glob</string>
+    <string name="library_glob_licenseId">bsd_3</string>
+    <!-- Custom variables section -->
+    <string name="library_glob_year">2014</string>
+    <string name="library_glob_owner">the Dart project authors</string>
+
+    <!-- shared_preferences -->
+    <string name="define_int_shared_preferences">year;owner</string>
+    <string name="library_shared_preferences_author">Flutter Team</string>
+    <string name="library_shared_preferences_libraryName">shared_preferences</string>
+    <string name="library_shared_preferences_libraryDescription">Flutter plugin for reading and writing simple key-value pairs. Wraps NSUserDefaults on iOS and SharedPreferences on Android.</string>
+    <string name="library_shared_preferences_libraryWebsite">
+    https://github.com/flutter/plugins/tree/master/packages/shared_preferences
+    </string>
+    <string name="library_shared_preferences_isOpenSource">true</string>
+    <string name="library_shared_preferences_repositoryLink">https://github.com/flutter/plugins</string>
+    <string name="library_shared_preferences_licenseId">bsd_3</string>
+    <!-- Custom variables section -->
+    <string name="library_shared_preferences_year">2017</string>
+    <string name="library_shared_preferences_owner">The Chromium Authors</string>
+
+    <!-- pubspec_parse -->
+    <string name="define_int_pubspec_parse">year;owner</string>
+    <string name="library_pubspec_parse_author">Dart Team</string>
+    <string name="library_pubspec_parse_libraryName">pubspec_parse</string>
+    <string name="library_pubspec_parse_libraryDescription">Simple package for parsing pubspec.yaml files with a type-safe API and rich error reporting.</string>
+    <string name="library_pubspec_parse_libraryWebsite">
+    https://github.com/dart-lang/pubspec_parse
+    </string>
+    <string name="library_pubspec_parse_isOpenSource">true</string>
+    <string name="library_pubspec_parse_repositoryLink">https://github.com/dart-lang/pubspec_parse</string>
+    <string name="library_pubspec_parse_licenseId">bsd_3</string>
+    <!-- Custom variables section -->
+    <string name="library_pubspec_parse_year">2018</string>
+    <string name="library_pubspec_parse_owner">the Dart project authors</string>
+
+    <!-- pub_semver -->
+    <string name="define_int_pub_semver">year;owner</string>
+    <string name="library_pub_semver_author">Dart Team</string>
+    <string name="library_pub_semver_libraryName">pub_semver</string>
+    <string name="library_pub_semver_libraryDescription">Versions and version constraints implementing pub\'s versioning policy. This is very similar to vanilla semver, with a few corner cases.
+</string>
+    <string name="library_pub_semver_libraryWebsite">
+    http://github.com/dart-lang/pub_semver
+    </string>
+    <string name="library_pub_semver_isOpenSource">true</string>
+    <string name="library_pub_semver_repositoryLink">http://github.com/dart-lang/pub_semver</string>
+    <string name="library_pub_semver_licenseId">bsd_3</string>
+    <!-- Custom variables section -->
+    <string name="library_pub_semver_year">2014</string>
+    <string name="library_pub_semver_owner">the Dart project authors</string>
+
+    <!-- source_gen -->
+    <string name="define_int_source_gen">year;owner</string>
+    <string name="library_source_gen_author">Dart Team</string>
+    <string name="library_source_gen_libraryName">source_gen</string>
+    <string name="library_source_gen_libraryDescription">Automated source code generation for Dart.</string>
+    <string name="library_source_gen_libraryWebsite">
+    https://github.com/dart-lang/source_gen
+    </string>
+    <string name="library_source_gen_isOpenSource">true</string>
+    <string name="library_source_gen_repositoryLink">https://github.com/dart-lang/source_gen</string>
+    <string name="library_source_gen_licenseId">bsd_3</string>
+    <!-- Custom variables section -->
+    <string name="library_source_gen_year">2015</string>
+    <string name="library_source_gen_owner">the Dart project authors</string>
+
+    <!-- intl -->
+    <string name="define_int_intl">year;owner</string>
+    <string name="library_intl_author">Dart Team</string>
+    <string name="library_intl_libraryName">intl</string>
+    <string name="library_intl_libraryDescription">Contains code to deal with internationalized/localized messages, date and number formatting and parsing, bi-directional text, and other internationalization issues.</string>
+    <string name="library_intl_libraryWebsite">
+    https://github.com/dart-lang/intl
+    </string>
+    <string name="library_intl_isOpenSource">true</string>
+    <string name="library_intl_repositoryLink">https://github.com/dart-lang/intl</string>
+    <string name="library_intl_licenseId">bsd_3</string>
+    <!-- Custom variables section -->
+    <string name="library_intl_year">2013</string>
+    <string name="library_intl_owner">the Dart project authors</string>
+
+    <!-- path -->
+    <string name="define_int_path">year;owner</string>
+    <string name="library_path_author">Dart Team</string>
+    <string name="library_path_libraryName">path</string>
+    <string name="library_path_libraryDescription">A string-based path manipulation library. All of the path operations you know and love, with solid support on both Windows and POSIX (Linux and Mac OS X) machines.
+</string>
+    <string name="library_path_libraryWebsite">
+    http://github.com/dart-lang/path
+    </string>
+    <string name="library_path_isOpenSource">true</string>
+    <string name="library_path_repositoryLink">http://github.com/dart-lang/path</string>
+    <string name="library_path_licenseId">bsd_3</string>
+    <!-- Custom variables section -->
+    <string name="library_path_year">2014</string>
+    <string name="library_path_owner">the Dart project authors</string>
+
+    <!-- build -->
+    <string name="define_int_build">year;owner</string>
+    <string name="library_build_author">Dart Team</string>
+    <string name="library_build_libraryName">build</string>
+    <string name="library_build_libraryDescription">A build system for Dart.</string>
+    <string name="library_build_libraryWebsite">
+    https://github.com/dart-lang/build/tree/master/build
+    </string>
+    <string name="library_build_isOpenSource">true</string>
+    <string name="library_build_repositoryLink">https://github.com/dart-lang/build</string>
+    <string name="library_build_licenseId">bsd_3</string>
+    <!-- Custom variables section -->
+    <string name="library_build_year">2016</string>
+    <string name="library_build_owner">the Dart project authors</string>
+
+    <!-- http_parser -->
+    <string name="define_int_http_parser">year;owner</string>
+    <string name="library_http_parser_author">Dart Team</string>
+    <string name="library_http_parser_libraryName">http_parser</string>
+    <string name="library_http_parser_libraryDescription">A platform-independent package for parsing and serializing HTTP formats.
+</string>
+    <string name="library_http_parser_libraryWebsite">
+    https://github.com/dart-lang/http_parser
+    </string>
+    <string name="library_http_parser_isOpenSource">true</string>
+    <string name="library_http_parser_repositoryLink">https://github.com/dart-lang/http_parser</string>
+    <string name="library_http_parser_licenseId">bsd_3</string>
+    <!-- Custom variables section -->
+    <string name="library_http_parser_year">2014</string>
+    <string name="library_http_parser_owner">the Dart project authors</string>
+
+    <!-- test_api -->
+    <string name="define_int_test_api">year;owner</string>
+    <string name="library_test_api_author">Dart Team</string>
+    <string name="library_test_api_libraryName">test_api</string>
+    <string name="library_test_api_libraryDescription">A library for writing Dart tests.</string>
+    <string name="library_test_api_libraryWebsite">
+    https://github.com/dart-lang/test/blob/master/pkgs/test_api
+    </string>
+    <string name="library_test_api_isOpenSource">true</string>
+    <string name="library_test_api_repositoryLink">https://github.com/dart-lang/test</string>
+    <string name="library_test_api_licenseId">bsd_3</string>
+    <!-- Custom variables section -->
+    <string name="library_test_api_year">2018</string>
+    <string name="library_test_api_owner">the Dart project authors</string>
+
+    <!-- vector_math -->
+    <string name="define_int_vector_math">year;owner</string>
+    <string name="library_vector_math_author">John McCutchan</string>
+    <string name="library_vector_math_libraryName">vector_math</string>
+    <string name="library_vector_math_libraryDescription">A Vector Math library for 2D and 3D applications.</string>
+    <string name="library_vector_math_libraryWebsite">
+    https://github.com/google/vector_math.dart
+    </string>
+    <string name="library_vector_math_isOpenSource">true</string>
+    <string name="library_vector_math_repositoryLink">https://github.com/google/vector_math.dart</string>
+    <string name="library_vector_math_licenseId">bsd_3</string>
+    <!-- Custom variables section -->
+    <string name="library_vector_math_year">2015</string>
+    <string name="library_vector_math_owner">Google Inc</string>
+
+    <!-- http_multi_server -->
+    <string name="define_int_http_multi_server">year;owner</string>
+    <string name="library_http_multi_server_author">Dart Team</string>
+    <string name="library_http_multi_server_libraryName">http_multi_server</string>
+    <string name="library_http_multi_server_libraryDescription">A dart:io HttpServer wrapper that handles requests from multiple servers.</string>
+    <string name="library_http_multi_server_libraryWebsite">
+    https://github.com/dart-lang/http_multi_server
+    </string>
+    <string name="library_http_multi_server_isOpenSource">true</string>
+    <string name="library_http_multi_server_repositoryLink">https://github.com/dart-lang/http_multi_server</string>
+    <string name="library_http_multi_server_licenseId">bsd_3</string>
+    <!-- Custom variables section -->
+    <string name="library_http_multi_server_year">2014</string>
+    <string name="library_http_multi_server_owner">the Dart project authors</string>
+
+    <!-- decimal -->
+    <string name="define_int_decimal">year;owner</string>
+    <string name="library_decimal_author">Alexandre Ardhuin</string>
+    <string name="library_decimal_libraryName">decimal</string>
+    <string name="library_decimal_libraryDescription">The decimal package allows you to deal with decimal numbers without loosing precision.
+</string>
+    <string name="library_decimal_libraryWebsite">
+    https://github.com/a14n/dart-decimal
+    </string>
+    <string name="library_decimal_isOpenSource">true</string>
+    <string name="library_decimal_repositoryLink">https://github.com/a14n/dart-decimal</string>
+    <string name="library_decimal_licenseId">apache_2_0</string>
+    <!-- Custom variables section -->
+    <string name="library_decimal_year">TODO</string>
+    <string name="library_decimal_owner">Alexandre Ardhuin</string>
+
+    <!-- analyzer -->
+    <string name="define_int_analyzer">year;owner</string>
+    <string name="library_analyzer_author">Dart Team</string>
+    <string name="library_analyzer_libraryName">analyzer</string>
+    <string name="library_analyzer_libraryDescription">Static analyzer for Dart.</string>
+    <string name="library_analyzer_libraryWebsite">
+    https://github.com/dart-lang/sdk/tree/master/pkg/analyzer
+    </string>
+    <string name="library_analyzer_isOpenSource">true</string>
+    <string name="library_analyzer_repositoryLink">https://github.com/dart-lang/sdk</string>
+    <string name="library_analyzer_licenseId">bsd_3</string>
+    <!-- Custom variables section -->
+    <string name="library_analyzer_year">2013</string>
+    <string name="library_analyzer_owner">the Dart project authors</string>
+
+    <!-- dart_style -->
+    <string name="define_int_dart_style">year;owner</string>
+    <string name="library_dart_style_author">Dart Team</string>
+    <string name="library_dart_style_libraryName">dart_style</string>
+    <string name="library_dart_style_libraryDescription">Opinionated, automatic Dart source code formatter.</string>
+    <string name="library_dart_style_libraryWebsite">
+    https://github.com/dart-lang/dart_style
+    </string>
+    <string name="library_dart_style_isOpenSource">true</string>
+    <string name="library_dart_style_repositoryLink">https://github.com/dart-lang/dart_style</string>
+    <string name="library_dart_style_licenseId">bsd_3</string>
+    <!-- Custom variables section -->
+    <string name="library_dart_style_year">2014</string>
+    <string name="library_dart_style_owner">the Dart project authors</string>
+
+    <!-- flutter_bloc -->
+    <string name="define_int_flutter_bloc">year;owner</string>
+    <string name="library_flutter_bloc_author">felix.angelov</string>
+    <string name="library_flutter_bloc_libraryName">flutter_bloc</string>
+    <string name="library_flutter_bloc_libraryDescription">Flutter Widgets that make it easy to implement the BLoC (Business Logic Component) design pattern. Built to be used with the bloc package.</string>
+    <string name="library_flutter_bloc_libraryWebsite">
+    https://github.com/felangel/bloc/tree/master/packages/flutter_bloc
+    </string>
+    <string name="library_flutter_bloc_isOpenSource">true</string>
+    <string name="library_flutter_bloc_repositoryLink">https://github.com/felangel/bloc</string>
+    <string name="library_flutter_bloc_licenseId">mit</string>
+    <!-- Custom variables section -->
+    <string name="library_flutter_bloc_year">2018</string>
+    <string name="library_flutter_bloc_owner">Felix Angelov</string>
+
+    <!-- cloud_firestore -->
+    <string name="define_int_cloud_firestore">year;owner</string>
+    <string name="library_cloud_firestore_author">Flutter Team</string>
+    <string name="library_cloud_firestore_libraryName">cloud_firestore</string>
+    <string name="library_cloud_firestore_libraryDescription">Flutter plugin for Cloud Firestore, a cloud-hosted, noSQL database with live synchronization and offline support on Android and iOS.</string>
+    <string name="library_cloud_firestore_libraryWebsite">
+    https://github.com/flutter/plugins/tree/master/packages/cloud_firestore
+    </string>
+    <string name="library_cloud_firestore_isOpenSource">true</string>
+    <string name="library_cloud_firestore_repositoryLink">https://github.com/flutter/plugins</string>
+    <string name="library_cloud_firestore_licenseId">bsd_3</string>
+    <!-- Custom variables section -->
+    <string name="library_cloud_firestore_year">2017</string>
+    <string name="library_cloud_firestore_owner">the Chromium project authors</string>
+
+    <!-- async -->
+    <string name="define_int_async">year;owner</string>
+    <string name="library_async_author">Dart Team</string>
+    <string name="library_async_libraryName">async</string>
+    <string name="library_async_libraryDescription">Utility functions and classes related to the \'dart:async\' library.</string>
+    <string name="library_async_libraryWebsite">
+    https://www.github.com/dart-lang/async
+    </string>
+    <string name="library_async_isOpenSource">true</string>
+    <string name="library_async_repositoryLink">https://www.github.com/dart-lang/async</string>
+    <string name="library_async_licenseId">bsd_3</string>
+    <!-- Custom variables section -->
+    <string name="library_async_year">2015</string>
+    <string name="library_async_owner">the Dart project authors</string>
+
+    <!-- firebase_core -->
+    <string name="define_int_firebase_core">year;owner</string>
+    <string name="library_firebase_core_author">Flutter Team</string>
+    <string name="library_firebase_core_libraryName">firebase_core</string>
+    <string name="library_firebase_core_libraryDescription">Flutter plugin for Firebase Core, enabling connecting to multiple Firebase apps.</string>
+    <string name="library_firebase_core_libraryWebsite">
+    https://github.com/flutter/plugins/tree/master/packages/firebase_core
+    </string>
+    <string name="library_firebase_core_isOpenSource">true</string>
+    <string name="library_firebase_core_repositoryLink">https://github.com/flutter/plugins</string>
+    <string name="library_firebase_core_licenseId">bsd_3</string>
+    <!-- Custom variables section -->
+    <string name="library_firebase_core_year">2017</string>
+    <string name="library_firebase_core_owner">The Chromium Authors</string>
+
+    <!-- build_config -->
+    <string name="define_int_build_config">year;owner</string>
+    <string name="library_build_config_author">Dart Team</string>
+    <string name="library_build_config_libraryName">build_config</string>
+    <string name="library_build_config_libraryDescription">Support for parsing `build.yaml` configuration.</string>
+    <string name="library_build_config_libraryWebsite">
+    https://github.com/dart-lang/build/tree/master/build_config
+    </string>
+    <string name="library_build_config_isOpenSource">true</string>
+    <string name="library_build_config_repositoryLink">https://github.com/dart-lang/build</string>
+    <string name="library_build_config_licenseId">bsd_3</string>
+    <!-- Custom variables section -->
+    <string name="library_build_config_year">2017</string>
+    <string name="library_build_config_owner">the Dart project authors</string>
+
+    <!-- firebase_auth -->
+    <string name="define_int_firebase_auth">year;owner</string>
+    <string name="library_firebase_auth_author">Flutter Team</string>
+    <string name="library_firebase_auth_libraryName">firebase_auth</string>
+    <string name="library_firebase_auth_libraryDescription">Flutter plugin for Firebase Auth, enabling Android and iOS authentication using passwords, phone numbers and identity providers like Google, Facebook and Twitter.</string>
+    <string name="library_firebase_auth_libraryWebsite">
+    https://github.com/flutter/plugins/tree/master/packages/firebase_auth
+    </string>
+    <string name="library_firebase_auth_isOpenSource">true</string>
+    <string name="library_firebase_auth_repositoryLink">https://github.com/flutter/plugins</string>
+    <string name="library_firebase_auth_licenseId">bsd_3</string>
+    <!-- Custom variables section -->
+    <string name="library_firebase_auth_year">2017</string>
+    <string name="library_firebase_auth_owner">The Chromium Authors</string>
+
+    <!-- charcode -->
+    <string name="define_int_charcode">year;owner</string>
+    <string name="library_charcode_author">Dart Team</string>
+    <string name="library_charcode_libraryName">charcode</string>
+    <string name="library_charcode_libraryDescription">Constants for ASCII and common non-ASCII character codes. When working with characters in Dart, there is no simple way to represent the code point of a character. This library declares readable symbolic names for character codes.</string>
+    <string name="library_charcode_libraryWebsite">
+    https://github.com/dart-lang/charcode
+    </string>
+    <string name="library_charcode_isOpenSource">true</string>
+    <string name="library_charcode_repositoryLink">https://github.com/dart-lang/charcode</string>
+    <string name="library_charcode_licenseId">bsd_3</string>
+    <!-- Custom variables section -->
+    <string name="library_charcode_year">2014</string>
+    <string name="library_charcode_owner">the Dart project authors</string>
+
+    <!-- http -->
+    <string name="define_int_http">year;owner</string>
+    <string name="library_http_author">Dart Team</string>
+    <string name="library_http_libraryName">http</string>
+    <string name="library_http_libraryDescription">A composable, Future-based API for making HTTP requests.</string>
+    <string name="library_http_libraryWebsite">
+    https://github.com/dart-lang/http
+    </string>
+    <string name="library_http_isOpenSource">true</string>
+    <string name="library_http_repositoryLink">https://github.com/dart-lang/http</string>
+    <string name="library_http_licenseId">bsd_3</string>
+    <!-- Custom variables section -->
+    <string name="library_http_year">2014</string>
+    <string name="library_http_owner">the Dart project authors</string>
+
+    <!-- json_annotation -->
+    <string name="define_int_json_annotation">year;owner</string>
+    <string name="library_json_annotation_author">Dart Team</string>
+    <string name="library_json_annotation_libraryName">json_annotation</string>
+    <string name="library_json_annotation_libraryDescription">Classes and helper functions that support JSON code generation via the `json_serializable` package.</string>
+    <string name="library_json_annotation_libraryWebsite">
+    https://github.com/dart-lang/json_serializable
+    </string>
+    <string name="library_json_annotation_isOpenSource">true</string>
+    <string name="library_json_annotation_repositoryLink">https://github.com/dart-lang/json_serializable</string>
+    <string name="library_json_annotation_licenseId">bsd_3</string>
+    <!-- Custom variables section -->
+    <string name="library_json_annotation_year">2017</string>
+    <string name="library_json_annotation_owner">the Dart project authors</string>
+
+    <!-- io -->
+    <string name="define_int_io">year;owner</string>
+    <string name="library_io_author">Dart Team</string>
+    <string name="library_io_libraryName">io</string>
+    <string name="library_io_libraryDescription">Utilities for the Dart VM Runtime.
+</string>
+    <string name="library_io_libraryWebsite">
+    https://github.com/dart-lang/io
+    </string>
+    <string name="library_io_isOpenSource">true</string>
+    <string name="library_io_repositoryLink">https://github.com/dart-lang/io</string>
+    <string name="library_io_licenseId">bsd_3</string>
+    <!-- Custom variables section -->
+    <string name="library_io_year">2017</string>
+    <string name="library_io_owner">the Dart project authors</string>
+
+    <!-- shelf_web_socket -->
+    <string name="define_int_shelf_web_socket">year;owner</string>
+    <string name="library_shelf_web_socket_author">Dart Team</string>
+    <string name="library_shelf_web_socket_libraryName">shelf_web_socket</string>
+    <string name="library_shelf_web_socket_libraryDescription">A WebSocket handler for Shelf.</string>
+    <string name="library_shelf_web_socket_libraryWebsite">
+    http://github.com/dart-lang/shelf_web_socket
+    </string>
+    <string name="library_shelf_web_socket_isOpenSource">true</string>
+    <string name="library_shelf_web_socket_repositoryLink">http://github.com/dart-lang/shelf_web_socket</string>
+    <string name="library_shelf_web_socket_licenseId">bsd_3</string>
+    <!-- Custom variables section -->
+    <string name="library_shelf_web_socket_year">2014</string>
+    <string name="library_shelf_web_socket_owner">the Dart project authors</string>
+
+    <!-- pedantic -->
+    <string name="define_int_pedantic">year;owner</string>
+    <string name="library_pedantic_author">Dart Team</string>
+    <string name="library_pedantic_libraryName">pedantic</string>
+    <string name="library_pedantic_libraryDescription">How to get the most value from Dart static analysis.</string>
+    <string name="library_pedantic_libraryWebsite">
+    https://github.com/dart-lang/pedantic
+    </string>
+    <string name="library_pedantic_isOpenSource">true</string>
+    <string name="library_pedantic_repositoryLink">https://github.com/dart-lang/pedantic</string>
+    <string name="library_pedantic_licenseId">bsd_3</string>
+    <!-- Custom variables section -->
+    <string name="library_pedantic_year">2017</string>
+    <string name="library_pedantic_owner">the Dart project authors</string>
+
+    <!-- built_collection -->
+    <string name="define_int_built_collection">year;owner</string>
+    <string name="library_built_collection_author">David Morgan,Matan Lurey,Philipp Schiffmann</string>
+    <string name="library_built_collection_libraryName">built_collection</string>
+    <string name="library_built_collection_libraryDescription">Immutable collections using the builder pattern.
+</string>
+    <string name="library_built_collection_libraryWebsite">
+    https://github.com/google/built_collection.dart
+    </string>
+    <string name="library_built_collection_isOpenSource">true</string>
+    <string name="library_built_collection_repositoryLink">https://github.com/google/built_collection.dart</string>
+    <string name="library_built_collection_licenseId">bsd_3</string>
+    <!-- Custom variables section -->
+    <string name="library_built_collection_year">2015</string>
+    <string name="library_built_collection_owner">Google Inc</string>
+
+    <!-- flutter_local_notifications -->
+    <string name="define_int_flutter_local_notifications">year;owner</string>
+    <string name="library_flutter_local_notifications_author">Michael Bui</string>
+    <string name="library_flutter_local_notifications_libraryName">flutter_local_notifications</string>
+    <string name="library_flutter_local_notifications_libraryDescription">A cross platform plugin for displaying and scheduling local notifications for Flutter applications with the ability to customise for each platform.</string>
+    <string name="library_flutter_local_notifications_libraryWebsite">
+    https://github.com/MaikuB/flutter_local_notifications
+    </string>
+    <string name="library_flutter_local_notifications_isOpenSource">true</string>
+    <string name="library_flutter_local_notifications_repositoryLink">https://github.com/MaikuB/flutter_local_notifications</string>
+    <string name="library_flutter_local_notifications_licenseId">bsd_3</string>
+    <!-- Custom variables section -->
+    <string name="library_flutter_local_notifications_year">2018</string>
+    <string name="library_flutter_local_notifications_owner">Michael Bui</string>
+
+    <!-- term_glyph -->
+    <string name="define_int_term_glyph">year;owner</string>
+    <string name="library_term_glyph_author">Dart Team</string>
+    <string name="library_term_glyph_libraryName">term_glyph</string>
+    <string name="library_term_glyph_libraryDescription">Useful glyphs and Windows-safe equivalents.</string>
+    <string name="library_term_glyph_libraryWebsite">
+    https://github.com/dart-lang/term_glyph
+    </string>
+    <string name="library_term_glyph_isOpenSource">true</string>
+    <string name="library_term_glyph_repositoryLink">https://github.com/dart-lang/term_glyph</string>
+    <string name="library_term_glyph_licenseId">bsd_3</string>
+    <!-- Custom variables section -->
+    <string name="library_term_glyph_year">2017</string>
+    <string name="library_term_glyph_owner">the Dart project authors</string>
+
+    <!-- stream_channel -->
+    <string name="define_int_stream_channel">year;owner</string>
+    <string name="library_stream_channel_author">Dart Team</string>
+    <string name="library_stream_channel_libraryName">stream_channel</string>
+    <string name="library_stream_channel_libraryDescription">An abstraction for two-way communication channels.</string>
+    <string name="library_stream_channel_libraryWebsite">
+    https://github.com/dart-lang/stream_channel
+    </string>
+    <string name="library_stream_channel_isOpenSource">true</string>
+    <string name="library_stream_channel_repositoryLink">https://github.com/dart-lang/stream_channel</string>
+    <string name="library_stream_channel_licenseId">bsd_3</string>
+    <!-- Custom variables section -->
+    <string name="library_stream_channel_year">2015</string>
+    <string name="library_stream_channel_owner">the Dart project authors</string>
+
+    <!-- utf -->
+    <string name="define_int_utf">year;owner</string>
+    <string name="library_utf_author">Dart Team</string>
+    <string name="library_utf_libraryName">utf</string>
+    <string name="library_utf_libraryDescription">Provides common operations for manipulating Unicode sequences</string>
+    <string name="library_utf_libraryWebsite">
+    https://www.github.com/dart-lang/utf
+    </string>
+    <string name="library_utf_isOpenSource">true</string>
+    <string name="library_utf_repositoryLink">https://www.github.com/dart-lang/utf</string>
+    <string name="library_utf_licenseId">bsd_3</string>
+    <!-- Custom variables section -->
+    <string name="library_utf_year">2015</string>
+    <string name="library_utf_owner">the Dart project authors</string>
+
+    <!-- source_span -->
+    <string name="define_int_source_span">year;owner</string>
+    <string name="library_source_span_author">Dart Team</string>
+    <string name="library_source_span_libraryName">source_span</string>
+    <string name="library_source_span_libraryDescription">A library for identifying source spans and locations.</string>
+    <string name="library_source_span_libraryWebsite">
+    https://github.com/dart-lang/source_span
+    </string>
+    <string name="library_source_span_isOpenSource">true</string>
+    <string name="library_source_span_repositoryLink">https://github.com/dart-lang/source_span</string>
+    <string name="library_source_span_licenseId">bsd_3</string>
+    <!-- Custom variables section -->
+    <string name="library_source_span_year">2014</string>
+    <string name="library_source_span_owner">the Dart project authors</string>
+
+    <!-- shelf -->
+    <string name="define_int_shelf">year;owner</string>
+    <string name="library_shelf_author">Dart Team</string>
+    <string name="library_shelf_libraryName">shelf</string>
+    <string name="library_shelf_libraryDescription">Web Server Middleware for Dart</string>
+    <string name="library_shelf_libraryWebsite">
+    https://github.com/dart-lang/shelf
+    </string>
+    <string name="library_shelf_isOpenSource">true</string>
+    <string name="library_shelf_repositoryLink">https://github.com/dart-lang/shelf</string>
+    <string name="library_shelf_licenseId">bsd_3</string>
+    <!-- Custom variables section -->
+    <string name="library_shelf_year">2014</string>
+    <string name="library_shelf_owner">the Dart project authors</string>
+
+    <!-- string_scanner -->
+    <string name="define_int_string_scanner">year;owner</string>
+    <string name="library_string_scanner_author">Dart Team</string>
+    <string name="library_string_scanner_libraryName">string_scanner</string>
+    <string name="library_string_scanner_libraryDescription">A class for parsing strings using a sequence of patterns.</string>
+    <string name="library_string_scanner_libraryWebsite">
+    https://github.com/dart-lang/string_scanner
+    </string>
+    <string name="library_string_scanner_isOpenSource">true</string>
+    <string name="library_string_scanner_repositoryLink">https://github.com/dart-lang/string_scanner</string>
+    <string name="library_string_scanner_licenseId">bsd_3</string>
+    <!-- Custom variables section -->
+    <string name="library_string_scanner_year">2014</string>
+    <string name="library_string_scanner_owner">the Dart project authors</string>
+
+    <!-- js -->
+    <string name="define_int_js">year;owner</string>
+    <string name="library_js_author">Dart Team</string>
+    <string name="library_js_libraryName">js</string>
+    <string name="library_js_libraryDescription">Access JavaScript from Dart.</string>
+    <string name="library_js_libraryWebsite">
+    https://github.com/dart-lang/sdk/tree/master/pkg/js
+    </string>
+    <string name="library_js_isOpenSource">true</string>
+    <string name="library_js_repositoryLink">https://github.com/dart-lang/sdk</string>
+    <string name="library_js_licenseId">bsd_3</string>
+    <!-- Custom variables section -->
+    <string name="library_js_year">2012</string>
+    <string name="library_js_owner">the Dart project authors</string>
+
+    <!-- front_end -->
+    <string name="define_int_front_end">year;owner</string>
+    <string name="library_front_end_author">Dart Team</string>
+    <string name="library_front_end_libraryName">front_end</string>
+    <string name="library_front_end_libraryDescription">Front end for compilation of Dart code.</string>
+    <string name="library_front_end_libraryWebsite">
+    https://github.com/dart-lang/sdk/tree/master/pkg/front_end
+    </string>
+    <string name="library_front_end_isOpenSource">true</string>
+    <string name="library_front_end_repositoryLink">https://github.com/dart-lang/sdk</string>
+    <string name="library_front_end_licenseId">bsd_3</string>
+    <!-- Custom variables section -->
+    <string name="library_front_end_year">2016</string>
+    <string name="library_front_end_owner">the Dart project authors</string>
+
+    <!-- args -->
+    <string name="define_int_args">year;owner</string>
+    <string name="library_args_author">Dart Team</string>
+    <string name="library_args_libraryName">args</string>
+    <string name="library_args_libraryDescription">Library for defining parsers for parsing raw command-line arguments into a set of options and values using GNU and POSIX style options.
+</string>
+    <string name="library_args_libraryWebsite">
+    https://github.com/dart-lang/args
+    </string>
+    <string name="library_args_isOpenSource">true</string>
+    <string name="library_args_repositoryLink">https://github.com/dart-lang/args</string>
+    <string name="library_args_licenseId">bsd_3</string>
+    <!-- Custom variables section -->
+    <string name="library_args_year">2013</string>
+    <string name="library_args_owner">the Dart project authors</string>
+
+    <!-- typed_data -->
+    <string name="define_int_typed_data">year;owner</string>
+    <string name="library_typed_data_author">Dart Team</string>
+    <string name="library_typed_data_libraryName">typed_data</string>
+    <string name="library_typed_data_libraryDescription">Utility functions and classes related to the \'dart:typed_data\' library.</string>
+    <string name="library_typed_data_libraryWebsite">
+    https://github.com/dart-lang/typed_data
+    </string>
+    <string name="library_typed_data_isOpenSource">true</string>
+    <string name="library_typed_data_repositoryLink">https://github.com/dart-lang/typed_data</string>
+    <string name="library_typed_data_licenseId">bsd_3</string>
+    <!-- Custom variables section -->
+    <string name="library_typed_data_year">2015</string>
+    <string name="library_typed_data_owner">the Dart project authors</string>
+
+    <!-- rxdart -->
+    <string name="define_int_rxdart">year;owner</string>
+    <string name="library_rxdart_author">Frank Pepermans,Brian Egan</string>
+    <string name="library_rxdart_libraryName">rxdart</string>
+    <string name="library_rxdart_libraryDescription">RxDart is an implementation of the popular reactiveX api for asynchronous programming, leveraging the native Dart Streams api.
+</string>
+    <string name="library_rxdart_libraryWebsite">
+    https://github.com/ReactiveX/rxdart
+    </string>
+    <string name="library_rxdart_isOpenSource">true</string>
+    <string name="library_rxdart_repositoryLink">https://github.com/ReactiveX/rxdart</string>
+    <string name="library_rxdart_licenseId">apache_2_0</string>
+    <!-- Custom variables section -->
+    <string name="library_rxdart_year">TODO</string>
+    <string name="library_rxdart_owner">Frank Pepermans,Brian Egan</string>
+
+    <!-- crypto -->
+    <string name="define_int_crypto">year;owner</string>
+    <string name="library_crypto_author">Dart Team</string>
+    <string name="library_crypto_libraryName">crypto</string>
+    <string name="library_crypto_libraryDescription">Library of cryptographic functions.</string>
+    <string name="library_crypto_libraryWebsite">
+    https://www.github.com/dart-lang/crypto
+    </string>
+    <string name="library_crypto_isOpenSource">true</string>
+    <string name="library_crypto_repositoryLink">https://www.github.com/dart-lang/crypto</string>
+    <string name="library_crypto_licenseId">bsd_3</string>
+    <!-- Custom variables section -->
+    <string name="library_crypto_year">2015</string>
+    <string name="library_crypto_owner">the Dart project authors</string>
+
+    <!-- build_resolvers -->
+    <string name="define_int_build_resolvers">year;owner</string>
+    <string name="library_build_resolvers_author">Dart Team</string>
+    <string name="library_build_resolvers_libraryName">build_resolvers</string>
+    <string name="library_build_resolvers_libraryDescription">Resolve Dart code in a Builder</string>
+    <string name="library_build_resolvers_libraryWebsite">
+    https://github.com/dart-lang/build/tree/master/build_resolvers
+    </string>
+    <string name="library_build_resolvers_isOpenSource">true</string>
+    <string name="library_build_resolvers_repositoryLink">https://github.com/dart-lang/build</string>
+    <string name="library_build_resolvers_licenseId">bsd_3</string>
+    <!-- Custom variables section -->
+    <string name="library_build_resolvers_year">2018</string>
+    <string name="library_build_resolvers_owner">the Dart project authors</string>
+
+    <!-- csslib -->
+    <string name="define_int_csslib">year;owner</string>
+    <string name="library_csslib_author">Dart Team</string>
+    <string name="library_csslib_libraryName">csslib</string>
+    <string name="library_csslib_libraryDescription">A library for parsing CSS.</string>
+    <string name="library_csslib_libraryWebsite">
+    https://github.com/dart-lang/csslib
+    </string>
+    <string name="library_csslib_isOpenSource">true</string>
+    <string name="library_csslib_repositoryLink">https://github.com/dart-lang/csslib</string>
+    <string name="library_csslib_licenseId">bsd_3</string>
+    <!-- Custom variables section -->
+    <string name="library_csslib_year">2013</string>
+    <string name="library_csslib_owner">the Dart project authors</string>
+
+    <!-- stack_trace -->
+    <string name="define_int_stack_trace">year;owner</string>
+    <string name="library_stack_trace_author">Dart Team</string>
+    <string name="library_stack_trace_libraryName">stack_trace</string>
+    <string name="library_stack_trace_libraryDescription">A package for manipulating stack traces and printing them readably.</string>
+    <string name="library_stack_trace_libraryWebsite">
+    https://github.com/dart-lang/stack_trace
+    </string>
+    <string name="library_stack_trace_isOpenSource">true</string>
+    <string name="library_stack_trace_repositoryLink">https://github.com/dart-lang/stack_trace</string>
+    <string name="library_stack_trace_licenseId">bsd_3</string>
+    <!-- Custom variables section -->
+    <string name="library_stack_trace_year">2014</string>
+    <string name="library_stack_trace_owner">the Dart project authors</string>
+
+    <!-- plugin -->
+    <string name="define_int_plugin">year;owner</string>
+    <string name="library_plugin_author">Dart Team</string>
+    <string name="library_plugin_libraryName">plugin</string>
+    <string name="library_plugin_libraryDescription">Support for building plugins.</string>
+    <string name="library_plugin_libraryWebsite">
+    https://github.com/dart-lang/plugin
+    </string>
+    <string name="library_plugin_isOpenSource">true</string>
+    <string name="library_plugin_repositoryLink">https://github.com/dart-lang/plugin</string>
+    <string name="library_plugin_licenseId">bsd_3</string>
+    <!-- Custom variables section -->
+    <string name="library_plugin_year">2015</string>
+    <string name="library_plugin_owner">the Dart project authors</string>
+
+    <!-- convert -->
+    <string name="define_int_convert">year;owner</string>
+    <string name="library_convert_author">Dart Team</string>
+    <string name="library_convert_libraryName">convert</string>
+    <string name="library_convert_libraryDescription">Utilities for converting between data representations.</string>
+    <string name="library_convert_libraryWebsite">
+    https://github.com/dart-lang/convert
+    </string>
+    <string name="library_convert_isOpenSource">true</string>
+    <string name="library_convert_repositoryLink">https://github.com/dart-lang/convert</string>
+    <string name="library_convert_licenseId">bsd_3</string>
+    <!-- Custom variables section -->
+    <string name="library_convert_year">2015</string>
+    <string name="library_convert_owner">the Dart project authors</string>
+
+    <!-- build_runner -->
+    <string name="define_int_build_runner">year;owner</string>
+    <string name="library_build_runner_author">Dart Team</string>
+    <string name="library_build_runner_libraryName">build_runner</string>
+    <string name="library_build_runner_libraryDescription">Tools to write binaries that run builders.</string>
+    <string name="library_build_runner_libraryWebsite">
+    https://github.com/dart-lang/build/tree/master/build_runner
+    </string>
+    <string name="library_build_runner_isOpenSource">true</string>
+    <string name="library_build_runner_repositoryLink">https://github.com/dart-lang/build</string>
+    <string name="library_build_runner_licenseId">bsd_3</string>
+    <!-- Custom variables section -->
+    <string name="library_build_runner_year">2016</string>
+    <string name="library_build_runner_owner">the Dart project authors</string>
+
+    <!-- fixnum -->
+    <string name="define_int_fixnum">year;owner</string>
+    <string name="library_fixnum_author">Dart Team</string>
+    <string name="library_fixnum_libraryName">fixnum</string>
+    <string name="library_fixnum_libraryDescription">Library for 32- and 64-bit signed fixed-width integers.</string>
+    <string name="library_fixnum_libraryWebsite">
+    https://github.com/dart-lang/fixnum
+    </string>
+    <string name="library_fixnum_isOpenSource">true</string>
+    <string name="library_fixnum_repositoryLink">https://github.com/dart-lang/fixnum</string>
+    <string name="library_fixnum_licenseId">bsd_3</string>
+    <!-- Custom variables section -->
+    <string name="library_fixnum_year">2014</string>
+    <string name="library_fixnum_owner">the Dart project authors</string>
+
+    <!-- stream_transform -->
+    <string name="define_int_stream_transform">year;owner</string>
+    <string name="library_stream_transform_author">Dart Team</string>
+    <string name="library_stream_transform_libraryName">stream_transform</string>
+    <string name="library_stream_transform_libraryDescription">A collection of utilities to transform and manipulate streams.</string>
+    <string name="library_stream_transform_libraryWebsite">
+    https://www.github.com/dart-lang/stream_transform
+    </string>
+    <string name="library_stream_transform_isOpenSource">true</string>
+    <string name="library_stream_transform_repositoryLink">https://www.github.com/dart-lang/stream_transform</string>
+    <string name="library_stream_transform_licenseId">bsd_3</string>
+    <!-- Custom variables section -->
+    <string name="library_stream_transform_year">2017</string>
+    <string name="library_stream_transform_owner">the Dart project authors</string>
+
+    <!-- timing -->
+    <string name="define_int_timing">year;owner</string>
+    <string name="library_timing_author">Dart Team</string>
+    <string name="library_timing_libraryName">timing</string>
+    <string name="library_timing_libraryDescription">Timing is a simple package for tracking performance of both async and sync actions</string>
+    <string name="library_timing_libraryWebsite">
+    https://github.com/dart-lang/timing
+    </string>
+    <string name="library_timing_isOpenSource">true</string>
+    <string name="library_timing_repositoryLink">https://github.com/dart-lang/timing</string>
+    <string name="library_timing_licenseId">bsd_3</string>
+    <!-- Custom variables section -->
+    <string name="library_timing_year">2018</string>
+    <string name="library_timing_owner">the Dart project authors</string>
+
+    <!-- graphs -->
+    <string name="define_int_graphs">year;owner</string>
+    <string name="library_graphs_author">Dart Team</string>
+    <string name="library_graphs_libraryName">graphs</string>
+    <string name="library_graphs_libraryDescription">Graph algorithms that operate on graphs in any representation</string>
+    <string name="library_graphs_libraryWebsite">
+    https://github.com/dart-lang/graphs
+    </string>
+    <string name="library_graphs_isOpenSource">true</string>
+    <string name="library_graphs_repositoryLink">https://github.com/dart-lang/graphs</string>
+    <string name="library_graphs_licenseId">bsd_3</string>
+    <!-- Custom variables section -->
+    <string name="library_graphs_year">2017</string>
+    <string name="library_graphs_owner">the Dart project authors</string>
+
+    <!-- logging -->
+    <string name="define_int_logging">year;owner</string>
+    <string name="library_logging_author">Dart Team</string>
+    <string name="library_logging_libraryName">logging</string>
+    <string name="library_logging_libraryDescription">Provides APIs for debugging and error logging. This library introduces abstractions similar to those used in other languages, such as the Closure JS Logger and java.util.logging.Logger.
+</string>
+    <string name="library_logging_libraryWebsite">
+    https://github.com/dart-lang/logging
+    </string>
+    <string name="library_logging_isOpenSource">true</string>
+    <string name="library_logging_repositoryLink">https://github.com/dart-lang/logging</string>
+    <string name="library_logging_licenseId">bsd_3</string>
+    <!-- Custom variables section -->
+    <string name="library_logging_year">2013</string>
+    <string name="library_logging_owner">the Dart project authors</string>
+
+    <!-- yaml -->
+    <string name="define_int_yaml">year;owner</string>
+    <string name="library_yaml_author">Dart Team</string>
+    <string name="library_yaml_libraryName">yaml</string>
+    <string name="library_yaml_libraryDescription">A parser for YAML.</string>
+    <string name="library_yaml_libraryWebsite">
+    https://github.com/dart-lang/yaml
+    </string>
+    <string name="library_yaml_isOpenSource">true</string>
+    <string name="library_yaml_repositoryLink">https://github.com/dart-lang/yaml</string>
+    <string name="library_yaml_licenseId">bsd_3</string>
+    <!-- Custom variables section -->
+    <string name="library_yaml_year">2014</string>
+    <string name="library_yaml_owner">the Dart project authors</string>
+
+</resources>
