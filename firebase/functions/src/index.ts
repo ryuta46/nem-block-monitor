@@ -16,6 +16,7 @@ import {CloudMessagingNotifier} from "./notifier";
 
 admin.initializeApp(functions.config().firebase);
 
+/*
 export const monitorNemBlockManual = functions.https.onRequest(async (request, response) => {
     const store = new FirestoreStore();
     const notifier = new CloudMessagingNotifier();
@@ -25,6 +26,7 @@ export const monitorNemBlockManual = functions.https.onRequest(async (request, r
     await app.run();
     response.send( logger.queuedLog.join('\n') + "\n\n");
 });
+*/
 
 
 export const monitorNemBlockFunc = functions.pubsub.topic("monitor-nem-block").onPublish(async (msg) => {

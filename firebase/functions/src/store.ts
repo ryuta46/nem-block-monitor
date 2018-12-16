@@ -123,7 +123,7 @@ export class FirestoreStore implements Store {
             const data = divisibilityDoc.data();
 
             for(const key of Object.keys(data)) {
-                divisibility[key] = data[key] as number
+                divisibility.set(key, data[key] as number);
             }
         }
         return divisibility;
