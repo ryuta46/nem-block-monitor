@@ -86,9 +86,12 @@ class _AppState extends State<App> {
     );
     _firebaseMessaging.requestNotificationPermissions(
         const IosNotificationSettings(sound: true, badge: true, alert: true));
-    _firebaseMessaging.onIosSettingsRegistered
-        .listen((IosNotificationSettings settings) {
-      print("Settings registered: $settings");
+
+    _firebaseMessaging.onIosSettingsRegistered.listen((IosNotificationSettings settings) {
+      _firebaseMessaging.getToken().then((String token) async {
+        _token = token;
+        await _updateUserData();
+      });
     });
 
     _firebaseMessaging.getToken().then((String token) async {
@@ -114,6 +117,11 @@ class _AppState extends State<App> {
 
     final userData = FirestoreUserDataRepository.instance;
     await userData.fetchUserData(_userId);
+
+    if (Preference.instance.isFirstLaunch) {
+      await userData.initializeData();
+      Preference.instance.setFirstLaunch();
+    }
 
     userData.setToken(_token);
 

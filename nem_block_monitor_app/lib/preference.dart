@@ -8,10 +8,11 @@ part 'preference.g.dart';
 
 @JsonSerializable(createToJson: true)
 class _PreferenceDTO {
+  final bool isFirstLaunch;
   final String network;
   final Map<String, String> nodes;
 
-  _PreferenceDTO(this.network, this.nodes);
+  _PreferenceDTO(this.isFirstLaunch, this.network, this.nodes);
 
   factory _PreferenceDTO.fromJson(Map<String, dynamic> json) => _$_PreferenceDTOFromJson(json);
 
@@ -33,7 +34,8 @@ class Preference {
       _dto = _PreferenceDTO.fromJson(decoded);
     } else {
       _dto = _PreferenceDTO(
-          "testnet",
+          true,
+          "mainnet",
           {
             "mainnet": "https://nismain.ttechdev.com:7891",
             "testnet": "https://nistest.ttechdev.com:7891",
@@ -51,9 +53,14 @@ class Preference {
     return dto;
   }
 
+  bool get isFirstLaunch => _dto.isFirstLaunch;
+
+  FutureOr<void> setFirstLaunch() async {
+    _dto = await _save(_PreferenceDTO(false, _dto.network, _dto.nodes));
+  }
 
   FutureOr<void> setNetwork(String newNetwork) async {
-    _dto = await _save(_PreferenceDTO(newNetwork, _dto.nodes));
+    _dto = await _save(_PreferenceDTO(_dto.isFirstLaunch, newNetwork, _dto.nodes));
   }
 
   String get network => _dto.network;
@@ -62,7 +69,7 @@ class Preference {
     final newNodes = Map<String, String>()..addAll(_dto.nodes);
     newNodes[network] = nodeUrl;
 
-    _dto = await _save(_PreferenceDTO(_dto.network, newNodes));
+    _dto = await _save(_PreferenceDTO(_dto.isFirstLaunch, _dto.network, newNodes));
   }
 
   String get node => _dto.nodes[_dto.network];

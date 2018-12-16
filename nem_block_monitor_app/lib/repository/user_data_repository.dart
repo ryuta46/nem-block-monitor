@@ -8,6 +8,8 @@ import 'package:nem_block_monitor_app/model/notification.dart';
 typedef void NotificationCallback(BuiltList<NotificationMessage> notifications);
 
 abstract class UserDataRepository {
+  FutureOr<void> initializeData();
+
   void setTargetNetwork(String network);
 
   String get userId;
@@ -18,7 +20,7 @@ abstract class UserDataRepository {
 
   Future<BuiltMap<String, bool>> get watchAddresses;
 
-  FutureOr<void> addWatchAddress(String address);
+  FutureOr<void> addWatchAddress(String address, String label);
   FutureOr<void> removeWatchAddress(String address);
   FutureOr<void> enableWatchAddress(String address, bool enables);
 
@@ -35,7 +37,7 @@ abstract class UserDataRepository {
 
   Future<BuiltMap<String, String>> get labels;
 
-  FutureOr<void> addLabel(String address, String label);
+  FutureOr<void> setLabel(String address, String label);
   FutureOr<void> removeLabel(String address);
 
   Future<BuiltList<NotificationMessage>> getNotificationMessages();

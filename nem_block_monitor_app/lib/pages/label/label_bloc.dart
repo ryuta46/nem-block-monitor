@@ -71,7 +71,7 @@ class LabelBloc extends Bloc<LabelEvent, LabelState> {
     if (event is LabelLoadEvent) {
     }
     else if (event is LabelAddEvent) {
-      await repository.addLabel(event.address, event.label);
+      await repository.setLabel(event.address, event.label);
     }
     else if (event is LabelRemoveEvent) {
       await repository.removeLabel(event.address);

@@ -165,10 +165,7 @@ class WatchBloc extends Bloc<WatchEvent, WatchState> {
     if (event is WatchLoadEvent) {
     }
     else if (event is WatchAddAddressEvent) {
-      await repository.addWatchAddress(event.address);
-      if (event.label.isNotEmpty) {
-        await repository.addLabel(event.address, event.label);
-      }
+      await repository.addWatchAddress(event.address, event.label);
     }
     else if (event is WatchRemoveAddressEvent) {
       await repository.removeWatchAddress(event.address);
@@ -186,11 +183,7 @@ class WatchBloc extends Bloc<WatchEvent, WatchState> {
       await repository.enableWatchAsset(event.asset, event.enables);
     }
     else if (event is WatchEditLabelEvent) {
-      if (event.label.isNotEmpty) {
-        await repository.addLabel(event.address, event.label);
-      } else {
-        await repository.removeLabel(event.address);
-      }
+      await repository.setLabel(event.address, event.label);
     }
     yield await _getSuccessEvent();
   }

@@ -67,6 +67,32 @@ class FirestoreUserDataRepository extends UserDataRepository {
   DocumentReference get _userRef => Firestore.instance.document('users/$_userId');
 
   @override
+  FutureOr<void> initializeData() async {
+    final snapShot = await _userRef.get();
+    if (snapShot.exists) {
+      await _userRef.delete();
+    }
+    for (var network in ["mainnet", "testnet"]) {
+      setTargetNetwork(network);
+
+      final addresses = await watchAddresses;
+      for (var address in addresses.keys) {
+        await removeWatchAddress(address);
+      }
+      final assets = await watchAssets;
+      for (var asset in assets.keys) {
+        await removeWatchAddress(asset);
+      }
+    }
+
+    final notificationRef = Firestore.instance.document('users/$_userId/notification/history');
+    final notificationDoc = await notificationRef.get();
+    if (notificationDoc.exists) {
+      await notificationRef.delete();
+    }
+  }
+
+  @override
   void setTargetNetwork(String network) {
     _network = network;
   }
@@ -119,26 +145,54 @@ class FirestoreUserDataRepository extends UserDataRepository {
   Future<BuiltMap<String, bool>> get watchAddresses async => _getList(keyAddresses);
 
   @override
-  FutureOr<void> addWatchAddress(String address) async => _addWatchEntry(keyAddresses, address);
+  FutureOr<void> addWatchAddress(String address, String label) async {
+    await Firestore.instance.runTransaction((transaction) async {
+      await _addWatchEntry(transaction, keyAddresses, address);
+      if (label.isNotEmpty) {
+        await _setLabel(transaction, address, label);
+      } else {
+        await _removeLabel(transaction, address);
+      }
+    });
+  }
+  @override
+  FutureOr<void> removeWatchAddress(String address) async {
+    await Firestore.instance.runTransaction((transaction) async {
+      await _removeWatchEntry(transaction, keyAddresses, address);
+      await _removeLabel(transaction, address);
+    });
+  }
 
   @override
-  FutureOr<void> removeWatchAddress(String address) async => _removeWatchEntry(keyAddresses, address);
-
-  @override
-  FutureOr<void> enableWatchAddress(String address, bool enables) async => _enableWatchEntry(keyAddresses, address, enables);
-
+  FutureOr<void> enableWatchAddress(String address, bool enables) async {
+    await Firestore.instance.runTransaction((transaction) async {
+      await _enableWatchEntry(transaction, keyAddresses, address, enables);
+    });
+  }
   @override
   Future<BuiltMap<String, bool>> get watchAssets async =>  _getList(keyAssets);
 
   @override
-  FutureOr<void> addWatchAsset(String assetFullName) async => _addWatchEntry(keyAssets, assetFullName);
+  FutureOr<void> addWatchAsset(String assetFullName) async {
+    await Firestore.instance.runTransaction((transaction) async {
+      await _addWatchEntry(transaction, keyAssets, assetFullName);
+    });
+  }
 
   @override
-  FutureOr<void> removeWatchAsset(String assetFullName) async => _removeWatchEntry(keyAssets, assetFullName);
+  FutureOr<void> removeWatchAsset(String assetFullName) async {
+    await Firestore.instance.runTransaction((transaction) async {
+      await _removeWatchEntry(transaction, keyAssets, assetFullName);
+    });
+  }
+
 
   @override
-  FutureOr<void> enableWatchAsset(String assetFullName, bool enables) async => _enableWatchEntry(keyAssets, assetFullName, enables);
-
+  FutureOr<void> enableWatchAsset(String assetFullName, bool enables) async {
+    await Firestore.instance.runTransaction((transaction) async {
+        await _enableWatchEntry(transaction, keyAssets, assetFullName, enables);
+    });
+  }
 
   //@override
   //Future<BuiltList<String>> get watchHarvests async => _getList(keyHarvests);
@@ -155,15 +209,23 @@ class FirestoreUserDataRepository extends UserDataRepository {
   }
 
   @override
-  FutureOr<void> addLabel(String address, String label) async {
-    Firestore.instance.runTransaction((transaction) async {
-      final labelsRef = Firestore.instance.document('users/$_userId/label/$_network');
-      await labelsRef.setData({address: label}, merge: true);
-
-      final watchRef = Firestore.instance.document(
-          '$_network/$keyAddresses/$address/$_userId');
-      await watchRef.setData({"label": label}, merge: true);
+  FutureOr<void> setLabel(String address, String label) async {
+    await Firestore.instance.runTransaction((transaction) async {
+      if (label.isNotEmpty) {
+        await _setLabel(transaction, address, label);
+      } else {
+        await _removeLabel(transaction, address);
+      }
     });
+  }
+
+  FutureOr<void> _setLabel(Transaction transaction, String address, String label) async {
+    final labelsRef = Firestore.instance.document('users/$_userId/label/$_network');
+    await labelsRef.setData({address: label}, merge: true);
+
+    final watchRef = Firestore.instance.document(
+        '$_network/$keyAddresses/$address/$_userId');
+    await watchRef.setData({"label": label}, merge: true);
 
     if (!_labels.containsKey(_network)) {
       _labels[_network] = {};
@@ -173,40 +235,46 @@ class FirestoreUserDataRepository extends UserDataRepository {
 
   @override
   FutureOr<void> removeLabel(String address) async {
-    Firestore.instance.runTransaction((transaction) async {
-      final labelsRef = Firestore.instance.document('users/$_userId/label/$_network');
-      final labelsDocument = await labelsRef.get();
-      if (labelsDocument.exists) {
-        final labelsData = labelsDocument.data;
-        labelsData.remove(address);
-        await labelsRef.setData(labelsData);
-      }
-
-      final watchRef = Firestore.instance.document('$_network/$keyAddresses/$address/$_userId');
-      final watchDocument = await watchRef.get();
-
-      final watchData = watchDocument.data;
-      watchData.remove("label");
-
-      // If key is only 'label', delete the entry. Otherwise, deletes key only
-      if (watchData.isEmpty) {
-        await watchRef.delete();
-      } else {
-        await watchRef.setData(watchData);
-      }
+    await Firestore.instance.runTransaction((transaction) async {
+      await _removeLabel(transaction, address);
     });
+  }
+
+  FutureOr<void> _removeLabel(Transaction transaction, String address) async {
+    final labelsRef = Firestore.instance.document('users/$_userId/label/$_network');
+    final labelsDocument = await labelsRef.get();
+    if (labelsDocument.exists) {
+      final labelsData = labelsDocument.data;
+      labelsData.remove(address);
+      await labelsRef.setData(labelsData);
+    }
+
+    final watchRef = Firestore.instance.document('$_network/$keyAddresses/$address/$_userId');
+    final watchDocument = await watchRef.get();
+
+    final watchData = watchDocument.data;
+    watchData.remove("label");
+
+    // If key is only 'label', delete the entry. Otherwise, deletes key only
+    if (watchData.isEmpty) {
+      await watchRef.delete();
+    } else {
+      await watchRef.setData(watchData);
+    }
 
     if (_labels.containsKey(_network)) {
       _labels[_network].remove(address);
     }
   }
 
+  @override
   Future<BuiltList<NotificationMessage>> getNotificationMessages() async {
     final notificationRef = Firestore.instance.document('users/$_userId/notification/history');
     final notificationDocument = await notificationRef.get();
     return _parseNotificationMessages(notificationDocument);
   }
 
+  @override
   void listenNotificationMessages(NotificationCallback callback) async {
     final notificationRef = Firestore.instance.document('users/$_userId/notification/history');
     notificationRef.snapshots().listen( (snapshot) async {
@@ -256,72 +324,65 @@ class FirestoreUserDataRepository extends UserDataRepository {
     return BuiltMap<String, bool>(watchList.getList(_network));
   }
 
-  FutureOr<void> _addWatchEntry(String key, String entry) async {
-    await _addToFirestore(_network, key, entry);
+  FutureOr<void> _addWatchEntry(Transaction transaction, String key, String entry) async {
+    await _addToFirestore(transaction, _network, key, entry);
     final watchList = _watchLists[key];
     watchList.add(_network, entry);
   }
 
-  FutureOr<void> _removeWatchEntry(String key, String entry) async {
-    await _removeFromFirestore(_network, key, entry);
+  FutureOr<void> _removeWatchEntry(Transaction transaction, String key, String entry) async {
+    await _removeFromFirestore(transaction, _network, key, entry);
     final watchList = _watchLists[key];
     watchList.remove(_network, entry);
   }
 
-  FutureOr<void> _enableWatchEntry(String key, String entry, bool enables) async {
-    await _enableOnFirestore(_network, key, entry, enables);
+  FutureOr<void> _enableWatchEntry(Transaction transaction, String key, String entry, bool enables) async {
+    await _enableOnFirestore(transaction, _network, key, entry, enables);
     final watchList = _watchLists[key];
     watchList.enable(_network, entry, enables);
   }
 
-  FutureOr<void> _addToFirestore(String network, String key, String entry) async {
-    Firestore.instance.runTransaction((transaction) async {
-      final userWatchRef = Firestore.instance.document(
-          'users/$_userId/watch/$network/$key/$entry');
-      await transaction.set(userWatchRef, {"active": true});
+  FutureOr<void> _addToFirestore(Transaction transaction, String network, String key, String entry) async {
+    final userWatchRef = Firestore.instance.document(
+        'users/$_userId/watch/$network/$key/$entry');
+    await transaction.set(userWatchRef, {"active": true});
 
-      final watchRef = Firestore.instance.document(
-          '$network/$key/$entry/$_userId');
+    final watchRef = Firestore.instance.document(
+        '$network/$key/$entry/$_userId');
 
-      await transaction.set(watchRef, {"active": true});
-    });
+    await transaction.set(watchRef, {"active": true});
   }
 
-  FutureOr<void> _removeFromFirestore(String network, String key, String entry) async {
-    Firestore.instance.runTransaction((transaction) async {
-      final userWatchRef = Firestore.instance.document(
-          'users/$_userId/watch/$network/$key/$entry');
+  FutureOr<void> _removeFromFirestore(Transaction transaction, String network, String key, String entry) async {
+    final userWatchRef = Firestore.instance.document(
+        'users/$_userId/watch/$network/$key/$entry');
 
-      await transaction.delete(userWatchRef);
+    await transaction.delete(userWatchRef);
 
-      final watchRef = Firestore.instance.document(
-          '$network/$key/$entry/$_userId');
+    final watchRef = Firestore.instance.document(
+        '$network/$key/$entry/$_userId');
 
-      await transaction.delete(watchRef);
-    });
+    await transaction.delete(watchRef);
   }
 
-  FutureOr<void> _enableOnFirestore(String network, String key, String entry, bool enables) async {
-    Firestore.instance.runTransaction((transaction) async {
-      final userWatchRef = Firestore.instance.document(
-          'users/$_userId/watch/$network/$key/$entry');
+  FutureOr<void> _enableOnFirestore(Transaction transaction, String network, String key, String entry, bool enables) async {
+    final userWatchRef = Firestore.instance.document(
+        'users/$_userId/watch/$network/$key/$entry');
 
-      final watchRef = Firestore.instance.document(
-          '$network/$key/$entry/$_userId');
+    final watchRef = Firestore.instance.document(
+        '$network/$key/$entry/$_userId');
 
-      final userWatchDoc = await transaction.get(userWatchRef);
-      final watchDoc = await transaction.get(watchRef);
+    final userWatchDoc = await transaction.get(userWatchRef);
+    final watchDoc = await transaction.get(watchRef);
 
-      if (userWatchDoc.exists && watchDoc.exists) {
-        final userWatchData = userWatchDoc.data;
-        final watchData = watchDoc.data;
-        userWatchData["active"] = enables;
-        watchData["active"] = enables;
+    if (userWatchDoc.exists && watchDoc.exists) {
+      final userWatchData = userWatchDoc.data;
+      final watchData = watchDoc.data;
+      userWatchData["active"] = enables;
+      watchData["active"] = enables;
 
-        await transaction.set(userWatchRef, userWatchData);
-        await transaction.set(watchRef, watchData);
-      }
-    });
-
+      await transaction.set(userWatchRef, userWatchData);
+      await transaction.set(watchRef, watchData);
+    }
   }
 }
