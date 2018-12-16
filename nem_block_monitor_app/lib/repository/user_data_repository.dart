@@ -4,6 +4,9 @@ import 'dart:async';
 import 'package:built_collection/built_collection.dart';
 import 'package:nem_block_monitor_app/model/notification.dart';
 
+
+typedef void NotificationCallback(BuiltList<NotificationMessage> notifications);
+
 abstract class UserDataRepository {
   void setTargetNetwork(String network);
 
@@ -36,5 +39,7 @@ abstract class UserDataRepository {
   FutureOr<void> removeLabel(String address);
 
   Future<BuiltList<NotificationMessage>> getNotificationMessages();
+
+  void listenNotificationMessages(NotificationCallback callback);
 
 }

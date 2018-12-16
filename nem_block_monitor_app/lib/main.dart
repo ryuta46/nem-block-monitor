@@ -75,7 +75,6 @@ class _AppState extends State<App> {
   _setupMessagingCallbacks() {
     _firebaseMessaging.configure(
       onMessage: (Map<String, dynamic> message) async {
-        _historyBloc.onNeedUpdate();
         print("onMessage: $message");
       },
       onLaunch: (Map<String, dynamic> message) async {
@@ -120,7 +119,7 @@ class _AppState extends State<App> {
 
     setState(() {
       _isLoadingUserData = false;
-      _historyBloc.onLoaded();
+      _historyBloc.startListening();
     });
   }
 

@@ -204,22 +204,33 @@ class FirestoreUserDataRepository extends UserDataRepository {
   Future<BuiltList<NotificationMessage>> getNotificationMessages() async {
     final notificationRef = Firestore.instance.document('users/$_userId/notification/history');
     final notificationDocument = await notificationRef.get();
-    if (!notificationDocument.exists) {
+    return _parseNotificationMessages(notificationDocument);
+  }
+
+  void listenNotificationMessages(NotificationCallback callback) async {
+    final notificationRef = Firestore.instance.document('users/$_userId/notification/history');
+    notificationRef.snapshots().listen( (snapshot) async {
+      callback(await _parseNotificationMessages(snapshot));
+    });
+  }
+
+  Future<BuiltList<NotificationMessage>> _parseNotificationMessages(DocumentSnapshot snapshot) async {
+    if (!snapshot.exists) {
       return BuiltList<NotificationMessage>();
     }
     final fetchedLabels = await labels;
 
     final notifications = List<NotificationMessage>();
-    final notificationData = notificationDocument.data["data"] as List<dynamic>;
+    final notificationData = snapshot.data["data"] as List<dynamic>;
     for (var notification in notificationData) {
       final assets = List<NotificationAsset>();
       final assetData = notification["assets"] as List<dynamic>;
       for (var asset in assetData) {
         assets.add(NotificationAsset(
-          asset["namespaceId"] as String,
-          asset["name"] as String,
-          asset["quantity"] as int,
-          asset["divisibility"] as int
+            asset["namespaceId"] as String,
+            asset["name"] as String,
+            asset["quantity"] as int,
+            asset["divisibility"] as int
         ));
       }
 
@@ -237,7 +248,6 @@ class FirestoreUserDataRepository extends UserDataRepository {
 
       notifications.add(notificationMessage);
     }
-
     return BuiltList<NotificationMessage>(notifications);
   }
 

@@ -35,7 +35,11 @@ class HistoryLoadEvent extends HistoryEvent {
 }
 
 class HistoryUpdateEvent extends HistoryEvent {
+  final BuiltList<NotificationMessage> notifications;
+
+  HistoryUpdateEvent(this.notifications);
 }
+
 
 class HistoryBloc extends Bloc<HistoryEvent, HistoryState> {
   final UserDataRepository repository;
@@ -44,26 +48,28 @@ class HistoryBloc extends Bloc<HistoryEvent, HistoryState> {
 
   HistoryState get initialState => HistoryState.initial();
 
+  void startListening() {
+    this.repository.listenNotificationMessages((notifications) {
+      dispatch(HistoryUpdateEvent(notifications));
+    });
+  }
+
   void onLoaded() {
     dispatch(HistoryLoadEvent());
   }
-
-  void onNeedUpdate() {
-    dispatch(HistoryUpdateEvent());
-  }
-
 
   @override
   Stream<HistoryState> mapEventToState(HistoryState state, HistoryEvent event) async* {
     if (event is HistoryLoadEvent) {
       yield HistoryState.loading();
+      try {
+        yield HistoryState.success(await repository.getNotificationMessages());
+      } catch (error) {
+        yield HistoryState.failed(error.toString());
+      }
     }
     else if (event is HistoryUpdateEvent) {
-    }
-    try {
-      yield HistoryState.success(await repository.getNotificationMessages());
-    } catch (error) {
-      yield HistoryState.failed(error.toString());
+      yield HistoryState.success(event.notifications);
     }
   }
 }
