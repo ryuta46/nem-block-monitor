@@ -11,18 +11,26 @@ class ExternalLauncher {
     }
   }
 
-  static openExplorerOfAddress(Address address) async {
-    final url = "http://explorer.nemchina.com/#/s_account?account=${address.plain}";
+  static openExplorerOfAddress(String network, Address address) async {
+    final url = network == "testnet"
+        ? "http://testnet-explorer.nemtool.com/#/s_account?account=${address.plain}"
+        : "http://explorer.nemchina.com/#/s_account?account=${address.plain}";
+
     return openUrl(url);
   }
 
-  static openExplorerOfAsset(String namespaceId, String name) async {
-    final url = "http://explorer.nemchina.com/#/mosaic?m=$name&ns=$namespaceId";
+  static openExplorerOfAsset(String network, String namespaceId, String name) async {
+    final url = network == "testnet"
+        ? "http://testnet-explorer.nemtool.com/#/mosaic?m=$name&ns=$namespaceId"
+        : "http://explorer.nemchina.com/#/mosaic?m=$name&ns=$namespaceId";
+
     return openUrl(url);
   }
 
-  static openExplorerOfHash(String hash) async{
-    final url = "http://explorer.nemchina.com/#/s_tx?hash=$hash";
+  static openExplorerOfHash(String network, String hash) async{
+    final url = network == "testnet"
+        ? "http://testnet-explorer.nemtool.com/#/s_tx?hash=$hash"
+        : "http://explorer.nemchina.com/#/s_tx?hash=$hash";
     return openUrl(url);
   }
 }

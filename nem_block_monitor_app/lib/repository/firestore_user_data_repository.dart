@@ -150,8 +150,6 @@ class FirestoreUserDataRepository extends UserDataRepository {
       await _addWatchEntry(transaction, keyAddresses, address);
       if (label.isNotEmpty) {
         await _setLabel(transaction, address, label);
-      } else {
-        await _removeLabel(transaction, address);
       }
     });
   }

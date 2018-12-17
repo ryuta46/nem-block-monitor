@@ -40,15 +40,27 @@ const app = new BlockMonitorApp(
 //    [NetworkTypes.MAIN_NET],
 //    1932922,
 //    1932923,
-    [NetworkTypes.MAIN_NET],
+    [NetworkTypes.TEST_NET],
     //1935659,
     //1885312,
     //1885313,
 
-    1935507,
-    1935508,
+    //1935507,
+//    1935508,
+
+    //1939980,  // Address
+    //1939981, //
+
+    //1939988,  // mosaic
+    //1939989, //
+
     //1932922,
     //1932923,
+
+    1746534, // testnet
+    1746535, // testnet
+
+
     false
 );
 app.run().then((result) => {

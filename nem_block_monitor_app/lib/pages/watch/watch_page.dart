@@ -200,7 +200,7 @@ class _WatchPageState extends State<WatchPage> {
     final buttonStyle = TextStyle(color: AppStyle.colorAccent, fontSize: 18);
     final List<_EditAction> actions = [
       _EditAction("Edit Label", () => _showEditLabelDialog(context, address, label)),
-      _EditAction("View on Explorer", () => ExternalLauncher.openExplorerOfAddress(Address(address))),
+      _EditAction("View on Explorer", () => ExternalLauncher.openExplorerOfAddress(Preference.instance.network, Address(address))),
       _EditAction((enables ? "Disable" : "Enable") + " Notification", () => _bloc.enableAddress(address, !enables)),
       _EditAction("Remove", () => _showRemoveAddressDialog(context, address)),
     ];
@@ -340,7 +340,7 @@ class _WatchPageState extends State<WatchPage> {
         final elements = assetFullName.split(":");
         if (elements.length == 2) {
           ExternalLauncher.openExplorerOfAsset(
-              elements[0], elements[1]);
+            Preference.instance.network, elements[0], elements[1]);
         }
       }),
       _EditAction((enables ? "Disable" : "Enable") + " Notification", () => _bloc.enableAsset(assetFullName, !enables)),
