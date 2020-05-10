@@ -52,12 +52,12 @@ export class FirestoreStore implements Store {
     }
 
     async loadWatchedAddresses(): Promise<string[]> {
-        const addresses = await admin.firestore().doc(`${this.network}/addresses`).getCollections();
+        const addresses = await admin.firestore().doc(`${this.network}/addresses`).listCollections();
         return addresses.map(collection => collection.id);
     }
 
     async loadWatchedAssets(): Promise<string[]> {
-        const assets = await admin.firestore().doc(`${this.network}/assets`).getCollections();
+        const assets = await admin.firestore().doc(`${this.network}/assets`).listCollections();
         return assets.map(collection => collection.id);
     }
 
