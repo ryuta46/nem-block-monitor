@@ -18,7 +18,7 @@
     "firebase-functions": "^3.6.1",
     "hoek": ">=4.2.1",
     "nem-library": "^2.0.0-RC4",
-    "node-fetch": "^2.2.1",
+    "node-fetch": "^2.6.7",
     "rxjs": "^5.5.12"
   },
   "devDependencies": {
